@@ -1,0 +1,33 @@
+{
+  "data": {
+    "appObjectId": "",
+    "azureSpnPermissions": "",
+    "azureSpnRoleAssignmentId": "",
+    "registryId": "/subscriptions/{{AZ_SUBSCRIPTION_ID}}/resourceGroups/{{AZDO_APPSERVICE_RG_NAME}}/providers/Microsoft.ContainerRegistry/registries/{{AZDO_DOCKER_REGISTRY_NAME}}",
+    "registrytype": "ACR",
+    "spnObjectId": "",
+    "subscriptionId": "{{AZ_SUBSCRIPTION_ID}}",
+    "subscriptionName": "{{AZ_SUBSCRIPTION_NAME}}"
+  },
+  "id": "{{AZ_REGISTRY_SP_CLIENT_ID}}",
+  "name": "{{AZDO_REGISTRY_SERVICE_CONNECTION_NAME}}",
+  "type": "dockerregistry",
+  "url": "https://{{AZDO_DOCKER_REGISTRY_FQDN}}",
+  "description": "",
+  "authorization": {
+    "parameters": {
+      "loginServer": "{{AZDO_DOCKER_REGISTRY_FQDN}}",
+      "role": "8311e382-0749-4cb8-b61a-304f252e45ec",
+      "scope": "/subscriptions/{{AZ_SUBSCRIPTION_ID}}/resourceGroups/{{AZDO_APPSERVICE_RG_NAME}}/providers/Microsoft.ContainerRegistry/registries/{{AZDO_DOCKER_REGISTRY_NAME}}",
+      "servicePrincipalId": "<placeholder>",
+      "tenantId": "{{AZ_TENANT_ID}}"
+    },
+    "scheme": "ServicePrincipal"
+  },
+  "operationStatus": null,
+  "readersGroup": null,
+  "serviceEndpointProjectReferences": null,
+  "groupScopeId": null,
+  "isShared": false,
+  "owner": "library"
+}

@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+set -e
+set -u
+
+this_cmd="${BASH_SOURCE[0]}"
+this_path="$(cd "$(dirname "$this_cmd")" && pwd)"
+
+if [ "$#" -eq 1 ]; then
+    echo "Sourcing variables from $1"
+    set -a; source "$this_path/$1"; set +a
+else
+    echo "Usage: $this_cmd apim.ENVIRONMENT.env"
+    exit 1
+fi
+
+echo -e "\nCreating a service connection for GitHub"
+export AZURE_DEVOPS_EXT_GITHUB_PAT="$AZDO_GITHUB_ACCESS_TOKEN"
+
+AZDO_GITHUB_SERVICE_CONNECTION_ID="$(az devops service-endpoint github create \
+  --github-url "$AZDO_GITHUB_URL" \
+  --name github \
+  --query id --output tsv)" || true
+
+echo -e "\nCreating a service principal w/ RBAC for AzureRM service connection"
+AZ_AZURERM_SP_PASSWORD="$(az ad sp create-for-rbac \
+    --name "$AZ_PREFIX-cicd-$AZ_NAME-apim-azurerm-sp" \
+    --role "Api Management Service Contributor" \
+    --scope "/subscriptions/$AZDO_APIM_SUBSCRIPTION_ID/resourceGroups/$AZDO_APIM_RESOURCE_GROUP_NAME" \
+    --only-show-errors \
+    --query password --output tsv)"
+
+echo -e "\nCreating an Azure Resource Manager service connection"
+AZ_AZURERM_SP_CLIENT_ID="$(az ad sp list \
+    --display-name "$AZ_PREFIX-cicd-$AZ_NAME-apim-azurerm-sp" \
+    --query [].appId --output tsv)"
+
+AZ_SUBSCRIPTION_NAME="$(az account show \
+    --subscription "$AZDO_APIM_SUBSCRIPTION_ID" \
+    --query name --output tsv)"
+
+AZ_TENANT_ID="$(az account show \
+    --subscription "$AZDO_APIM_SUBSCRIPTION_ID" \
+    --query tenantId --output tsv)"
+
+AZDO_AZURERM_SERVICE_CONNECTION_ID="$(az devops service-endpoint list \
+    --query "[?name=='$AZDO_AZURERM_SERVICE_CONNECTION_NAME'].id" --output tsv)"
+
+az devops service-endpoint delete --yes \
+    --id "$AZDO_AZURERM_SERVICE_CONNECTION_ID" || true
+
+export AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY="$AZ_AZURERM_SP_PASSWORD"
+az devops service-endpoint azurerm create \
+    --azure-rm-service-principal-id "$AZ_AZURERM_SP_CLIENT_ID" \
+    --azure-rm-subscription-id "$AZDO_APIM_SUBSCRIPTION_ID" \
+    --azure-rm-subscription-name "$AZ_SUBSCRIPTION_NAME" \
+    --azure-rm-tenant-id "$AZ_TENANT_ID" \
+    --name "$AZDO_AZURERM_SERVICE_CONNECTION_NAME" || true
+
+echo -e "\nCreating a pipeline for ${1%'.env'}"
+az pipelines create \
+    --branch main \
+    --name "$AZDO_APIM_PIPELINE_NAME" \
+    --repository "$AZDO_GITHUB_URL" \
+    --service-connection "$AZDO_GITHUB_SERVICE_CONNECTION_ID" \
+    --skip-first-run \
+    --yml-path "$AZDO_APIM_PIPELINE_YAML_PATH" || true
+
+echo -e "\nCreating a variable group for ${1%'.env'}"
+az pipelines variable-group create \
+    --name "${1%'.env'}" \
+    --variables apimName="$AZDO_APIM_NAME" \
+    azureRmApimServiceConnectionName="$AZDO_AZURERM_SERVICE_CONNECTION_NAME" \
+    apimResourceGroupName="$AZDO_APIM_RESOURCE_GROUP_NAME" \ apimSubscriptionId="$AZDO_APIM_SUBSCRIPTION_ID" \
+    --authorize false || true

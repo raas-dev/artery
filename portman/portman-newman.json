@@ -1,0 +1,11 @@
+{
+  "local": "openapi.yaml",
+  "output": "portman/collection.postman.json",
+  "envFile": "portman/.env-portman",
+  "filterFile": "portman/oas-format-filter.json",
+  "portmanConfigFile": "portman/portman-config.json",
+  "baseUrl": "http://localhost:8080",
+  "includeTests": true,
+  "syncPostman": false,
+  "runNewman": false
+}

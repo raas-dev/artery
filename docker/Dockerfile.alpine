@@ -1,0 +1,70 @@
+
+ARG NODE_VERSION=14.17.3
+
+## --------------------------------------------
+# Transpiler
+
+FROM node:${NODE_VERSION}-alpine as build
+WORKDIR /build/
+
+# Copy everything except files in .dockerignore
+COPY . .
+
+# Install devDependencies, build dist and run tests
+RUN npm ci
+RUN npm run lint
+RUN npm run build
+RUN npm run test:all
+
+## --------------------------------------------
+# Production dependencies only
+
+FROM node:${NODE_VERSION}-alpine as clean
+WORKDIR /clean/
+
+# Copy npm packaging files from local
+COPY --chown=node:node package.json .
+COPY --chown=node:node package-lock.json .
+
+# Install production only dependencies
+RUN npm install --no-save --production
+
+## --------------------------------------------
+# JavaScript only
+
+FROM node:${NODE_VERSION}-alpine as run
+
+# if no tzdata, will stick on UTC
+ARG ADD_APK_PACKAGES="tzdata"
+RUN apk --no-cache --update add ${ADD_APK_PACKAGES}
+
+ARG TZ="Europe/Helsinki"
+RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
+    echo ${TZ} > /etc/timezone || true
+
+USER node
+WORKDIR /home/node
+
+# Production only dependencies
+COPY --from=build --chown=node:node /build/dist dist
+COPY --from=clean --chown=node:node /clean/node_modules node_modules
+
+# For dist/index.js
+COPY --chown=node:node openapi.yaml .
+RUN echo -n "$(date +%Y%m%d-%H.%M)" > builtInfo.txt
+
+# Add entrypoint to trap signals
+COPY --chown=node:node docker/runner.sh runner.sh
+RUN chmod 755 runner.sh
+ENTRYPOINT ["./runner.sh"]
+
+CMD ["node", "dist/index.js"]
+EXPOSE 8080
+
+# sshd
+USER root
+RUN apk add --no-cache --update openssh bash
+RUN ssh-keygen -A
+COPY docker/sshd_config /etc/ssh/
+RUN echo "root:Docker!" | chpasswd
+EXPOSE 2222

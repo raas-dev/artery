@@ -1,0 +1,13 @@
+*
+
+!.eslintrc.js
+!docker/runner.sh
+!docker/sshd_config
+!jest.config.js
+!openapi.json
+!openapi.yaml
+!package.json
+!package-lock.json
+!portman/
+!src/
+!tsconfig.json

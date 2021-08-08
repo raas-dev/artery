@@ -1,0 +1,87 @@
+# triggers shall also be defined in Azure DevOps pipeline settings
+
+trigger:
+  - prod
+
+pr: none
+
+name: $(Date:yyyyMMdd)-$(Hours).$(Minutes)-$(SourceBranch).$(Rev:r)
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: prod
+
+stages:
+  - stage: rc
+    displayName: rc
+    jobs:
+      - job: docker
+        displayName: Release app
+        steps:
+          - task: Docker@2
+            displayName: build
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              repository: '$(dockerRepositoryName)'
+              command: 'build'
+              Dockerfile: 'docker/Dockerfile.alpine.prod'
+              buildContext: '.'
+              tags: |
+                $(Build.BuildNumber)
+                prod
+              arguments: '--pull --no-cache'
+          - task: Docker@2
+            displayName: login
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              command: 'login'
+          - task: Docker@2
+            displayName: push
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              repository: '$(dockerRepositoryName)'
+              command: 'push'
+              tags: |
+                $(Build.BuildNumber)
+                prod
+      - job: slot
+        dependsOn: docker
+        displayName: Deploy AppService slot
+        steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy to rc
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: '$(azureRmServiceConnectionName)'
+              appType: 'webAppContainer'
+              WebAppName: '$(appServiceName)'
+              deployToSlotOrASE: true
+              ResourceGroupName: '$(appServiceRgName)'
+              SlotName: '$(appServiceSlotName)'
+              DockerNamespace: '$(dockerRegistryFQDN)'
+              DockerRepository: '$(dockerRepositoryName)'
+              DockerImageTag: '$(Build.BuildNumber)'
+
+  - stage: production
+    displayName: production
+    dependsOn: rc
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/prod'))
+    jobs:
+      - deployment: appservice
+        displayName: Swap slots
+        environment: production
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureAppServiceManage@0
+                  displayName: Swap rc to production
+                  inputs:
+                    azureSubscription: '$(azureRmServiceConnectionName)'
+                    Action: 'Swap Slots'
+                    WebAppName: '$(appServiceName)'
+                    ResourceGroupName: '$(appServiceRgName)'
+                    SourceSlot: '$(appServiceSlotName)'
+                    PreserveVnet: true

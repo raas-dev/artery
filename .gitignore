@@ -1,0 +1,20 @@
+# transpiled JavaScript
+dist/
+
+# postman-to-k6 auto-generated tests
+k6/auto
+
+# npm packages
+node_modules/
+
+# newman test results
+results/
+
+# Portman temporary files
+tmp/
+
+# environment configs
+*.env
+
+# private files
+*.private.*

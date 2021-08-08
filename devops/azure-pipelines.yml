@@ -1,0 +1,110 @@
+# triggers shall also be defined in Azure DevOps pipeline settings
+
+trigger:
+  - main
+
+pr:
+  - main
+
+name: $(Date:yyyyMMdd)-$(Hours).$(Minutes)-$(SourceBranch).$(Rev:r)
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: stg
+
+stages:
+  - stage: testing
+    displayName: testing
+    jobs:
+      - job: docker
+        displayName: Release app
+        steps:
+          - task: Docker@2
+            displayName: build
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              repository: '$(dockerRepositoryName)'
+              command: 'build'
+              Dockerfile: 'docker/Dockerfile.alpine'
+              buildContext: '.'
+              tags: |
+                $(Build.BuildNumber)
+                main
+              arguments: '--pull --no-cache'
+          - task: Docker@2
+            displayName: login
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              command: 'login'
+          - task: Docker@2
+            displayName: push
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              repository: '$(dockerRepositoryName)'
+              command: 'push'
+              tags: |
+                $(Build.BuildNumber)
+                main
+      - job: slot
+        dependsOn: docker
+        displayName: Deploy AppService slot
+        steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy to testing
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: '$(azureRmServiceConnectionName)'
+              appType: 'webAppContainer'
+              WebAppName: '$(appServiceName)'
+              deployToSlotOrASE: true
+              ResourceGroupName: '$(appServiceRgName)'
+              SlotName: '$(appServiceSlotName)'
+              DockerNamespace: '$(dockerRegistryFQDN)'
+              DockerRepository: '$(dockerRepositoryName)'
+              DockerImageTag: '$(Build.BuildNumber)'
+              AppSettings: |
+                -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "$(Build.SourceBranchName)" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
+              # -FUNCTIONS_EXTENSION_VERSION "~3"
+
+  - stage: staging
+    displayName: staging
+    dependsOn: testing
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: appservice
+        displayName: Swap slots
+        environment: staging
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureAppServiceManage@0
+                  displayName: Swap testing to staging
+                  inputs:
+                    azureSubscription: '$(azureRmServiceConnectionName)'
+                    Action: 'Swap Slots'
+                    WebAppName: '$(appServiceName)'
+                    ResourceGroupName: '$(appServiceRgName)'
+                    SourceSlot: '$(appServiceSlotName)'
+                    PreserveVnet: true
+            on:
+              success:
+                steps:
+                  - task: AzureRmWebAppDeployment@4
+                    displayName: Redeploy to slot
+                    inputs:
+                      ConnectionType: 'AzureRM'
+                      azureSubscription: '$(azureRmServiceConnectionName)'
+                      appType: 'webAppContainer'
+                      WebAppName: '$(appServiceName)'
+                      deployToSlotOrASE: true
+                      ResourceGroupName: '$(appServiceRgName)'
+                      SlotName: '$(appServiceSlotName)'
+                      DockerNamespace: '$(dockerRegistryFQDN)'
+                      DockerRepository: '$(dockerRepositoryName)'
+                      DockerImageTag: '$(Build.BuildNumber)'
+                      AppSettings: |
+                        -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "$(Build.SourceBranchName)" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
+                      # -FUNCTIONS_EXTENSION_VERSION "~3"

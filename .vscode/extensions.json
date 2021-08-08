@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "mermade.openapi-lint",
+    "timonwong.shellcheck",
+    "ms-cst-e.vscode-devskim",
+    "ms-azure-devops.azure-pipelines"
+  ]
+}

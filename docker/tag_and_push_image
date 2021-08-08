@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -e
+
+### constants ##################################################################
+
+this_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root_path="$(cd "$this_path/.." && pwd)"
+branch_name="$(git branch --show-current)"
+
+### variables ##################################################################
+
+: "${IMAGE_NAME:="${repo_root_path##*/}"}"
+: "${IMAGE_TAG:="${branch_name//\//-}"}"
+
+# most registries require image name downcased, make it so
+IMAGE_NAME="$(echo "$IMAGE_NAME" | tr '[:upper:]' '[:lower:]')"
+
+: "${REGISTRY_FQDN:=""}"
+: "${REGISTRY_IMAGE_REF:="${REGISTRY_FQDN}/${IMAGE_NAME}"}"
+: "${REGISTRY_IMAGE_TAG:="$(date +%Y%m%d-%H.%M)-$(whoami)_$IMAGE_TAG"}"
+
+### tag and push ###############################################################
+
+# tag and push "date-time-username_branchname"
+docker tag "$IMAGE_NAME:$IMAGE_TAG" "$REGISTRY_IMAGE_REF:$REGISTRY_IMAGE_TAG"
+docker push "$REGISTRY_IMAGE_REF:$REGISTRY_IMAGE_TAG"
+
+# tag and push "branchname"
+docker tag "$IMAGE_NAME:$IMAGE_TAG" "$REGISTRY_IMAGE_REF:$IMAGE_TAG"
+docker push "$REGISTRY_IMAGE_REF:$IMAGE_TAG"

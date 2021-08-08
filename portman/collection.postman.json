@@ -1,0 +1,433 @@
+{
+  "_": {
+    "postman_id": "cfddb9da-0be1-42cd-b574-4f9604107b5a"
+  },
+  "item": [
+    {
+      "id": "a67bae81-0204-42f2-95c2-889f6038893a",
+      "name": "json",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0580715f-11ed-4c66-bcad-6edebe3ee526",
+          "name": "version",
+          "request": {
+            "name": "version",
+            "description": {
+              "content": "Responds version",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "aa1fa962-58e3-4d59-bce6-76f2ebe517e8",
+              "name": "ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "c9edfa6e-db97-40e9-b16f-16947e84d0cb",
+                "type": "text/javascript",
+                "exec": [
+                  "// Validate status 2xx \npm.test(\"[GET]::/ - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/ - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate if response header has matching content-type\npm.test(\"[GET]::/ - Content-Type is application/json\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n",
+                  "// Validate if response has JSON Body \npm.test(\"[GET]::/ - Response has JSON Body\", function () {\n    pm.response.to.have.jsonBody();\n});\n"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "03785f62-2a67-446f-8fdb-930ccea26e9d",
+          "name": "to Backend",
+          "request": {
+            "name": "to Backend",
+            "description": {
+              "content": "Respond connection to backend",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "to-backend"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "981f299d-9634-4c44-9f6c-7e3a0eb50a9e",
+              "name": "ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "to-backend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": []
+            },
+            {
+              "_": {
+                "postman_previewlanguage": "json"
+              },
+              "id": "ce055a3a-be08-498b-8152-aec7185125bc",
+              "name": "bad_request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "to-backend"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "2c3d94b3-72b2-48c5-8f51-5111575a801d",
+                "type": "text/javascript",
+                "exec": [
+                  "// Validate status 2xx \npm.test(\"[GET]::/to-backend - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/to-backend - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate if response header has matching content-type\npm.test(\"[GET]::/to-backend - Content-Type is application/json\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n",
+                  "// Validate if response has JSON Body \npm.test(\"[GET]::/to-backend - Response has JSON Body\", function () {\n    pm.response.to.have.jsonBody();\n});\n"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b8b760b3-0ba1-4173-bdd3-ff7f18f4b664",
+      "name": "non-json",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9de429cb-9f87-4e7e-824f-c5cbba153097",
+          "name": "spec",
+          "request": {
+            "name": "spec",
+            "description": {
+              "content": "Respond OpenAPI definition",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "spec"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "text"
+              },
+              "id": "37b33e1e-d42e-43c1-81e6-d33e29333b81",
+              "name": "ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "spec"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/yaml"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "c1afc275-01a2-4dda-bc80-62a9546cd937",
+                "type": "text/javascript",
+                "exec": [
+                  "// Validate status 2xx \npm.test(\"[GET]::/spec - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/spec - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate if response header has matching content-type\npm.test(\"[GET]::/spec - Content-Type is text/yaml\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/yaml\");\n});\n"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "8bf55f72-f5e1-4257-8920-ce90074cdd9b",
+          "name": "docs",
+          "request": {
+            "name": "docs",
+            "description": {
+              "content": "Responds API docs",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "docs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "text"
+              },
+              "id": "37c6f9ab-0f31-4faa-9602-81e6a6c68bc1",
+              "name": "ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "docs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "6b0011f9-89c6-46c2-9b35-5ad79169ee94",
+                "type": "text/javascript",
+                "exec": [
+                  "// Validate status 2xx \npm.test(\"[GET]::/docs - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/docs - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate if response header has matching content-type\npm.test(\"[GET]::/docs - Content-Type is text/html\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");\n});\n"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "b5599714-7089-4c9e-81c8-45f96d583486",
+          "name": "dns Servers",
+          "request": {
+            "name": "dns Servers",
+            "description": {
+              "content": "Respond DNS servers used",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "dns-servers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "GET"
+          },
+          "response": [
+            {
+              "_": {
+                "postman_previewlanguage": "text"
+              },
+              "id": "ac8fedb3-4600-4b82-94ca-57d200fe9709",
+              "name": "ok",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "dns-servers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "0bc0863b-a039-4d23-9f71-09de79662957",
+                "type": "text/javascript",
+                "exec": [
+                  "// Validate status 2xx \npm.test(\"[GET]::/dns-servers - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/dns-servers - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate if response header has matching content-type\npm.test(\"[GET]::/dns-servers - Content-Type is text/plain\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/plain\");\n});\n"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "86859bbc-e670-4451-89bd-0686827944f8",
+        "type": "text/javascript",
+        "exec": []
+      }
+    }
+  ],
+  "variable": [
+    {
+      "type": "string",
+      "value": "http://localhost:8080",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "cfddb9da-0be1-42cd-b574-4f9604107b5a",
+    "name": "artery",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "https://github.com/raas-dev/artery",
+      "type": "text/plain"
+    }
+  }
+}

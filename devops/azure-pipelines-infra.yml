@@ -1,0 +1,70 @@
+# triggers shall also be defined in Azure DevOps pipeline settings
+
+trigger: none
+pr: none
+
+name: $(Date:yyyyMMdd)-$(Hours).$(Minutes)-$(SourceBranchName).$(Rev:r)
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: staging
+    displayName: Staging
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+    variables:
+      - group: stg
+    jobs:
+      - deployment: deploy_stg
+        displayName: Deploy stg
+        environment: staging.infra
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: bicep/deploy
+                  inputs:
+                    azureSubscription: '$(azureRmServiceConnectionName)'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: './deploy'
+                    workingDirectory: 'bicep'
+                  env:
+                    AZ_SUBSCRIPTION_ID: $(AZ_SUBSCRIPTION_ID)
+                    AZ_LOCATION: $(AZ_LOCATION)
+                    AZ_PREFIX: $(AZ_PREFIX)
+                    AZ_ENVIRONMENT: $(AZ_ENVIRONMENT)
+                    AZ_NAME: $(AZ_NAME)
+                    AZ_OWNER: $(AZ_OWNER)
+                    AZ_SLOT_POSTFIX: $(AZ_SLOT_POSTFIX)
+
+  - stage: production
+    displayName: Production
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/prod')
+    variables:
+      - group: prod
+    jobs:
+      - deployment: deploy_prod
+        displayName: Deploy prod
+        environment: production.infra
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: bicep/deploy
+                  inputs:
+                    azureSubscription: '$(azureRmServiceConnectionName)'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: './deploy'
+                    workingDirectory: 'bicep'
+                  env:
+                    AZ_SUBSCRIPTION_ID: $(AZ_SUBSCRIPTION_ID)
+                    AZ_LOCATION: $(AZ_LOCATION)
+                    AZ_PREFIX: $(AZ_PREFIX)
+                    AZ_ENVIRONMENT: $(AZ_ENVIRONMENT)
+                    AZ_NAME: $(AZ_NAME)
+                    AZ_OWNER: $(AZ_OWNER)
+                    AZ_SLOT_POSTFIX: $(AZ_SLOT_POSTFIX)

@@ -1,0 +1,8 @@
+{
+  "local": "openapi.yaml",
+  "output": "tmp/k6.postman.json",
+  "envFile": "portman/.env-portman",
+  "filterFile": "portman/oas-format-filter.json",
+  "baseUrl": "http://api:8080",
+  "includeTests": false
+}

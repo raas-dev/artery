@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2034,SC2086
+
+set -e
+
+### constants ##################################################################
+
+this_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root_path="$(cd "$this_path/.." && pwd)"
+node_version="$(cat $repo_root_path/.nvmrc)"
+branch_name="$(git branch --show-current)"
+
+### variables ##################################################################
+
+: "${BUILD_ARGS:="--build-arg NODE_VERSION=$node_version"}"
+: "${BUILD_DIR:="$repo_root_path"}"
+
+: "${IMAGE_KIND:="alpine.prod"}"
+: "${IMAGE_NAME:="${repo_root_path##*/}"}"
+: "${IMAGE_TAG:="${branch_name//\//-}"}"
+
+: "${RUN_ARGS:="-it -p 8080:8080 --env SWAGGER_STATS_USERNAME=local \
+                --env SWAGGER_STATS_PASSWORD=local"}"
+
+### build ######################################################################
+
+docker build \
+  --file "$this_path/Dockerfile.$IMAGE_KIND" \
+  $BUILD_ARGS \
+  --tag "$IMAGE_NAME:$IMAGE_TAG" \
+  "$BUILD_DIR"
+
+### run ########################################################################
+
+docker run --init --rm \
+  --user node \
+  --cap-drop ALL \
+  $RUN_ARGS \
+  "$IMAGE_NAME:$IMAGE_TAG" $@

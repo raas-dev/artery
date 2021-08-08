@@ -1,0 +1,90 @@
+# triggers shall also be defined in Azure DevOps pipeline settings
+
+trigger:
+  - main
+  - prod
+
+pr:
+  - main
+
+name: $(Date:yyyyMMdd)-$(Hours).$(Minutes)-$(SourceBranch).$(Rev:r)
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: staging
+    displayName: Staging
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+    variables:
+      - group: apim.stg
+      - group: stg
+    jobs:
+      - job: deploy_api_stg
+        displayName: Deploy API to APIM
+        steps:
+          - task: AzureCLI@2
+            displayName: Upload openapi.yaml
+            inputs:
+              azureSubscription: $(azureRmApimServiceConnectionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az storage blob upload \
+                  --account-name "${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}sa" \
+                  --container-name public \
+                  --name openapi.yaml \
+                  --file openapi.yaml
+          - task: AzureCLI@2
+            displayName: Create API deployment
+            inputs:
+              azureSubscription: $(azureRmApimServiceConnectionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az deployment group create \
+                    --resource-group "$(apimResourceGroupName)" \
+                    --subscription "$(apimSubscriptionId)" \
+                    --template-file api.bicep \
+                    -p app_name="$AZ_NAME" \
+                    -p api_backend_url="https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
+                    -p api_spec="https://${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}sa.blob.core.windows.net/public/openapi.yaml"
+              workingDirectory: 'bicep'
+
+  - stage: production
+    displayName: Production
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/prod')
+    variables:
+      - group: apim.prod
+      - group: prod
+    jobs:
+      - job: deploy_api_prod
+        displayName: Deploy API to APIM
+        steps:
+          - task: AzureCLI@2
+            displayName: Upload openapi.yaml
+            inputs:
+              azureSubscription: $(azureRmApimServiceConnectionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az storage blob upload \
+                  --account-name "${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}sa" \
+                  --container-name public \
+                  --name openapi.yaml \
+                  --file openapi.yaml
+          - task: AzureCLI@2
+            displayName: Create API deployment
+            inputs:
+              azureSubscription: $(azureRmApimServiceConnectionName)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az deployment group create \
+                    --resource-group "$(apimResourceGroupName)" \
+                    --subscription "$(apimSubscriptionId)" \
+                    --template-file api.bicep \
+                    -p app_name="$AZ_NAME" \
+                    -p api_backend_url="https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
+                    -p api_spec="https://${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}sa.blob.core.windows.net/public/openapi.yaml"
+              workingDirectory: 'bicep'

@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: artery
+  version: 1.0.0
+  description: 'https://github.com/raas-dev/artery'
+  contact: {}
+tags:
+  - name: json
+  - name: non-json
+  - name: no-test
+
+paths:
+  /:
+    get:
+      description: Responds version
+      tags:
+        - json
+      operationId: version
+      x-eov-operation-handler: handlers
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema: {}
+  /spec:
+    get:
+      description: Respond OpenAPI definition
+      tags:
+        - non-json
+      operationId: spec
+      x-eov-operation-handler: handlers
+      responses:
+        '200':
+          description: ok
+          content:
+            text/yaml:
+              schema: {}
+  /docs:
+    get:
+      description: Responds API docs
+      tags:
+        - non-json
+      operationId: docs
+      x-eov-operation-handler: handlers
+      responses:
+        '200':
+          description: ok
+          content:
+            text/html:
+              schema: {}
+  /dns-servers:
+    get:
+      description: Respond DNS servers used
+      tags:
+        - non-json
+      operationId: dnsServers
+      x-eov-operation-handler: handlers
+      responses:
+        '200':
+          description: ok
+          content:
+            text/plain:
+              schema: {}
+  /to-backend:
+    get:
+      description: Respond connection to backend
+      tags:
+        - json
+      operationId: toBackend
+      x-eov-operation-handler: handlers
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: bad_request
+          content:
+            application/json:
+              schema: {}
+  /users:
+    get:
+      description: Respond users mock
+      tags:
+        - no-test
+      operationId: getUsers
+      x-eov-operation-handler: mocks
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+  /users/{id}:
+    get:
+      description: Respond user mock
+      tags:
+        - no-test
+      operationId: getUserById
+      x-eov-operation-handler: mocks
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+security: []
+
+servers:
+  - url: ''
+
+components:
+  links: {}
+  callbacks: {}
+  schemas:
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          x-faker: datatype.uuid
+        username:
+          type: string
+          x-faker: internet.userName
+        firstName:
+          type: string
+          x-faker: name.firstName
+        lastName:
+          type: string
+          x-faker: name.lastName
+        email:
+          type: string
+          x-faker: internet.email
+        phone:
+          type: string
+          x-faker: phone.phoneNumber
+  responses: {}
+  securitySchemes: {}

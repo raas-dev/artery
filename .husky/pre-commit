@@ -1,0 +1,13 @@
+# .husky/pre-commit
+
+## prettier
+npx pretty-quick --staged
+
+## eslint
+npx eslint --cache --fix
+
+## spectral
+npm run lint:spec
+
+## portman
+npm run portman && git add portman/collection.postman.json

@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090
+
+set -e
+set -u
+
+this_cmd="${BASH_SOURCE[0]}"
+this_path="$(cd "$(dirname "$this_cmd")" && pwd)"
+
+if [ "$#" -eq 1 ]; then
+    echo "Sourcing variables from the env file"
+    set -a; source "$this_path/$1"; set +a
+fi
+
+echo -e "\nCreating a target resource group for deployment"
+az group create \
+    --name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
+    --location "$AZ_LOCATION" \
+    --subscription "$AZ_SUBSCRIPTION_ID" \
+    --tags app="$AZ_NAME" environment="$AZ_ENVIRONMENT" owner="$AZ_OWNER"
+
+echo -e "\nCreating an AAD app for requiring authentication on the App Service"
+AZ_AAD_APP_CLIENT_SECRET="$(openssl rand -base64 32)"
+
+az ad app create \
+    --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr" \
+    --available-to-other-tenants false \
+    --homepage "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
+    --reply-urls "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net/.auth/login/aad/callback" "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app-$AZ_SLOT_POSTFIX.azurewebsites.net/.auth/login/aad/callback" \
+    --password "$AZ_AAD_APP_CLIENT_SECRET" &>/dev/null
+
+#  fetch client ID as `app create` returns none if the app was already created
+AZ_AAD_APP_CLIENT_ID="$(az ad app list \
+    --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr" \
+    --query [].appId --output tsv)"
+
+# create a service principal required for granting API permissions to the app
+az ad sp create --id "$AZ_AAD_APP_CLIENT_ID" &>/dev/null || true
+
+echo -e "\nGranting User.Read on AAD Graph API to the App Service AAD app"
+az ad app permission add \
+    --id "$AZ_AAD_APP_CLIENT_ID" \
+    --api "00000002-0000-0000-c000-000000000000" \
+    --api-permissions "311a71cc-e848-46a1-bdf8-97ff7156d8e6=Scope" &>/dev/null
+
+az ad app permission grant \
+    --id "$AZ_AAD_APP_CLIENT_ID" \
+    --api "00000002-0000-0000-c000-000000000000"
+
+echo -e "\nCreating a service principal for App Service to docker pull from ACR"
+AZ_ACR_SP_PASSWORD="$(az ad sp create-for-rbac \
+    --name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-sp" \
+    --skip-assignment \
+    --only-show-errors \
+    --query password --output tsv)"
+
+AZ_ACR_SP_CLIENT_ID="$(az ad sp list \
+    --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-sp" \
+    --only-show-errors \
+    --query [].appId --output tsv)"
+
+AZ_ACR_SP_OBJECT_ID="$(az ad sp list \
+    --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-sp" \
+    --only-show-errors \
+    --query [].objectId --output tsv)"
+
+echo -e "\nCreating a deployment in the resource group"
+az deployment group create \
+    --resource-group "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
+    --subscription "$AZ_SUBSCRIPTION_ID" \
+    --template-file "$this_path/main.bicep" \
+    -p prefix="$AZ_PREFIX" \
+    -p name="$AZ_NAME" \
+    -p environment="$AZ_ENVIRONMENT" \
+    -p owner="$AZ_OWNER" \
+    -p app_slot_postfix="$AZ_SLOT_POSTFIX" \
+    -p acr_sp_client_id="$AZ_ACR_SP_CLIENT_ID" \
+    -p acr_sp_object_id="$AZ_ACR_SP_OBJECT_ID" \
+    -p acr_sp_password="$AZ_ACR_SP_PASSWORD" \
+    -p aad_app_client_id="$AZ_AAD_APP_CLIENT_ID" \
+    -p aad_app_client_secret="$AZ_AAD_APP_CLIENT_SECRET"
+
+echo -e "\n✅ Successfully finished."

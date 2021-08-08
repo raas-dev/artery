@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1091
+
+set -e
+set -u
+
+this_cmd="${BASH_SOURCE[0]}"
+this_path="$(cd "$(dirname "$this_cmd")" && pwd)"
+
+echo "Sourcing variables from infra,env"
+set -a; source "$this_path/infra.env"; set +a
+
+echo -e "\nSetting Azure DevOps defaults for Azure CLI"
+az devops configure --defaults \
+    organization="$AZDO_ORG_URL" \
+    project="$AZDO_PROJECT_NAME"
+
+echo -e "\nCreating an Azure DevOps project"
+az devops project create \
+    --name "$AZDO_PROJECT_NAME" \
+    --description "$AZDO_GITHUB_URL" \
+    --visibility private || true
+
+echo -e "\nCreating a service connection for GitHub"
+export AZURE_DEVOPS_EXT_GITHUB_PAT="$AZDO_GITHUB_ACCESS_TOKEN"
+
+AZDO_GITHUB_SERVICE_CONNECTION_ID="$(az devops service-endpoint github create \
+  --github-url "$AZDO_GITHUB_URL" \
+  --name github \
+  --query id --output tsv)" || true
+
+echo -e "\nCreating a service principal w/ RBAC for AzureRM service connection"
+AZ_INFRA_SP_PASSWORD="$(az ad sp create-for-rbac \
+    --name "$AZ_PREFIX-cicd-$AZ_NAME-infra-azurerm-sp" \
+    --role "Contributor" \
+    --scope "/subscriptions/$AZ_SUBSCRIPTION_ID" \
+    --only-show-errors \
+    --query password --output tsv)"
+
+echo -e "\nCreating an Azure Resource Manager service connection"
+AZ_INFRA_SP_CLIENT_ID="$(az ad sp list \
+    --display-name "$AZ_PREFIX-cicd-$AZ_NAME-infra-azurerm-sp" \
+    --query [].appId --output tsv)"
+
+AZ_SUBSCRIPTION_NAME="$(az account show \
+    --subscription "$AZ_SUBSCRIPTION_ID" \
+    --query name --output tsv)"
+
+AZ_TENANT_ID="$(az account show \
+    --subscription "$AZ_SUBSCRIPTION_ID" \
+    --query tenantId --output tsv)"
+
+AZDO_AZURERM_SERVICE_CONNECTION_ID="$(az devops service-endpoint list \
+    --query "[?name=='$AZDO_AZURERM_SERVICE_CONNECTION_NAME'].id" --output tsv)"
+
+az devops service-endpoint delete --yes \
+    --id "$AZDO_AZURERM_SERVICE_CONNECTION_ID" || true
+
+export AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY="$AZ_INFRA_SP_PASSWORD"
+az devops service-endpoint azurerm create \
+    --azure-rm-service-principal-id "$AZ_INFRA_SP_CLIENT_ID" \
+    --azure-rm-subscription-id "$AZ_SUBSCRIPTION_ID" \
+    --azure-rm-subscription-name "$AZ_SUBSCRIPTION_NAME" \
+    --azure-rm-tenant-id "$AZ_TENANT_ID" \
+    --name azurermInfra || true
+
+echo -e "\nCreating a pipeline for infra"
+az pipelines create \
+    --branch main \
+    --name "$AZDO_PIPELINE_NAME" \
+    --repository "$AZDO_GITHUB_URL" \
+    --service-connection "$AZDO_GITHUB_SERVICE_CONNECTION_ID" \
+    --skip-first-run \
+    --yml-path "$AZDO_PIPELINE_YAML_PATH" || true
+
+echo -e "\nCreating a variable for infra AzureRM service connection name"
+az pipelines variable create \
+    --pipeline-name "$AZDO_PIPELINE_NAME" \
+    --name "azureRmServiceConnectionName" \
+    --value "$AZDO_AZURERM_SERVICE_CONNECTION_NAME" \
+    --allow-override false || true

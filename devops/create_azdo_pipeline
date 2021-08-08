@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1090,SC2046,SC1083
+
+set -e
+set -u
+
+this_cmd="${BASH_SOURCE[0]}"
+this_path="$(cd "$(dirname "$this_cmd")" && pwd)"
+
+if [ "$#" -eq 1 ]; then
+    echo "Sourcing variables from bicep/$1 and cicd/$1"
+    set -a; source "$this_path/../bicep/$1"; source "$this_path/$1"; set +a
+else
+    echo "Usage: $this_cmd ENVIRONMENT.env"
+    exit 1
+fi
+
+echo -e "\nCreating a variable group for $AZ_ENVIRONMENT"
+az pipelines variable-group create \
+    --name "$AZ_ENVIRONMENT" \
+    --variables $( (tr '\n' ' ' | tr -s ' ') < "$this_path/../bicep/$1") \
+    --authorize false || true
+
+echo -e "\nAssigning role 'User Access Administrator' to the infra SP in the rg"
+AZ_INFRA_SP_OBJECT_ID="$(az ad sp list \
+    --display-name "$AZ_PREFIX-cicd-$AZ_NAME-infra-azurerm-sp" \
+    --query [].objectId --output tsv)"
+
+az role assignment create \
+    --assignee "$AZ_INFRA_SP_OBJECT_ID" \
+    --role "User Access Administrator" \
+    --scope "/subscriptions/$AZ_SUBSCRIPTION_ID/resourceGroups/$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg"
+
+echo -e "\nCreating a GitHub service connection"
+export AZURE_DEVOPS_EXT_GITHUB_PAT="$AZDO_GITHUB_ACCESS_TOKEN"
+
+AZDO_GITHUB_SERVICE_CONNECTION_ID="$(az devops service-endpoint github create \
+  --github-url "$AZDO_GITHUB_URL" \
+  --name github \
+  --query id --output tsv)" || true
+
+echo -e "\nCreating a service principal w/ RBAC for AzureRM service connection"
+AZ_AZURERM_SP_PASSWORD="$(az ad sp create-for-rbac \
+    --name "$AZ_PREFIX-cicd-$AZ_NAME-$AZ_ENVIRONMENT-azurerm-sp" \
+    --role "Contributor" \
+    --scope "/subscriptions/$AZ_SUBSCRIPTION_ID/resourceGroups/$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
+    --only-show-errors \
+    --query password --output tsv)"
+
+echo -e "\nCreating an Azure Resource Manager service connection"
+AZ_AZURERM_SP_CLIENT_ID="$(az ad sp list \
+    --display-name "$AZ_PREFIX-cicd-$AZ_NAME-$AZ_ENVIRONMENT-azurerm-sp" \
+    --query [].appId --output tsv)"
+
+AZ_SUBSCRIPTION_NAME="$(az account show \
+    --subscription "$AZ_SUBSCRIPTION_ID" \
+    --query name --output tsv)"
+
+AZ_TENANT_ID="$(az account show \
+    --subscription "$AZ_SUBSCRIPTION_ID" \
+    --query tenantId --output tsv)"
+
+AZDO_AZURERM_SERVICE_CONNECTION_ID="$(az devops service-endpoint list \
+    --query "[?name=='$AZDO_AZURERM_SERVICE_CONNECTION_NAME'].id" --output tsv)"
+
+az devops service-endpoint delete --yes \
+    --id "$AZDO_AZURERM_SERVICE_CONNECTION_ID" || true
+
+export AZURE_DEVOPS_EXT_AZURE_RM_SERVICE_PRINCIPAL_KEY="$AZ_AZURERM_SP_PASSWORD"
+az devops service-endpoint azurerm create \
+    --azure-rm-service-principal-id "$AZ_AZURERM_SP_CLIENT_ID" \
+    --azure-rm-subscription-id "$AZ_SUBSCRIPTION_ID" \
+    --azure-rm-subscription-name "$AZ_SUBSCRIPTION_NAME" \
+    --azure-rm-tenant-id "$AZ_TENANT_ID" \
+    --name "$AZDO_AZURERM_SERVICE_CONNECTION_NAME" || true
+
+echo -e "\nCreating a service principal w/ RBAC for ACR service connection"
+AZ_REGISTRY_SP_CLIENT_ID="$(az ad sp create-for-rbac \
+    --name "$AZ_PREFIX-cicd-$AZ_NAME-$AZ_ENVIRONMENT-registry-sp" \
+    --role "AcrPush" \
+    --scope "/subscriptions/$AZ_SUBSCRIPTION_ID/resourceGroups/$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg/providers/Microsoft.ContainerRegistry/registries/${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}acr" \
+    --only-show-errors \
+    --query appId --output tsv)"
+
+echo -e "\nCreating an Azure Container Registry service connection"
+(sed "s/{{AZ_SUBSCRIPTION_ID}}/$AZ_SUBSCRIPTION_ID/g" | \
+    sed "s/{{AZDO_APPSERVICE_RG_NAME}}/$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg/g" | \
+    sed "s/{{AZDO_DOCKER_REGISTRY_NAME}}/${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}acr/g" | \
+    sed "s/{{AZ_SUBSCRIPTION_NAME}}/$AZ_SUBSCRIPTION_NAME/g" | \
+    sed "s/{{AZ_REGISTRY_SP_CLIENT_ID}}/$AZ_REGISTRY_SP_CLIENT_ID/g" | \
+    sed "s/{{AZDO_REGISTRY_SERVICE_CONNECTION_NAME}}/$AZDO_REGISTRY_SERVICE_CONNECTION_NAME/g" | \
+    sed "s/{{AZDO_DOCKER_REGISTRY_FQDN}}/${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}acr.azurecr.io/g" | \
+    sed "s/{{AZ_TENANT_ID}}/$AZ_TENANT_ID/g") \
+    < "$this_path/scon_registry.tmpl.json" > "$this_path/$AZDO_REGISTRY_SERVICE_CONNECTION_NAME.generated.json"
+
+az devops service-endpoint create \
+    --service-endpoint-configuration "$AZDO_REGISTRY_SERVICE_CONNECTION_NAME.generated.json" || true
+
+echo -e "\nCreating a pipeline for $AZ_ENVIRONMENT"
+az pipelines create \
+  --branch "$AZDO_BRANCH_NAME" \
+  --name "$AZDO_PIPELINE_NAME" \
+  --repository "$AZDO_GITHUB_URL" \
+  --service-connection "$AZDO_GITHUB_SERVICE_CONNECTION_ID" \
+  --skip-first-run \
+  --yml-path "$AZDO_PIPELINE_YAML_PATH" || true
+
+echo -e "\nAdding pipeline variables to the variable group"
+AZDO_VARIABLE_GROUP_ID="$(az pipelines variable-group list \
+    --group-name "$AZ_ENVIRONMENT" \
+    --query [].id --output tsv)"
+
+az pipelines variable-group variable create \
+    --group-id "$AZDO_VARIABLE_GROUP_ID" \
+    --name "azureRmServiceConnectionName" \
+    --value "$AZDO_AZURERM_SERVICE_CONNECTION_NAME" || true
+
+az pipelines variable-group variable create \
+    --group-id "$AZDO_VARIABLE_GROUP_ID" \
+    --name "registryServiceConnectionName" \
+    --value "$AZDO_REGISTRY_SERVICE_CONNECTION_NAME" || true
+
+az pipelines variable-group variable create \
+    --group-id "$AZDO_VARIABLE_GROUP_ID" \
+    --name "appServiceRgName" \
+    --value "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" || true
+
+az pipelines variable-group variable create \
+    --group-id "$AZDO_VARIABLE_GROUP_ID" \
+    --name "appServiceName" \
+    --value "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app" || true
+
+az pipelines variable-group variable create \
+    --group-id "$AZDO_VARIABLE_GROUP_ID" \
+    --name "appServiceSlotName" \
+    --value "$AZ_SLOT_POSTFIX" || true
+
+az pipelines variable-group variable create \
+    --group-id "$AZDO_VARIABLE_GROUP_ID" \
+    --name "dockerRegistryFQDN" \
+    --value "${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}acr.azurecr.io" || true
+
+az pipelines variable-group variable create \
+    --group-id "$AZDO_VARIABLE_GROUP_ID" \
+    --name "dockerRepositoryName" \
+    --value "$AZDO_DOCKER_REPOSITORY_NAME" || true

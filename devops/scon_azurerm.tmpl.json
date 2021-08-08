@@ -1,0 +1,23 @@
+{
+  "data": {
+    "environment": "AzureCloud",
+    "subscriptionId": "{{AZ_SUBSCRIPTION_ID}}",
+    "subscriptionName": "{{AZ_SUBSCRIPTION_NAME}}",
+    "scopeLevel": "Subscription",
+    "creationMode": "Manual"
+  },
+  "name": "{{AZDO_AZURERM_SERVICE_CONNECTION_NAME}}",
+  "type": "azurerm",
+  "url": "https://management.azure.com/",
+  "authorization": {
+    "parameters": {
+      "tenantId": "{{AZ_TENANT_ID}}",
+      "servicePrincipalId": "{{AZ_AZURERM_SP_CLIENT_ID}}",
+      "authenticationType": "spnKey",
+      "servicePrincipalKey": "{{AZ_AZURERM_SP_PASSWORD}}"
+    },
+    "scheme": "ServicePrincipal"
+  },
+  "isShared": false,
+  "owner": "Library"
+}
