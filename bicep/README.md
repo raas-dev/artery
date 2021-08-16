@@ -1,6 +1,6 @@
 # Running on Azure App Service
 
-This `README.md` summarizes [the blog post from 2021-08-08](https://rise.raas.dev/zero-to-paas/).
+This `README.md` summarizes [the blog post from 2021-08-08](https://rise.raas.dev/zero-to-paas/) which is more likely up-to-date.
 
 This is a reference implementation that focuses on minimizing:
 
@@ -121,7 +121,7 @@ Fetch the AAD app's client ID:
 
     AZ_AAD_APP_CLIENT_ID="$(az ad app list \
         --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr" \
-        --query [].appId --output tsv)"
+        --query "[].appId" --output tsv)"
 
 Create a service principal for the above AAD app:
 
@@ -172,12 +172,12 @@ Create a service principal for App Service (and slot) to pull images from ACR:
     AZ_ACR_SP_CLIENT_ID="$(az ad sp list \
         --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-sp" \
         --only-show-errors \
-        --query [].appId --output tsv)"
+        --query "[].appId" --output tsv)"
 
     AZ_ACR_SP_OBJECT_ID="$(az ad sp list \
         --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-sp" \
         --only-show-errors \
-        --query [].objectId --output tsv)"
+        --query "[].objectId" --output tsv)"
 
 Finally, create a deployment in the resource group with Bicep:
 

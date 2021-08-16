@@ -32,7 +32,7 @@ az ad app create \
 #  fetch client ID as `app create` returns none if the app was already created
 AZ_AAD_APP_CLIENT_ID="$(az ad app list \
     --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr" \
-    --query [].appId --output tsv)"
+    --query "[].appId" --output tsv)"
 
 # create a service principal required for granting API permissions to the app
 az ad sp create --id "$AZ_AAD_APP_CLIENT_ID" &>/dev/null || true
@@ -57,12 +57,12 @@ AZ_ACR_SP_PASSWORD="$(az ad sp create-for-rbac \
 AZ_ACR_SP_CLIENT_ID="$(az ad sp list \
     --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-sp" \
     --only-show-errors \
-    --query [].appId --output tsv)"
+    --query "[].appId" --output tsv)"
 
 AZ_ACR_SP_OBJECT_ID="$(az ad sp list \
     --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-sp" \
     --only-show-errors \
-    --query [].objectId --output tsv)"
+    --query "[].objectId" --output tsv)"
 
 echo -e "\nCreating a deployment in the resource group"
 az deployment group create \
