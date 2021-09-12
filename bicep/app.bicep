@@ -307,14 +307,14 @@ resource app_logs 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
       }
     ]*/
     logs: [
-      {
+      /*{
         category: 'AppServiceAntivirusScanAuditLogs'
         enabled: true
         retentionPolicy: {
           enabled: true
           days: app_sa_logs_retention_in_days
         }
-      }
+      }*/
       {
         category: 'AppServiceHTTPLogs'
         enabled: true
@@ -339,14 +339,14 @@ resource app_logs 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
           days: app_sa_logs_retention_in_days
         }
       }
-      {
+      /*{
         category: 'AppServiceFileAuditLogs'
         enabled: true
         retentionPolicy: {
           enabled: true
           days: app_sa_logs_retention_in_days
         }
-      }
+      }*/
       {
         category: 'AppServiceAuditLogs'
         enabled: true
