@@ -255,7 +255,7 @@ Deploy a container from the image in the App Service slot:
 You can ignore the warning regarding the registry credentials, as username and
 password are read from the Key Vault by the App Service's service principal.
 
-Wait for the slot to restart or restart it immeadiately:
+Wait for the slot to restart or restart it immediately:
 
     az webapp restart \
         --name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app" \
