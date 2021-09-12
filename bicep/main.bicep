@@ -6,7 +6,7 @@ PARAMETERS
 
 @description('Prefix')
 @minLength(2)
-@maxLength(4)
+@maxLength(8)
 param prefix string
 
 @description('Name')
