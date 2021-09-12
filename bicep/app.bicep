@@ -229,8 +229,7 @@ resource app_slot_vnet_integration 'Microsoft.Web/sites/slots/networkConfig@2020
 
 // Bicep gives faulty warnings on authsettingsV2
 // See: https://github.com/Azure/bicep/issues/2905
-// Use authsettings ("Classic") below for now
-/*
+
 resource app_aad_auth 'Microsoft.Web/sites/config@2020-12-01' = if(!empty(aad_app_client_id)) {
   parent: app
   name: 'authsettingsV2'
@@ -273,7 +272,7 @@ resource app_slot_aad_auth 'Microsoft.Web/sites/slots/config@2020-12-01' = if(!e
       azureActiveDirectory: {
         enabled: true
         registration: {
-          openIdIssuer: ''
+          openIdIssuer: 'https://sts.windows.net/${subscription().tenantId}/v2.0'
           clientId: aad_app_client_id
           clientSecretSettingName: 'AAD_APP_CLIENT_SECRET'
         }
@@ -287,34 +286,6 @@ resource app_slot_aad_auth 'Microsoft.Web/sites/slots/config@2020-12-01' = if(!e
         enabled: true
       }
     }
-  }
-}*/
-
-resource app_aad_auth 'Microsoft.Web/sites/config@2020-12-01' = {
-  parent: app
-  name: 'authsettings'
-  properties: {
-    enabled: true
-    tokenStoreEnabled: true
-    defaultProvider: 'AzureActiveDirectory'
-    unauthenticatedClientAction: 'RedirectToLoginPage'
-    clientId: aad_app_client_id
-    clientSecretSettingName: 'AAD_APP_CLIENT_SECRET'
-    issuer: 'https://sts.windows.net/${subscription().tenantId}/'
-  }
-}
-
-resource app_slot_aad_auth 'Microsoft.Web/sites/slots/config@2020-12-01' = if (!empty(app_slot_postfix)) {
-  parent: app_slot
-  name: 'authsettings'
-  properties: {
-    enabled: true
-    tokenStoreEnabled: true
-    defaultProvider: 'AzureActiveDirectory'
-    unauthenticatedClientAction: 'RedirectToLoginPage'
-    clientId: aad_app_client_id
-    clientSecretSettingName: 'AAD_APP_CLIENT_SECRET'
-    issuer: 'https://sts.windows.net/${subscription().tenantId}/'
   }
 }
 
