@@ -225,11 +225,15 @@ to the private endpoint fronted services, I recommend to take a look at the
 
 Build Docker image (and run a container from it, printing the Node.js version):
 
+    cd ..
+
     IMAGE_KIND="alpine" \
     BUILD_ARGS="--pull --no-cache" \
       docker/build_and_test_image node --version
 
 Login to your Azure Container Registry:
+
+    set -a; source bicep/stg.env; set +a
 
     az acr login --name "${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}acr"
 
@@ -253,11 +257,11 @@ password are read from the Key Vault by the App Service's service principal.
 
 Wait for the slot to restart or restart it immeadiately:
 
-az webapp restart \
- --name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app" \
-      --slot "$AZ_SLOT_POSTFIX" \
- --resource-group "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
-      --subscription "$AZ_SUBSCRIPTION_ID"
+    az webapp restart \
+        --name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app" \
+        --slot "$AZ_SLOT_POSTFIX" \
+        --resource-group "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
+        --subscription "$AZ_SUBSCRIPTION_ID"
 
 Browse to `https://APP_SERVICE_SLOT_URL/docs`, authenticate with your Azure AD
 account (if not already in) and you will see the API docs:
