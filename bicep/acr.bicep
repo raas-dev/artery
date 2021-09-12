@@ -25,11 +25,8 @@ RESOURCES
 ------------------------------------------------------------------------------
 */
 
-// adminUserEnabled was changed to true on 2021-09-12
-// on 2021-08, was confirmed to work with adminUserEnabled: false and an SP
-//
-// possibly related https://github.com/MicrosoftDocs/azure-docs/issues/64660
-// Microsoft must seriously fix this issue...
+// adminUserEnabled: false may or may not work (works as of 2021-09-12)
+// https://github.com/MicrosoftDocs/azure-docs/issues/64660
 resource acr 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
   name: acr_name
   location: resourceGroup().location
@@ -38,7 +35,7 @@ resource acr 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
     name: acr_sku_name
   }
   properties: {
-    adminUserEnabled: true // has to be enabled as of 2021-09-12 for AppService
+    adminUserEnabled: false
     publicNetworkAccess: 'Enabled'
     networkRuleBypassOptions: 'AzureServices'
     anonymousPullEnabled: false
