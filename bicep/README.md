@@ -251,6 +251,14 @@ Deploy a container from the image in the App Service slot:
 You can ignore the warning regarding the registry credentials, as username and
 password are read from the Key Vault by the App Service's service principal.
 
+Wait for the slot to restart or restart it immeadiately:
+
+az webapp restart \
+ --name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app" \
+      --slot "$AZ_SLOT_POSTFIX" \
+ --resource-group "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
+      --subscription "$AZ_SUBSCRIPTION_ID"
+
 Browse to `https://APP_SERVICE_SLOT_URL/docs`, authenticate with your Azure AD
 account (if not already in) and you will see the API docs:
 
@@ -301,6 +309,12 @@ the App Service application settings:
         --settings SWAGGER_STATS_USERNAME=main \
                    SWAGGER_STATS_PASSWORD="$(git rev-parse HEAD)" \
                    PRIVATE_BACKEND_URL="https://${AZ_PREFIX//-/}${AZ_ENVIRONMENT//-/}${AZ_NAME//-/}sa.blob.core.windows.net/public/openapi.yaml"
+
+    az webapp restart \
+        --name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app" \
+        --slot "$AZ_SLOT_POSTFIX" \
+        --resource-group "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
+        --subscription "$AZ_SUBSCRIPTION_ID"
 
 Now go to endpoint `/local` and you will be presented with a login form, which
 is not related to the Azure AD authentication (even though all the endpoints
