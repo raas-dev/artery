@@ -320,7 +320,7 @@ the App Service application settings:
         --resource-group "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
         --subscription "$AZ_SUBSCRIPTION_ID"
 
-Now go to endpoint `/local` and you will be presented with a login form, which
+Now go to endpoint `/stats` and you will be presented with a login form, which
 is not related to the Azure AD authentication (even though all the endpoints
 are behind AD auth wall in any case). Use `main` as the username and SHA
 of the last git commit as the password to log in.
