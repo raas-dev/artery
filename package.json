@@ -22,7 +22,7 @@
     "prism:proxy": "npx --yes prism proxy openapi.yaml http://localhost:8080 --errors",
     "newman": "newman run portman/collection.postman.json --reporters cli,junit,htmlextra --reporter-junit-export results/newman.junit.xml --reporter-htmlextra-export results/newman.html",
     "portman": "portman --cliOptionsFile portman/portman-newman.json",
-    "k6": "portman --cliOptionsFile portman/portman-k6.json ; npx --yes postman-to-k6 tmp/k6.postman.json --iterations 10 --output k6/auto/tests.js ; docker-compose up -d ; docker-compose run k6 run --vus 100 --duration 30s /auto/tests.js"
+    "k6": "portman --cliOptionsFile portman/portman-k6.json ; postman-to-k6 tmp/k6.postman.json --iterations 10 --output k6/auto/tests.js ; docker-compose up -d ; docker-compose run k6 run --vus 100 --duration 30s /auto/tests.js"
   },
   "dependencies": {
     "applicationinsights": "^2.1.4",
@@ -57,6 +57,7 @@
     "jest": "^27.0.6",
     "newman-reporter-htmlextra": "^1.21.0",
     "nodemon": "^2.0.12",
+    "postman-to-k6": "^1.5.0",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.1.1",
     "ts-jest": "^27.0.4",
