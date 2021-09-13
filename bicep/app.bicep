@@ -60,14 +60,6 @@ var app_file_shares = {
 
 var app_settings = [
   {
-    name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-    value: '@Microsoft.KeyVault(VaultName=${kv_name}; SecretName=DOCKER-REGISTRY-SERVER-USERNAME)'
-  }
-  {
-    name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-    value: '@Microsoft.KeyVault(VaultName=${kv_name};SecretName=DOCKER-REGISTRY-SERVER-PASSWORD)'
-  }
-  {
     name: 'AAD_APP_CLIENT_SECRET'
     value: '@Microsoft.KeyVault(VaultName=${kv_name};SecretName=AAD-APP-CLIENT-SECRET)'
   }
@@ -162,6 +154,7 @@ resource app_config 'Microsoft.Web/sites/config@2020-12-01' = {
     alwaysOn: true
     ftpsState: 'Disabled'
     azureStorageAccounts: app_enable_file_shares ? app_file_shares : null
+    acrUseManagedIdentityCreds: true
     appSettings: app_settings
   }
   dependsOn: [
@@ -196,6 +189,7 @@ resource app_slot_config 'Microsoft.Web/sites/slots/config@2020-12-01' = if (!em
     alwaysOn: true
     ftpsState: 'Disabled'
     azureStorageAccounts: app_enable_file_shares ? app_file_shares : null
+    acrUseManagedIdentityCreds: true
     appSettings: app_settings
   }
   dependsOn: [
@@ -447,27 +441,23 @@ resource app_slot_kv_secret_reader 'Microsoft.Authorization/roleAssignments@2020
   ]
 }
 
-// Pulling from ACR with managed identity does not work.
-// See: https://github.com/MicrosoftDocs/azure-docs/issues/64660
-// See: `acr.bicep` for a workaround to pull with a service principal instead
-/*
 resource app_acr_pull 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
-  name: guid(app.id)
+  name: guid(app.name)
   properties: {
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
     principalId: app.identity.principalId
   }
 }
-resource app_acr_pull 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
-  name: guid(app_slot.id)
+
+resource app_slot_acr_pull 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
+  name: guid(app_slot.name)
   properties: {
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
     principalId: app_slot.identity.principalId
   }
 }
-*/
 
 /*
 ------------------------------------------------------------------------------
