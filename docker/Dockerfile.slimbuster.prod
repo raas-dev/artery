@@ -1,4 +1,4 @@
-ARG NODE_VERSION=14.17.6
+ARG NODE_VERSION=16.13.1
 
 ## --------------------------------------------
 # Transpiler
