@@ -19,7 +19,7 @@ services:
       - ALL
 
   influxdb:
-    image: influxdb:1.8-alpine
+    image: influxdb:1.8
     networks:
       - k6
       - grafana
