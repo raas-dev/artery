@@ -4,7 +4,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prepare": "husky install",
     "build": "tsc",
     "start": "node dist/index.js",
     "watch-build": "tsc --watch",
@@ -26,7 +25,6 @@
   },
   "dependencies": {
     "applicationinsights": "^2.1.6",
-    "applicationinsights-native-metrics": "0.0.6",
     "axios": "^0.21.4",
     "express": "^4.17.1",
     "express-openapi-validator": "^4.13.1",
