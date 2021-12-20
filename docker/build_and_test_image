@@ -32,7 +32,7 @@ docker build \
 
 ### run ########################################################################
 
-docker run --init --rm \
+docker run --rm \
   --user node \
   --cap-drop ALL \
   $RUN_ARGS \
