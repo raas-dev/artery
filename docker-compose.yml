@@ -25,11 +25,9 @@ services:
       - grafana
     environment:
       - INFLUXDB_DB=k6
-    cap_drop:
-      - ALL
 
   k6:
-    image: loadimpact/k6:latest
+    image: 24hoursmedia/k6-xarch:latest
     networks:
       - k6
     environment:
