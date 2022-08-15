@@ -12,7 +12,7 @@
         "openApiOperation": "*::/*",
         "responseTime": {
           "enabled": true,
-          "maxMs": 500
+          "maxMs": 1000
         }
       },
       {

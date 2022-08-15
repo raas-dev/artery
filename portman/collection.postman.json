@@ -1,10 +1,10 @@
 {
   "_": {
-    "postman_id": "1ebb9e78-f177-43f0-b3c3-66b930cac450"
+    "postman_id": "5a6bfe15-c42f-4cde-91b9-d423c11db71c"
   },
   "item": [
     {
-      "id": "b8611e11-d77e-4c05-8b8e-4e62c917c749",
+      "id": "abd7298a-26a6-4edd-8d1b-64fd709ddd67",
       "name": "json",
       "description": {
         "content": "",
@@ -12,7 +12,7 @@
       },
       "item": [
         {
-          "id": "b87f4860-fa19-458f-8b68-ab9bd2e591f6",
+          "id": "55766fc0-81e7-4c76-a633-d9539f05bc6c",
           "name": "version",
           "request": {
             "name": "version",
@@ -43,7 +43,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "f19320d3-21e8-49ab-91fd-fd190d74c01e",
+              "id": "1be2a6b3-dee3-46d8-b642-ca50dde9a86e",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -75,11 +75,11 @@
             {
               "listen": "test",
               "script": {
-                "id": "4f829181-67a6-42e9-b535-5f43872147f8",
+                "id": "d5a1da61-5f97-4de0-ad4a-24b285ea4b34",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/ - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
-                  "// Validate response time \npm.test(\"[GET]::/ - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/ - Response time is less than 1000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(1000);\n});\n",
                   "// Validate if response header has matching content-type\npm.test(\"[GET]::/ - Content-Type is application/json\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n",
                   "// Validate if response has JSON Body \npm.test(\"[GET]::/ - Response has JSON Body\", function () {\n    pm.response.to.have.jsonBody();\n});\n"
                 ]
@@ -88,7 +88,7 @@
           ]
         },
         {
-          "id": "a6aebf87-f7b5-4527-bc03-357bafd55a3f",
+          "id": "e92a1e92-3e80-4b5b-91cf-62e61a5e7910",
           "name": "to Backend",
           "request": {
             "name": "to Backend",
@@ -119,7 +119,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "2864aaff-da3b-4679-b7e4-277b2e9aa477",
+              "id": "d8a02427-8abc-49a2-a8c8-b5e6a593a22b",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -150,7 +150,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "d895e7c3-3d9e-4b5c-b198-badd855d18a9",
+              "id": "64e3e394-3233-4d19-b274-10d5d8297b7f",
               "name": "bad_request",
               "originalRequest": {
                 "url": {
@@ -182,11 +182,11 @@
             {
               "listen": "test",
               "script": {
-                "id": "2d07318f-c22d-4805-b38f-adf81de3d2e8",
+                "id": "83188bb7-a188-468e-ab96-4d78c14f4d59",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/to-backend - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
-                  "// Validate response time \npm.test(\"[GET]::/to-backend - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/to-backend - Response time is less than 1000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(1000);\n});\n",
                   "// Validate if response header has matching content-type\npm.test(\"[GET]::/to-backend - Content-Type is application/json\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n",
                   "// Validate if response has JSON Body \npm.test(\"[GET]::/to-backend - Response has JSON Body\", function () {\n    pm.response.to.have.jsonBody();\n});\n"
                 ]
@@ -198,7 +198,7 @@
       "event": []
     },
     {
-      "id": "a7b9ef47-dd9c-4004-aad7-d8dbac0f5879",
+      "id": "970834df-bc1d-400e-99ea-a221d9bd3ab3",
       "name": "non-json",
       "description": {
         "content": "",
@@ -206,7 +206,7 @@
       },
       "item": [
         {
-          "id": "9f3bfe64-fad4-4b47-a8a0-3947f721f88f",
+          "id": "f52e4f18-1aa0-4bac-b96f-1b0fb292120e",
           "name": "spec",
           "request": {
             "name": "spec",
@@ -237,7 +237,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "ac141e9c-4242-4bf5-88f7-0391d3f50adf",
+              "id": "ffa8cd86-05aa-4675-aefd-579b5b52fa8d",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -269,11 +269,11 @@
             {
               "listen": "test",
               "script": {
-                "id": "7eb197e6-c4b1-444d-a86a-f50d6f4ee8be",
+                "id": "b8db37ab-12f7-4cce-8d9e-092a99a41a4b",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/spec - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
-                  "// Validate response time \npm.test(\"[GET]::/spec - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/spec - Response time is less than 1000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(1000);\n});\n",
                   "// Validate if response header has matching content-type\npm.test(\"[GET]::/spec - Content-Type is text/yaml\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/yaml\");\n});\n"
                 ]
               }
@@ -281,7 +281,7 @@
           ]
         },
         {
-          "id": "96ad224b-29ea-475b-99ed-1998d6f0deb4",
+          "id": "81cfd835-83d3-4103-b993-668879834578",
           "name": "docs",
           "request": {
             "name": "docs",
@@ -312,7 +312,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "9717a1c9-2be4-4a82-aefd-2e8bd96e3dc8",
+              "id": "833b32ac-39e3-4f4d-8624-71a5629a6854",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -344,11 +344,11 @@
             {
               "listen": "test",
               "script": {
-                "id": "919dd049-60fd-4bd0-a466-6de08f656ffa",
+                "id": "8394abef-db4b-4e0b-8aeb-eecd9f932505",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/docs - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
-                  "// Validate response time \npm.test(\"[GET]::/docs - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/docs - Response time is less than 1000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(1000);\n});\n",
                   "// Validate if response header has matching content-type\npm.test(\"[GET]::/docs - Content-Type is text/html\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/html\");\n});\n"
                 ]
               }
@@ -356,7 +356,7 @@
           ]
         },
         {
-          "id": "cc41f630-eca1-4d24-806a-b74fc0b3a245",
+          "id": "da55a9c4-4ee9-493d-9108-fb31a8f219b7",
           "name": "dns Servers",
           "request": {
             "name": "dns Servers",
@@ -387,7 +387,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "4f10283c-5aaf-45ac-ba17-3641f09c08c8",
+              "id": "6bddc5ee-9a18-41a7-ac97-2ab6d8e0183c",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -419,11 +419,11 @@
             {
               "listen": "test",
               "script": {
-                "id": "6e394ca5-dcf0-4450-8efd-8a3f567fccf0",
+                "id": "36b0401d-35bf-4620-a4e0-566a740da484",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/dns-servers - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
-                  "// Validate response time \npm.test(\"[GET]::/dns-servers - Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});\n",
+                  "// Validate response time \npm.test(\"[GET]::/dns-servers - Response time is less than 1000ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(1000);\n});\n",
                   "// Validate if response header has matching content-type\npm.test(\"[GET]::/dns-servers - Content-Type is text/plain\", function () {\n   pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/plain\");\n});\n"
                 ]
               }
@@ -443,7 +443,7 @@
     }
   ],
   "info": {
-    "_postman_id": "1ebb9e78-f177-43f0-b3c3-66b930cac450",
+    "_postman_id": "5a6bfe15-c42f-4cde-91b9-d423c11db71c",
     "name": "artery",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
