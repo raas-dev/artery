@@ -106,15 +106,19 @@ if the person submitting the pull request is outside of the project core team.
 
 Install [Trivy](https://github.com/aquasecurity/trivy).
 
-Run Trivy for vulnerability and secret scanning:
+Run Trivy for vulnerable dependencies and secret scanning:
 
     npm run trivy
 
 Or run it for the locally built Docker image:
 
-    npm run trivy:docker
+    npm run trivy:image
 
 ### Static code analysis
+
+Run [ESLint](https://eslint.org/) automatically fixing issues if any:
+
+    npm run lint:fix
 
 Install [semgrep](https://github.com/returntocorp/semgrep).
 
@@ -122,11 +126,15 @@ Fetch rules and run semgrep in the local git working copy:
 
     npm run semgrep
 
+### Dockerfile scan
+
+Install [hadolint](https://github.com/hadolint/hadolint).
+
+Run it for `docker/` Dockerfiles:
+
+    npm run lint:docker
+
 ### Pre-commit
-
-Run [ESLint](https://eslint.org/) automatically fixing issues if any:
-
-    npm run lint:fix
 
 Visual Studio Code is preferred as it can install the extensions defined in
 `.vscode/extensions.json`. Thus linting, fixing and formatting both code and
