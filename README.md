@@ -102,11 +102,13 @@ do not have handlers implemented, causing Prism to then to mock the response.
 GitHub. Deploy PRs to testing requires approval from the project admin
 if the person submitting the pull request is outside of the project core team.
 
-### Changelog
+### Security scans
 
-Update `CHANGELOG.md` by [auto-changelog](https://github.com/CookPete/auto-changelog):
+Install [Trivy](https://github.com/aquasecurity/trivy).
 
-    npm run changelog
+Run trivy to detect vulnerable packages in `package-json.lock`:
+
+npm run trivy
 
 ### Pre-commit
 
