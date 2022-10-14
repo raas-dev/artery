@@ -19,7 +19,6 @@
     "lint": "tsc --noEmit && eslint --ext .ts 'src/**/*'",
     "lint:fix": "eslint --ext .ts 'src/**/*' --fix",
     "lint:spec": "spectral lint openapi.{json,yml,yaml}",
-    "changelog": "npx --yes auto-changelog --package && git add CHANGELOG.md",
     "prism:mock": "npx --yes --package=prism prism mock --dynamic openapi.yaml",
     "prism:proxy": "npx --yes --package=prism prism proxy openapi.yaml http://localhost:8080 --errors",
     "newman": "newman run portman/collection.postman.json --reporters cli,junit,htmlextra --reporter-junit-export results/newman.junit.xml --reporter-htmlextra-export results/newman.html",
