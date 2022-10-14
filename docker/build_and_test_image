@@ -39,7 +39,7 @@ docker build \
 ### scan #######################################################################
 
 if command -v trivy >/dev/null; then
-  trivy "$IMAGE_NAME:$IMAGE_TAG"
+  trivy image "$IMAGE_NAME:$IMAGE_TAG"
 fi
 
 ### run ########################################################################
