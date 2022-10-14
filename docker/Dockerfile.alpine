@@ -55,6 +55,7 @@ COPY --chown=node:node docker/runner.sh runner.sh
 RUN chmod 755 runner.sh
 ENTRYPOINT ["./runner.sh"]
 
+HEALTHCHECK CMD nc -z -v localhost 8080
 CMD ["node", "dist/index.js"]
 EXPOSE 8080
 
