@@ -102,6 +102,17 @@ do not have handlers implemented, causing Prism to then to mock the response.
 GitHub. Deploy PRs to testing requires approval from the project admin
 if the person submitting the pull request is outside of the project core team.
 
+### IDE checks
+
+VSCode is preferred as it can install the extensions defined in
+`.vscode/extensions.json`. Then linting, formatting and static analysis
+runs write-time, before code even ends up in a commit.
+
+You have to install [Semgrep](https://github.com/returntocorp/semgrep),
+[hadolint](https://github.com/hadolint/hadolint) and
+[Trivy](https://github.com/aquasecurity/trivy) for your operating system to
+fully benefit from the extensions.
+
 ### Linters
 
 Run [ESLint](https://eslint.org/) automatically fixing issues if any:
@@ -110,33 +121,29 @@ Run [ESLint](https://eslint.org/) automatically fixing issues if any:
 
 ### Static code analysis
 
-Install [semgrep](https://github.com/returntocorp/semgrep).
-
-Run static code analysis in the git working copy:
+Run [Semgrep](https://github.com/returntocorp/semgrep) for static code
+analysis in the git working copy:
 
     npm run scan:code
 
-### Security scans
+### Dependency scanning
 
-Install [Trivy](https://github.com/aquasecurity/trivy).
-
-Scan vulnerable dependencies in the git working copy:
+Run [Trivy](https://github.com/aquasecurity/trivy) to scan vulnerable
+dependencies in the git working copy:
 
     npm run scan:deps
 
-### Pre-commit
+### Pre-commit hooks
 
-Visual Studio Code is preferred as it can install the extensions defined in
-`.vscode/extensions.json`. Thus linting, fixing and formatting both code and
-the OpenAPI spec runs edit-time, before changes even ending up in a commit.
-
-In addition to edit-time helpers, [Husky](https://typicode.github.io/husky/#/)
-is used for running the git hooks defined in `.husky/pre-commit`, such as:
+[Husky](https://typicode.github.io/husky/#/) is used for running the git hooks
+defined in `.husky/pre-commit`, such as:
 
 - ESLint for linting and autofixing TypeScript, configured in `.eslintrc.js`
 - [Prettier](https://prettier.io/) for formatting, configured in `.prettierrc`
 - [Spectral](https://stoplight.io/open-source/spectral/) for linting OpenAPI
 - `npm run portman` to generate always up-to-date API tests from `openapi.yaml`
+
+Husky is installed as part of Node.js development dependencies.
 
 ### CI/CD
 

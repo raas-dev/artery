@@ -8,6 +8,7 @@
     "ms-cst-e.vscode-devskim",
     "semgrep.semgrep",
     "ms-azure-devops.azure-pipelines",
-    "exiasr.hadolint"
+    "exiasr.hadolint",
+    "AquaSecurityOfficial.trivy-vulnerability-scanner"
   ]
 }
