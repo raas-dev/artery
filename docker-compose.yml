@@ -3,6 +3,9 @@ version: '3'
 services:
   grafana:
     image: grafana/grafana:latest
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     networks:
       - grafana
     ports:
@@ -20,6 +23,9 @@ services:
 
   influxdb:
     image: influxdb:1.8
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     networks:
       - k6
       - grafana
@@ -28,6 +34,9 @@ services:
 
   k6:
     image: 24hoursmedia/k6-xarch:latest
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     networks:
       - k6
     environment:

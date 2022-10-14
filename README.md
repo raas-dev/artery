@@ -106,9 +106,21 @@ if the person submitting the pull request is outside of the project core team.
 
 Install [Trivy](https://github.com/aquasecurity/trivy).
 
-Run trivy to detect vulnerable packages in `package-json.lock`:
+Run Trivy for vulnerability and secret scanning:
 
     npm run trivy
+
+Or run it for the locally built Docker image:
+
+    npm run trivy:docker
+
+### Static code analysis
+
+Install [semgrep](https://github.com/returntocorp/semgrep).
+
+Fetch rules and run semgrep in the local git working copy:
+
+    npm run semgrep
 
 ### Pre-commit
 

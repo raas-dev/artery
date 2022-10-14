@@ -15,7 +15,7 @@
     "test:api": "concurrently --raw --success first -k npm:start npm:newman",
     "test:all": "npm run test ; npm run test:api",
     "semgrep": "semgrep --config auto",
-    "trivy": "trivy fs package-lock.json",
+    "trivy": "trivy fs --skip-dirs=node_modules .",
     "trivy:docker": "trivy image artery-api:latest",
     "lint": "tsc --noEmit && eslint --ext .ts 'src/**/*'",
     "lint:fix": "eslint --ext .ts 'src/**/*' --fix",
