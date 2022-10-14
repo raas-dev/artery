@@ -102,37 +102,27 @@ do not have handlers implemented, causing Prism to then to mock the response.
 GitHub. Deploy PRs to testing requires approval from the project admin
 if the person submitting the pull request is outside of the project core team.
 
-### Security scans
-
-Install [Trivy](https://github.com/aquasecurity/trivy).
-
-Run Trivy for vulnerable dependencies and secret scanning:
-
-    npm run trivy
-
-Or run it for the locally built Docker image:
-
-    npm run trivy:image
-
-### Static code analysis
+### Linters
 
 Run [ESLint](https://eslint.org/) automatically fixing issues if any:
 
     npm run lint:fix
 
+### Static code analysis
+
 Install [semgrep](https://github.com/returntocorp/semgrep).
 
-Fetch rules and run semgrep in the local git working copy:
+Run static code analysis in the git working copy:
 
-    npm run semgrep
+    npm run scan:code
 
-### Dockerfile scan
+### Security scans
 
-Install [hadolint](https://github.com/hadolint/hadolint).
+Install [Trivy](https://github.com/aquasecurity/trivy).
 
-Run it for `docker/` Dockerfiles:
+Scan vulnerable dependencies in the git working copy:
 
-    npm run lint:docker
+    npm run scan:deps
 
 ### Pre-commit
 
