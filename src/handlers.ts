@@ -20,7 +20,7 @@ module.exports = {
   version: async (req: any, res: any) => {
     await res
       .status(200)
-      .json({ version: version, serverTimeUTC: new Date().toISOString() })
+      .json({ version, serverTimeUTC: new Date().toISOString() })
   },
   spec: async (req: any, res: any) => {
     await res.status(200).sendFile(path.join(__dirname, '..', 'openapi.yaml'))
