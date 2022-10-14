@@ -10,10 +10,7 @@ WORKDIR /build/
 COPY . .
 
 # Install devDependencies, build dist and run tests
-RUN npm ci
-RUN npm run lint
-RUN npm run build
-RUN npm run test
+RUN npm ci && npm run lint && npm run build && npm run test:all
 
 ## --------------------------------------------
 # Production dependencies only
@@ -34,8 +31,8 @@ RUN npm install --no-save --omit=dev
 FROM node:${NODE_VERSION}-buster-slim as run
 
 ARG TZ="Europe/Helsinki"
-RUN cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
-    echo ${TZ} > /etc/timezone
+RUN (cp /usr/share/zoneinfo/${TZ} /etc/localtime && \
+    echo ${TZ} > /etc/timezone) || true
 
 USER node
 WORKDIR /home/node
@@ -46,7 +43,7 @@ COPY --from=clean --chown=node:node /clean/node_modules node_modules
 
 # For dist/index.js
 COPY --chown=node:node openapi.yaml .
-RUN echo -n "$(date +%Y%m%d-%H.%M)" > builtInfo.txt
+RUN printf "%s" "$(date +%Y%m%d-%H.%M)" > builtInfo.txt
 
 # Add entrypoint to trap signals
 COPY --chown=node:node docker/runner.sh runner.sh
