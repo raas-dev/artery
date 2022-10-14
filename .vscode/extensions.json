@@ -6,6 +6,7 @@
     "mermade.openapi-lint",
     "timonwong.shellcheck",
     "ms-cst-e.vscode-devskim",
+    "semgrep.semgrep",
     "ms-azure-devops.azure-pipelines"
   ]
 }
