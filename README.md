@@ -108,7 +108,7 @@ Install [Trivy](https://github.com/aquasecurity/trivy).
 
 Run trivy to detect vulnerable packages in `package-json.lock`:
 
-npm run trivy
+    npm run trivy
 
 ### Pre-commit
 

@@ -11,6 +11,3 @@ npm run lint:spec
 
 ## portman
 npm run portman && git add portman/collection.postman.json
-
-## trivy
-npm run trivy
