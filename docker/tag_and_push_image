@@ -30,8 +30,9 @@ docker push "$REGISTRY_IMAGE_REF:$REGISTRY_IMAGE_TAG"
 docker tag "$IMAGE_NAME:$IMAGE_TAG" "$REGISTRY_IMAGE_REF:$IMAGE_TAG"
 docker push "$REGISTRY_IMAGE_REF:$IMAGE_TAG"
 
-### verify #####################################################################
+### scan image #################################################################
 
 if command -v dockle >/dev/null; then
-  dockle "$REGISTRY_IMAGE_REF:$IMAGE_TAG"
+  export DOCKER_CONTENT_TRUST=1
+  dockle "$REGISTRY_IMAGE_REF:$IMAGE_TAG" || true
 fi
