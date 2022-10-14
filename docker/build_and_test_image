@@ -22,6 +22,12 @@ branch_name="$(git branch --show-current)"
 : "${RUN_ARGS:="-it -p 8080:8080 --env SWAGGER_STATS_USERNAME=local \
                 --env SWAGGER_STATS_PASSWORD=local"}"
 
+### lint #######################################################################
+
+if command -v hadolint >/dev/null; then
+  hadolint "$this_path/Dockerfile.$IMAGE_KIND"
+fi
+
 ### build ######################################################################
 
 docker build \
@@ -29,6 +35,12 @@ docker build \
   $BUILD_ARGS \
   --tag "$IMAGE_NAME:$IMAGE_TAG" \
   "$BUILD_DIR"
+
+### scan #######################################################################
+
+if command -v trivy >/dev/null; then
+  trivy "$IMAGE_NAME:$IMAGE_TAG"
+fi
 
 ### run ########################################################################
 
