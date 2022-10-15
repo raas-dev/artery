@@ -18,6 +18,13 @@ Principles:
 
 ## ⚙️ Development
 
+Install development tools with [Homebrew](https://brew.sh/) on macOS and
+Linux distros:
+
+    brew bundle
+
+If you cannot use Homebrew, install them manually.
+
 Install Node.js version in `.nvmrc`, with [nvm](https://github.com/nvm-sh/nvm):
 
     nvm install
@@ -104,9 +111,8 @@ if the person submitting the pull request is outside of the project core team.
 
 ### Security scans
 
-Install [Trivy](https://trivy.dev) for your operating
-system to run vulnerability, misconfiguration, secret and license scans
-automatically before commit.
+Install [Trivy](https://trivy.dev) for your operating system to run secret,
+vulnerability, misconfiguration and license scans automatically on commit.
 
 You may run the scans manually in the git working copy:
 

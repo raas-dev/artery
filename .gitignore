@@ -18,3 +18,6 @@ tmp/
 
 # private files
 *.private.*
+
+# Homebrew
+Brewfile.lock.json
