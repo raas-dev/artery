@@ -26,7 +26,8 @@
     "prism:proxy": "npx --yes --package=prism prism proxy openapi.yaml http://localhost:8080 --errors",
     "newman": "newman run portman/collection.postman.json --reporters cli,junit,htmlextra --reporter-junit-export results/newman.junit.xml --reporter-htmlextra-export results/newman.html",
     "portman": "portman --cliOptionsFile portman/portman-newman.json",
-    "k6": "portman --cliOptionsFile portman/portman-k6.json ; postman-to-k6 tmp/k6.postman.json --iterations 10 --output k6/auto/tests.js ; docker-compose up -d ; docker-compose run k6 run --vus 100 --duration 30s /auto/tests.js"
+    "k6": "portman --cliOptionsFile portman/portman-k6.json ; postman-to-k6 tmp/k6.postman.json --iterations 10 --output k6/auto/tests.js ; docker-compose up -d ; docker-compose run k6 run --vus 100 --duration 30s /auto/tests.js",
+    "release": "npx --yes standard-version"
   },
   "dependencies": {
     "applicationinsights": "^2.3.5",
@@ -42,6 +43,8 @@
   "devDependencies": {
     "@apideck/portman": "^1.18.1",
     "@apideck/postman-to-k6": "^1.8.5",
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@stoplight/spectral-cli": "^6.5.1",
     "@types/express": "^4.17.14",
     "@types/jest": "^29.1.2",
