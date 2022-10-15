@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2034,SC2086
+
+# shellcheck disable=SC2068  # not quoting parameter expansions for docker
+# shellcheck disable=SC2086  # not quoting arguments
 
 set -e
 
