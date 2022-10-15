@@ -6,7 +6,7 @@ db:
   repository: ghcr.io/aquasecurity/trivy-db
   skip-update: false
 debug: false
-exit-code: 0
+exit-code: 1
 format: table
 generate-default-config: false
 ignore-policy: ''

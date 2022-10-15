@@ -102,6 +102,35 @@ do not have handlers implemented, causing Prism to then to mock the response.
 GitHub. Deploy PRs to testing requires approval from the project admin
 if the person submitting the pull request is outside of the project core team.
 
+### Security scans
+
+Install [Trivy](https://github.com/aquasecurity/trivy) for your operating
+system to run vulnerability, misconfiguration, secret and license scans
+automatically before commit.
+
+You may run the scans manually in the git working copy:
+
+    npm run sec
+
+Or to write `results/` in various different formats:
+
+    npm run sec:html
+    npm run sec:junit
+    npm run sec:sarif
+
+### Pre-commit hooks
+
+[Husky](https://typicode.github.io/husky/#/) is used for running the git hooks
+defined in `.husky/pre-commit`, such as:
+
+- [Trivy](https://github.com/aquasecurity/trivy) for various security scans
+- [ESLint](https://eslint.org/) for linting and fixing TypeScript, configured in `.eslintrc.js`
+- [Prettier](https://prettier.io/) for formatting, configured in `.prettierrc`
+- [Spectral](https://stoplight.io/open-source/spectral/) for linting OpenAPI
+- `npm run portman` to generate always up-to-date API tests from `openapi.yaml`
+
+Husky is installed in Node.js development dependencies (on `npm install`).
+
 ### IDE checks
 
 VSCode is preferred as it can install the extensions defined in
@@ -109,41 +138,21 @@ VSCode is preferred as it can install the extensions defined in
 runs write-time, before code even ends up in a commit.
 
 You have to install [Semgrep](https://github.com/returntocorp/semgrep),
-[hadolint](https://github.com/hadolint/hadolint) and
-[Trivy](https://github.com/aquasecurity/trivy) for your operating system to
-benefit from the checks.
+[hadolint](https://github.com/hadolint/hadolint) for your operating system
+to benefit from the extensions.
 
-### Linters
+#### Linters
 
-Run [ESLint](https://eslint.org/) automatically fixing issues if any:
+You may run [ESLint](https://eslint.org/) manually for fixing issues if any:
 
     npm run lint:fix
 
-### Code analysis
+#### Code analysis
 
-Run [Semgrep](https://github.com/returntocorp/semgrep) for static code
-analysis in the git working copy:
+You may run [Semgrep](https://github.com/returntocorp/semgrep) manually
+for static code analysis:
 
-    npm run scan:qa
-
-### Security scans
-
-Run [Trivy](https://github.com/aquasecurity/trivy) to scan secrets,
-vulnerabilities, misconfigurations and licenses in the git working copy:
-
-    npm run scan:sec
-
-### Pre-commit hooks
-
-[Husky](https://typicode.github.io/husky/#/) is used for running the git hooks
-defined in `.husky/pre-commit`, such as:
-
-- ESLint for linting and autofixing TypeScript, configured in `.eslintrc.js`
-- [Prettier](https://prettier.io/) for formatting, configured in `.prettierrc`
-- [Spectral](https://stoplight.io/open-source/spectral/) for linting OpenAPI
-- `npm run portman` to generate always up-to-date API tests from `openapi.yaml`
-
-Husky is installed as part of Node.js development dependencies.
+    npm run sa
 
 ### CI/CD
 
