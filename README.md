@@ -119,12 +119,12 @@ Run [ESLint](https://eslint.org/) automatically fixing issues if any:
 
     npm run lint:fix
 
-### Static code analysis
+### Code analysis
 
 Run [Semgrep](https://github.com/returntocorp/semgrep) for static code
 analysis in the git working copy:
 
-    npm run scan:code
+    npm run scan:qa
 
 ### Security scans
 
