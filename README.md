@@ -111,7 +111,7 @@ runs write-time, before code even ends up in a commit.
 You have to install [Semgrep](https://github.com/returntocorp/semgrep),
 [hadolint](https://github.com/hadolint/hadolint) and
 [Trivy](https://github.com/aquasecurity/trivy) for your operating system to
-fully benefit from the extensions.
+benefit from the checks.
 
 ### Linters
 
@@ -126,12 +126,12 @@ analysis in the git working copy:
 
     npm run scan:code
 
-### Dependency scanning
+### Security scans
 
-Run [Trivy](https://github.com/aquasecurity/trivy) to scan vulnerable
-dependencies in the git working copy:
+Run [Trivy](https://github.com/aquasecurity/trivy) to scan secrets,
+vulnerabilities, misconfigurations and licenses in the git working copy:
 
-    npm run scan:deps
+    npm run scan:sec
 
 ### Pre-commit hooks
 
