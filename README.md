@@ -140,7 +140,7 @@ Use VSCode to install the VSCode extensions defined in `.vscode/extensions.json`
 so linting, static analysis and formatting runs continuously write-time,
 before code even ends up in a commit.
 
-You have to have [Semgrep](https://github.com/returntocorp/semgrep),
+Have [Semgrep](https://github.com/returntocorp/semgrep) and
 [hadolint](https://github.com/hadolint/hadolint) present in your system
 to benefit from the VSCode extensions.
 
