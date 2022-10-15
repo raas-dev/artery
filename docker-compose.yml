@@ -3,7 +3,6 @@ version: '3'
 services:
   grafana:
     image: grafana/grafana:latest
-    read_only: true
     security_opt:
       - no-new-privileges:true
     networks:
