@@ -104,7 +104,7 @@ if the person submitting the pull request is outside of the project core team.
 
 ### Security scans
 
-Install [Trivy](https://github.com/aquasecurity/trivy) for your operating
+Install [Trivy](https://trivy.dev) for your operating
 system to run vulnerability, misconfiguration, secret and license scans
 automatically before commit.
 
@@ -123,11 +123,11 @@ Or to write `results/` in various different formats:
 [Husky](https://typicode.github.io/husky/#/) is used for running the various
 code analysis tools defined in `.husky/pre-commit`, such as:
 
-- [Trivy](https://github.com/aquasecurity/trivy) for various security scans
+- [Trivy](https://trivy.dev) for various security scans
 - [Prettier](https://prettier.io/) for formatting code based on `.prettierrc`
 - [ESLint](https://eslint.org/) for linting and fixing code based on `.eslintrc.js`
 - [Spectral](https://stoplight.io/open-source/spectral/) for linting OpenAPI
-- `npm run portman` for generating up-to-date API tests based on `openapi.yaml`
+- [Portman](https://github.com/apideck-libraries/portman) for updating the API tests based on `openapi.yaml`
 
 Husky is installed in Node.js development dependencies (on `npm install`).
 
@@ -155,8 +155,8 @@ OpenAPI definition files manually:
 
 #### Static analysis
 
-You may run [Semgrep](https://github.com/returntocorp/semgrep) manually
-for the git working copy:
+You may run [Semgrep](https://github.com/returntocorp/semgrep) for the codebase
+manually:
 
     npm run sa
 
