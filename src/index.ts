@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 
 import express from 'express'
+import favicon from 'serve-favicon'
 import Helmet from 'helmet'
 import morgan from 'morgan'
 import swaggerStats from 'swagger-stats'
@@ -30,6 +31,7 @@ app.use(
     contentSecurityPolicy: false
   })
 )
+app.use(favicon(path.join(__dirname, 'favicon.ico')))
 app.use(express.json())
 
 // logging - https://github.com/expressjs/morgan#options

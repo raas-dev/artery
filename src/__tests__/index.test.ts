@@ -34,6 +34,11 @@ describe('HTTP endpoint tests', () => {
     expect(res.status).toBe(200)
   })
 
+  test('GET to /favicon.ico responds 200', async () => {
+    const res = await client.get('/favicon.ico')
+    expect(res.status).toBe(200)
+  })
+
   test('GET to /stats responds 404 if auth not set', async () => {
     const res = await client.get('/stats')
     expect(res.status).toBe(404)
