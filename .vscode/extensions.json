@@ -3,12 +3,12 @@
     "editorconfig.editorconfig",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
-    "mermade.openapi-lint",
     "timonwong.shellcheck",
     "ms-cst-e.vscode-devskim",
     "semgrep.semgrep",
     "ms-azure-devops.azure-pipelines",
     "exiasr.hadolint",
-    "AquaSecurityOfficial.trivy-vulnerability-scanner"
+    "aquasecurityofficial.trivy-vulnerability-scanner",
+    "stoplight.spectral"
   ]
 }

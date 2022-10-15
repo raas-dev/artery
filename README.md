@@ -120,37 +120,43 @@ Or to write `results/` in various different formats:
 
 ### Pre-commit hooks
 
-[Husky](https://typicode.github.io/husky/#/) is used for running the git hooks
-defined in `.husky/pre-commit`, such as:
+[Husky](https://typicode.github.io/husky/#/) is used for running the various
+code analysis tools defined in `.husky/pre-commit`, such as:
 
 - [Trivy](https://github.com/aquasecurity/trivy) for various security scans
-- [ESLint](https://eslint.org/) for linting and fixing TypeScript, configured in `.eslintrc.js`
-- [Prettier](https://prettier.io/) for formatting, configured in `.prettierrc`
+- [Prettier](https://prettier.io/) for formatting code based on `.prettierrc`
+- [ESLint](https://eslint.org/) for linting and fixing code based on `.eslintrc.js`
 - [Spectral](https://stoplight.io/open-source/spectral/) for linting OpenAPI
-- `npm run portman` to generate always up-to-date API tests from `openapi.yaml`
+- `npm run portman` for generating up-to-date API tests based on `openapi.yaml`
 
 Husky is installed in Node.js development dependencies (on `npm install`).
 
 ### IDE checks
 
-VSCode is preferred as it can install the extensions defined in
-`.vscode/extensions.json`. Then linting, formatting and static analysis
-runs write-time, before code even ends up in a commit.
+You can use VSCode to install the extensions defined in
+`.vscode/extensions.json` so linting, static analysis and formatting runs
+continuously write-time, before code even ends up in a commit.
 
 You have to install [Semgrep](https://github.com/returntocorp/semgrep),
 [hadolint](https://github.com/hadolint/hadolint) for your operating system
-to benefit from the extensions.
+to benefit from the VSCode extensions.
 
-#### Linters
+#### Linting
 
-You may run [ESLint](https://eslint.org/) manually for fixing issues if any:
+You may run [ESLint](https://eslint.org/) manually for linting the codebase
+manually:
 
     npm run lint:fix
 
-#### Code analysis
+Or [Spectral](https://stoplight.io/open-source/spectral/) for linting the
+OpenAPI definition files manually:
+
+    npm run lint:spec
+
+#### Static analysis
 
 You may run [Semgrep](https://github.com/returntocorp/semgrep) manually
-for static code analysis:
+for the git working copy:
 
     npm run sa
 
