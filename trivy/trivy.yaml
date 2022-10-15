@@ -10,7 +10,7 @@ exit-code: 0
 format: table
 generate-default-config: false
 ignore-policy: ''
-ignorefile: .trivyignore
+ignorefile: trivy/.trivyignore
 image:
   input: ''
   removed-pkgs: false
@@ -39,7 +39,7 @@ license:
     - Facebook-3-Clause
     - Facebook-Examples
     - WTFPL
-  full: true
+  full: false
   ignored: []
   notice:
     - AFL-1.1
@@ -185,9 +185,10 @@ scan:
   rekor-url: https://rekor.sigstore.dev
   sbom-sources: []
   security-checks:
-    - vuln
-    - secret
+    - config
     - license
+    - secret
+    - vuln
   skip-dirs:
     - node_modules
   skip-files: []

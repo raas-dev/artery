@@ -1,0 +1,4 @@
+# Allow root user for Azure AppService SSH access for non-production containers:
+# docker/Dockerfile.alpine
+# docker/Dockerfile.slimbuster
+AVD-DS-0002 # https://avd.aquasec.com/misconfig/dockerfile/general/avd-ds-0002/

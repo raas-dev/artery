@@ -13,7 +13,7 @@
     "dev:proxy": "concurrently -k -p '[{name}]' -n 'typescript,api,prism' -c 'yellow.bold,cyan.bold,magenta' npm:watch-build npm:watch-start npm:prism:proxy",
     "scan:code": "semgrep --config auto --verbose --junit-xml . > results/semgrep.junit.xml",
     "scan:deps": "trivy fs --config trivy/trivy.yaml .",
-    "scan:deps:ci": "trivy fs --config trivy/trivy.yaml --format template --template @trivy/junit.tpl --output results/trivy.junit.xml .",
+    "scan:deps:ci": "trivy fs --config trivy/trivy.yaml --exit-code 1 --format template --template @trivy/junit.tpl --output results/trivy.junit.xml .",
     "test": "jest",
     "test:api": "concurrently --raw --success first -k npm:start npm:newman",
     "test:all": "npm run test ; npm run test:api",
