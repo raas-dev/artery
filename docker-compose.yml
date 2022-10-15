@@ -49,6 +49,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.alpine.prod
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
     networks:
       - k6
     ports:
