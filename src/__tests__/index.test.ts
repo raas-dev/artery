@@ -15,8 +15,12 @@ describe('HTTP endpoint tests', () => {
       baseURL: `http://localhost:${serverPort}`,
       validateStatus: () => true
     })
+    const env = process.env
+    env.SWAGGER_STATS_USERNAME = 'local'
+    env.SWAGGER_STATS_PASSWORD = 'local'
     start = spawn('npm', ['start'], {
       cwd: __dirname,
+      env,
       detached: true,
       stdio: 'inherit'
     })
@@ -39,9 +43,9 @@ describe('HTTP endpoint tests', () => {
     expect(res.status).toBe(200)
   })
 
-  test('GET to /stats responds 404 if auth not set', async () => {
+  test('GET to /stats responds 200', async () => {
     const res = await client.get('/stats')
-    expect(res.status).toBe(404)
+    expect(res.status).toBe(200)
   })
 
   test('GET to non-implemented responds 501', async () => {
