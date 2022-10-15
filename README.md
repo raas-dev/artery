@@ -16,7 +16,7 @@ Principles:
 - One command deploy PaaS with connectivity, monitoring and identity services
 - Create Azure DevOps project and pipelines with IAC, requiring only Azure CLI
 
-## ⚙️ Development
+## 🔨 Development
 
 Install development tools with [Homebrew](https://brew.sh/) on macOS and
 Linux distros:
@@ -42,6 +42,8 @@ Build production `dist/`:
 Start development server that watches for changes:
 
     npm run dev
+
+### Testing
 
 Run functional tests on [Jest](https://jestjs.io/):
 
@@ -103,12 +105,6 @@ properties `operationId` and `x-eov-operation-handler`: The Express will
 respond HTTP status 501 (Not Implemented) for routes that do not have handlers
 implemented, causing Prism then to mock the response.
 
-## ✨ Contributing
-
-[Pull requests](https://github.com/raas-dev/artery/pulls) are reviewed in
-GitHub. Deploying PRs to testing requires approval from the project admin,
-if the person submitting the pull request is outside the project team.
-
 ### Security scans
 
 Have [Trivy](https://trivy.dev) present in your system to run vulnerability,
@@ -166,7 +162,7 @@ codebase:
 
     npm run sa
 
-### CI/CD
+## ⚙️ CI/CD
 
 Azure DevOps will host the pipelines for building Docker images, deploying to
 testing-staging and rc-production in Azure.
@@ -206,6 +202,20 @@ The git workflow uses two persisting branches in addition to feature branches:
       prod may be required in case of errors
       - note that after prod deployment, the previous prod is in slot 'rc'
         - thus rollback is possibly done fastest by just swapping the slots
+
+### Azure DevOps
+
+To reproduce the Azure DevOps project and the pipelines in your Azure DevOps
+organisation, see
+[creating Azure DevOps resources programmatically](devops/README.md).
+
+For private Azure DevOps projects, depending on the practices and size of the
+team, it is recommended to configure deployment of feature branches
+automatically to testing, just before the review (triggered by creating a PR),
+even if testing is used as a shared environment between the team members.
+
+For public projects, **never let PRs to be deployed to a shared environment**
+without a review from a core team member - doing so might compromise security.
 
 ## 🏗️ Infrastructure
 
@@ -260,17 +270,3 @@ when there are changes.
 
 This is due to that the infrastructure deployment is not necessarily idenpotent
 and could cause a brief interruption in customer-facing services.
-
-### Azure DevOps
-
-To reproduce the Azure DevOps project and the pipelines in your Azure DevOps
-organisation,
-see [creating Azure DevOps resources programmatically](devops/README.md).
-
-For private Azure DevOps projects, depending on the practices and size of the
-team, it is recommended to configure deployment of feature branches
-automatically to testing, just before the review (triggered by creating a PR),
-even if testing is used as a shared environment between the team members.
-
-For public projects, **never let PRs to be deployed to a shared environment**
-without a review from a core team member - doing so might compromise security.
