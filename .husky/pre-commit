@@ -1,16 +1,16 @@
 # .husky/pre-commit
 
-## security scans
+## scan vulnerabilties
 npm run sec
 
-## prettier
+## format code
 npx pretty-quick --staged
 
-## eslint
+## lint typescript
 npx eslint --cache --fix
 
-## spectral
+## lint openapi
 npm run lint:spec
 
-## portman
+## generate tests
 npm run portman && git add portman/collection.postman.json
