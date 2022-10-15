@@ -1,10 +1,16 @@
 # .husky/pre-commit
 
+## security scan
+npm run scan:sec
+
 ## prettier
 npx pretty-quick --staged
 
 ## eslint
 npx eslint --cache --fix
+
+## code analysis
+npm run scan:qa
 
 ## spectral
 npm run lint:spec
