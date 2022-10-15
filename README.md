@@ -1,6 +1,6 @@
-# 💢
+# artery
 
-This template is for running Express powered APIs on Azure App Service with:
+This is a template for running Express powered APIs on Azure App Service with:
 
 - Blue-green zero-downtime deployments and all environments behind Azure AD auth
 - Monitoring, alerts, availability tests and logging to analytics workspace
@@ -25,11 +25,11 @@ Linux distros:
 
 If you cannot use Homebrew, install them manually.
 
-Install Node.js version in `.nvmrc`, with [nvm](https://github.com/nvm-sh/nvm):
+Install Node.js version in `.nvmrc`:
 
     nvm install
 
-Install npm packages:
+Install Node.js packages:
 
     npm install
 
@@ -39,7 +39,7 @@ Build production `dist/`:
 
     npm run build
 
-Start development server watching for changes:
+Start development server that watches for changes:
 
     npm run dev
 
@@ -51,11 +51,11 @@ Run API tests on [Newman](https://github.com/postmanlabs/newman):
 
     npm run test:api
 
-Generate and run [k6](https://k6.io/) load tests and the API in Docker Compose:
+Generate and run [k6](https://k6.io/) load tests and this API in Docker Compose:
 
     npm run k6
 
-The Docker Compose stack includes a
+The Docker Compose stack includes
 [Grafana dashboard](http://localhost:3000/d/k6/k6-load-testing-results)
 for load test results:
 
@@ -73,46 +73,46 @@ and password `local` for real-time metrics by
 ![Real-time statistics for endpoints](docs/swagger_stats.png)
 
 When [deployed to Azure](bicep/README.md) username and password are
-set in the App Service app settings and generated from branch name and
-commit SHA by the [Azure DevOps pipeline](devops/README.md).
+set in the App Service app settings and generated from the branch name and
+from the commit SHA by the [Azure DevOps pipeline](devops/README.md).
 
-In Azure, Node.js metrics are also streamed to Application Insights and logs
-to Log Analytics Workspace.
+In Azure, Node.js metrics are streamed to Application Insights and logs are
+sent to Log Analytics Workspace.
 
 ### Mocking APIs
 
-Use [Prism](https://github.com/stoplightio/prism) locally to fake APIs
-defined in `openapi.yaml` but not yet implemented in Express:
+Use [Prism](https://github.com/stoplightio/prism) locally to fake the APIs
+defined in `openapi.yaml` that are not yet implemented:
 
     npm run prism:mock
 
-Fake data is generated dynamically according to the `x-faker` property in the
+Fake data is generated dynamically according to the `x-faker` properties in the
 OpenAPI definition. See [Faker.js](https://github.com/marak/Faker.js#api-methods)
-for all kinds of test data it can be used generate.
+for all different kinds of test data to generate.
 
 To run Prism so that the already implemented endpoints are responded by Express:
 
     npm run prism:proxy
 
-This launches the Prism server at [localhost:4010](http://localhost:4010)
-returning mock responses for the non-implemented endpoints according to
-`example`/`examples` properties in OpenAPI definition.
+Prism server is launched at [localhost:4010](http://localhost:4010), returning
+mock responses for the non-implemented endpoints according to
+`example`/`examples` properties in the OpenAPI definition (`openapi.yaml`).
 
-This is effective for all the routes which do not have handler set by the
-OpenAPI properties `operationId` and `x-eov-operation-handler`, as the
-Express will respond HTTP status 501 (Not Implemented) for routes that
-do not have handlers implemented, causing Prism to then to mock the response.
+This applies for all the routes which do not have handler set by the OpenAPI
+properties `operationId` and `x-eov-operation-handler`: The Express will
+respond HTTP status 501 (Not Implemented) for routes that do not have handlers
+implemented, causing Prism then to mock the response.
 
 ## ✨ Contributing
 
 [Pull requests](https://github.com/raas-dev/artery/pulls) are reviewed in
-GitHub. Deploy PRs to testing requires approval from the project admin
-if the person submitting the pull request is outside of the project core team.
+GitHub. Deploying PRs to testing requires approval from the project admin,
+if the person submitting the pull request is outside the project team.
 
 ### Security scans
 
-Install [Trivy](https://trivy.dev) for your operating system to run secret,
-vulnerability, misconfiguration and license scans automatically on commit.
+Have [Trivy](https://trivy.dev) present in your system to run vulnerability,
+secret, misconfiguration and license scans automatically on commit.
 
 You may run the scans manually in the git working copy:
 
@@ -126,52 +126,54 @@ Or to write `results/` in various different formats:
 
 ### Pre-commit hooks
 
-[Husky](https://typicode.github.io/husky/#/) is used for running the various
-code analysis tools defined in `.husky/pre-commit`, such as:
+[Husky](https://typicode.github.io/husky/#/) is used for running the static
+code analysis tools defined in `.husky/pre-commit`:
 
 - [Trivy](https://trivy.dev) for various security scans
 - [Prettier](https://prettier.io/) for formatting code based on `.prettierrc`
 - [ESLint](https://eslint.org/) for linting and fixing code based on `.eslintrc.js`
 - [Spectral](https://stoplight.io/open-source/spectral/) for linting OpenAPI
-- [Portman](https://github.com/apideck-libraries/portman) for updating the API tests based on `openapi.yaml`
+- [Portman](https://github.com/apideck-libraries/portman) for updating API tests
+  based on `openapi.yaml`
 
 Husky is installed in Node.js development dependencies (on `npm install`).
 
 ### IDE checks
 
-You can use VSCode to install the extensions defined in
-`.vscode/extensions.json` so linting, static analysis and formatting runs
-continuously write-time, before code even ends up in a commit.
+Use VSCode to install the VSCode extensions defined in `.vscode/extensions.json`
+so linting, static analysis and formatting runs continuously write-time,
+before code even ends up in a commit.
 
-You have to install [Semgrep](https://github.com/returntocorp/semgrep),
-[hadolint](https://github.com/hadolint/hadolint) for your operating system
+You have to have [Semgrep](https://github.com/returntocorp/semgrep),
+[hadolint](https://github.com/hadolint/hadolint) present in your system
 to benefit from the VSCode extensions.
 
 #### Linting
 
-You may run [ESLint](https://eslint.org/) manually for linting the codebase
-manually:
+You may run [ESLint](https://eslint.org/) manually for linting the codebase:
 
     npm run lint:fix
 
-Or [Spectral](https://stoplight.io/open-source/spectral/) for linting the
-OpenAPI definition files manually:
+Or [Spectral](https://stoplight.io/open-source/spectral/) manually for linting
+the OpenAPI files:
 
     npm run lint:spec
 
 #### Static analysis
 
-You may run [Semgrep](https://github.com/returntocorp/semgrep) for the codebase
-manually:
+You may run [Semgrep](https://github.com/returntocorp/semgrep) manually for the
+codebase:
 
     npm run sa
 
 ### CI/CD
 
-[Azure DevOps](https://dev.azure.com/raas-dev/artery) has the pipelines for
-building Docker images, deploying to testing-staging and rc-production in Azure,
-the infra pipeline to create/update the Azure resources for those environments,
-and _api-to-apim_ to import/update the API in an existing API Management service.
+Azure DevOps will host the pipelines for building Docker images, deploying to
+testing-staging and rc-production in Azure.
+
+The infra pipeline is to create/update the Azure resources in those
+environments, and _api-to-apim_ to import/update the API in an existing API
+Management service.
 
 The pipeline stages are configured as following:
 
@@ -182,7 +184,7 @@ The pipeline stages are configured as following:
 | rc          | ✔️  | `prod` | ✔️  | `main` merged to `prod`            |
 | production  | ✔️  | `prod` |     | rc deployed + manual approval      |
 
-Git workflow includes two persistent branches in addition to feature branches:
+The git workflow uses two persisting branches in addition to feature branches:
 
 `main`
 
@@ -207,60 +209,66 @@ Git workflow includes two persistent branches in addition to feature branches:
 
 ## 🏗️ Infrastructure
 
-Docker images are used as the primary distribution mechanism and thus the npm
-package is configured as private in `package.json`.
+Docker images are used as the primary distribution mechanism, thus this APIs
+npm package is configured as private in `package.json`.
 
-The Docker images can be hosted in any Docker registry and containers will
-run in any system having Docker available, but Azure Container Registry and
-Azure App Service are preferred as the registry and the PaaS, respectively.
+The Docker images can be hosted in any Docker registry and the containers will
+run in any system having Docker present.
+
+Regardless, Azure Container Registry and Azure App Service are preferred as the
+container registry and as the PaaS respectively.
 
 ### Local
 
-Multi-staged `docker/` files are used to build the images as following:
+Multi-staged `docker/` files build the images as following:
 
-- The first stage runs all tests before transpiling TypeScript to JavaScript.
-- The second stage copies JS and installs only its production dependencies
-- The final (run-time) image knows nothing about packages and has only pure JS
+- The first stage runs all tests before transpiling TypeScript to JavaScript
+- The second stage copies JS files and installs only the production dependencies
+- The final run-time image knows nothing about packages and only has pure JS
 
-To build the API image locally and run the production server in container:
+To build the API image locally and run the production server as container:
 
     docker/build_and_test_image
 
-Or to run the API, as well as k6 and its Grafana dashboard with Docker Compose:
+Or to run the API, as well as k6 and Grafana with Docker Compose:
 
     docker-compose up
 
 By default, Alpine Linux based Docker images are built, but Debian Buster
-(slim) Dockerfiles are also included in `docker/` if happen to face any
-[Alpine caveats](https://github.com/gliderlabs/docker-alpine/blob/master/docs/caveats.md).
+(slim) Dockerfiles are also included in `docker/` if
+[Alpine caveats](https://github.com/gliderlabs/docker-alpine/blob/master/docs/caveats.md) are present in your system.
 
 Docker images are built by the CI/CD pipelines per environment and pushed to
-the environment specific Azure Container Registry. When building image locally,
-with `docker/build_and_test_image`, `docker/Dockerfile.alpine.prod` is used.
+the environment specific Azure Container Registry. When building the image,
+`docker/build_and_test_image` and `docker/Dockerfile.alpine.prod` are used.
 
-The difference between non-prod and prod images is that non-prod will install,
-configure (according to AppService's guidelines) and start an SSH daemon which
-will help debugging over the wire in the testing-staging Azure App Service.
+The only difference between non-prod and prod images is that non-prod will
+install, configure (according to App Service's guidelines) and start the
+SSH daemon which can help in debugging in the testing-staging Azure App Service.
 
 ### Azure
 
 Azure resources are designed to be updated by the _infra_ Azure DevOps pipeline
-after initially [creating Azure resources](bicep/README.md) for environments.
+after having [created the Azure resources](bicep/README.md) for the
+environments.
 
-Note that Azure resources for rc-production is only updated from `prod` branch.
+Note that Azure resources for rc-production is only updated from the `prod`
+branch.
 
 Even in `main` (testing-staging), the pipeline ought to be run manually only
-when there are changes as the infrastructure deployment is not necessarily
-idenpotent and could cause a brief interruption in customer-facing services.
-Whether downtime is the case, depends on factors like App Service tier used.
+when there are changes.
+
+This is due to that the infrastructure deployment is not necessarily idenpotent
+and could cause a brief interruption in customer-facing services.
 
 ### Azure DevOps
 
-To reproduce the Azure DevOps project and the pipelines in your organisation,
+To reproduce the Azure DevOps project and the pipelines in your Azure DevOps
+organisation,
 see [creating Azure DevOps resources programmatically](devops/README.md).
 
-For private projects, depending on the level of communication and size of the
-team, it is highly recommended to configure deployment of feature branches
+For private Azure DevOps projects, depending on the practices and size of the
+team, it is recommended to configure deployment of feature branches
 automatically to testing, just before the review (triggered by creating a PR),
 even if testing is used as a shared environment between the team members.
 
