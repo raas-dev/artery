@@ -173,8 +173,8 @@ Deployment triggers are as followng:
 
 | Environment | CI  | Branch | CD  | Deployment trigger                      |
 | ----------- | :-: | ------ | :-: | --------------------------------------- |
-| PR          | ✔️  | `*`    | ✔️  | Tests in the pull request pass          |
-| staging     | ✔️  | `main` | ✔️  | After a PR merge, tests pass in main    |
+| PR envs     | ✔️  | `*`    | ✔️  | After tests in the feature branch pass  |
+| staging     | ✔️  | `main` | ✔️  | After a PR merge and tests pass in main |
 | rc          | ✔️  | `main` |     | A person runs the production pipeline   |
 | production  | ✔️  | `main` |     | (Configure gate in the ADO environment) |
 
