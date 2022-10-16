@@ -55,14 +55,14 @@ Infra:
 Stg:
 
 - GitHub
-- AzureRm (the SP will have _Contributor_ in the testing-staging rg)
-- Registry (the SP will AcrPush in the testing-staging ACR)
+- AzureRm (the SP will have _Contributor_ in the stg rg)
+- Registry (the SP will AcrPush in the stg ACR)
 
 Prod:
 
 - GitHub
-- AzureRm (the SP will have _Contributor_ in the rc-production rg)
-- Registry (the SP will have AcrPush in the rc-production ACR)
+- AzureRm (the SP will have _Contributor_ in the prod rg)
+- Registry (the SP will have AcrPush in the prod ACR)
 
 Copy `infra.env.example` to `infra.env`, configure variables and create project:
 
@@ -128,7 +128,7 @@ in `azure-pipelines` YAML files.
 
 Do so for each pipeline in the pipeline settings as explained below.
 
-#### testing-staging
+#### staging
 
 Continuous integration: branch filters -> if include `main`
 
@@ -141,7 +141,7 @@ Pull reqest validation: branch filters -> if include `main`
 
 ![Override pipeline triggers for PRs](../docs/trigger_prs.png)
 
-#### rc-production
+#### production
 
 - Continuous integration: branch filters -> if include `main`
 - Pull reqest validation: disabled

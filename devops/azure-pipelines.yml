@@ -25,7 +25,7 @@ stages:
               containerRegistry: '$(registryServiceConnectionName)'
               repository: '$(dockerRepositoryName)'
               command: 'build'
-              Dockerfile: 'docker/Dockerfile.alpine'
+              Dockerfile: 'docker/Dockerfile.prod.alpine'
               buildContext: '.'
               tags: |
                 $(Build.BuildNumber)

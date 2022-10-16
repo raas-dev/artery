@@ -12,8 +12,8 @@ variables:
   - group: stg
 
 stages:
-  - stage: testing
-    displayName: testing
+  - stage: PR
+    displayName: PR
     jobs:
       - job: docker
         displayName: Release app

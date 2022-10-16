@@ -164,8 +164,10 @@ codebase:
 
 ## ⚙️ CI/CD
 
-Azure DevOps will host the pipelines for building Docker images, deploying to
-testing-staging and rc-production in Azure.
+The git workflow is [trunk based development](https://trunkbaseddevelopment.com/).
+
+Azure DevOps will host the pipelines for building Docker images, deploying PRs
+to testing environments and trunk to staging and production in Azure.
 
 ### Creating pipelines
 
@@ -176,13 +178,11 @@ organisation, see
 For public projects, **don't let PRs to be deployed to a shared environment**
 without a review from a core member as doing so might compromise security.
 
-### Branches and environments
-
-The git workflow uses trunk-based development and environments are as following:
+### Deployment triggers
 
 | Environment | CI  | Branch | CD  | Deployment trigger                      |
 | ----------- | :-: | ------ | :-: | --------------------------------------- |
-| testing     | ✔️  | `*`    | ✔️  | Tests in the pull request pass          |
+| PR          | ✔️  | `*`    | ✔️  | Tests in the pull request pass          |
 | staging     | ✔️  | `main` | ✔️  | After a PR merge, tests pass in main    |
 | rc          | ✔️  | `main` |     | A person runs the production pipeline   |
 | production  | ✔️  | `main` |     | (Configure gate in the ADO environment) |
@@ -224,7 +224,7 @@ the environment specific Azure Container Registry. When building the image,
 
 The only difference between non-prod and prod images is that non-prod will
 install, configure (according to App Service's guidelines) and start the
-SSH daemon which can help in debugging in the testing-staging Azure App Service.
+SSH daemon which can help debugging Azure App Service in pull requests.
 
 ### Azure
 

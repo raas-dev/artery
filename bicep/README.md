@@ -56,7 +56,7 @@ production can be swapped back as fast as possible. Note that for this to work,
 database migrations ought to be already run in `rc`. Sometimes errors only occur
 with production data and for debugging them `rc` is also the most ideal.
 
-For both testing-staging and rc-production, we will always deploy to the first
+For both staging and production, we will always deploy to the first
 environment first before swapping it to the latter environment. This
 ensures zero-downtime deployment in App Service, preferable not only in
 production, but also in staging as there is often internal demoing going on.
@@ -387,10 +387,10 @@ private endpoints are left as a reference in `main.bicep` albeit commented out.
 
 ## Next steps
 
-### Create rc-production
+### Create production resources
 
-Done similarly as testing-staging, except copy `prod.env.example` to `prod.env`
-and after configuring variables, run:
+Do it similarly except copy `prod.env.example` to `prod.env` and after
+configuring the variables, run:
 
     ./deploy prod.env
 
