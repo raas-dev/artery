@@ -180,12 +180,12 @@ without a review from a core member as doing so might compromise security.
 
 The git workflow uses trunk-based development and environments are as following:
 
-| Environment | CI  | Branch | CD  | Deployment trigger                    |
-| ----------- | :-: | ------ | :-: | ------------------------------------- |
-| testing     | ✔️  | `*`    | ✔️  | Pull request tests pass               |
-| staging     | ✔️  | `main` | ✔️  | After PR merge, tests pass in main    |
-| rc          | ✔️  | `main` |     | A person runs the production pipeline |
-| production  | ✔️  | `main` |     | Exposure to public is approved        |
+| Environment | CI  | Branch | CD  | Deployment trigger                      |
+| ----------- | :-: | ------ | :-: | --------------------------------------- |
+| testing     | ✔️  | `*`    | ✔️  | Tests in the pull request pass          |
+| staging     | ✔️  | `main` | ✔️  | After a PR merge, tests pass in main    |
+| rc          | ✔️  | `main` |     | A person runs the production pipeline   |
+| production  | ✔️  | `main` |     | (Configure gate in the ADO environment) |
 
 ## 🏗️ Infrastructure
 
