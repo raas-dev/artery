@@ -9,8 +9,8 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: slot
-    displayName: slot
+  - stage: testing
+    displayName: testing
     variables:
       - group: stg
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))

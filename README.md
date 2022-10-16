@@ -166,14 +166,19 @@ implemented, causing Prism then to mock the response.
 
 ## ⚙️ CI/CD
 
-The git workflow is [trunk based development](https://trunkbaseddevelopment.com/) and pipelines are as following:
+The git workflow is [trunk based development](https://trunkbaseddevelopment.com/).
 
-| Environment | CI/CD | Branch | CDP | Deployment trigger                        |
-| ----------- | :---: | ------ | :-: | ----------------------------------------- |
-| PRs         |  ✔️   | `*`    | ✔️  | After tests in the feature branch pass    |
-| staging     |  ✔️   | `main` | ✔️  | After the PR merge and tests pass in main |
-| rc          |  ✔️   | `main` | ✔️  | After deployment to staging succeeded     |
-| production  |  ✔️   | `main` |     | A person runs the production pipeline     |
+The branches map to pipeline stages and target Azure environments as following:
+
+| Branch |   Stage    | CI/CD | CDP |             Deployment trigger              | Env  |
+| ------ | :--------: | ----- | :-: | :-----------------------------------------: | :--: |
+| `*`    |     PR     | ✔️    | ✔️  |   The tests in the feature branch passed    | stg  |
+| `main` |  testing   | ✔️    | ✔️  |  A PR was merged and tests passed in main   | stg  |
+| `main` |  staging   | ✔️    | ✔️  |    Deployment to testing slot succeeded     | stg  |
+| `main` |     rc     | ✔️    | ✔️  | Testing was successfully swapped to staging | prod |
+| `main` | production | ✔️    |     |    A person runs the production pipeline    | prod |
+
+Different stages in `stg` and `prod` environments are implemented using slots.
 
 The only function of the production pipeline is to swap rc and production.
 
