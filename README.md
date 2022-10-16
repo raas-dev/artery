@@ -164,25 +164,32 @@ codebase:
 
 ## ⚙️ CI/CD
 
-The git workflow is [trunk based development](https://trunkbaseddevelopment.com/).
-
-Azure DevOps hosts the pipelines for building Docker images and deploying
-images to PR, staging and production environments in Azure.
-
-Deployment triggers are as followng:
+The git workflow is [trunk based development](https://trunkbaseddevelopment.com/) and pipelines are as following:
 
 | Environment | CI/CD | Branch | CDP | Deployment trigger                        |
 | ----------- | :---: | ------ | :-: | ----------------------------------------- |
-| PR envs     |  ✔️   | `*`    | ✔️  | After tests in the feature branch pass    |
+| PRs         |  ✔️   | `*`    | ✔️  | After tests in the feature branch pass    |
 | staging     |  ✔️   | `main` | ✔️  | After the PR merge and tests pass in main |
 | rc          |  ✔️   | `main` | ✔️  | After deployment to staging succeeded     |
 | production  |  ✔️   | `main` |     | A person runs the production pipeline     |
 
-The function of the production pipeline is to only swap rc with production.
+The only function of the production pipeline is to swap rc and production.
 
-### Create Azure DevOps project
+### Azure App Service
 
-To reproduce the Azure DevOps project and the pipelines in your Azure DevOps
+In Azure, swapping can be used rolling back fast or doing progressive exposure.
+
+The infrastructure deployment pipelines are separated from app deployment.
+
+For pull request review environments, the infrastructure is deployed
+by the PR pipeline before the tests in the feature branch are run.
+
+### Azure DevOps
+
+Azure DevOps pipelines are used for building Docker images and deploying the
+images to environments in Azure.
+
+To create the Azure DevOps project and the pipelines in your Azure DevOps
 organisation, see
 [creating Azure DevOps resources programmatically](devops/README.md).
 
@@ -197,8 +204,8 @@ npm package is configured as private in `package.json`.
 The Docker images can be hosted in any Docker registry and the containers will
 run in any system having Docker present.
 
-Regardless, Azure Container Registry and Azure App Service are preferred as the
-container registry and as the PaaS respectively.
+Regardless, Azure Container Registry and Azure App Service are preferred here
+as the container registry and as the PaaS.
 
 ### Docker images
 
@@ -228,14 +235,8 @@ The only difference between non-prod and prod images is that non-prod will
 install, configure (according to App Service's guidelines) and start the
 SSH daemon which can help debugging Azure App Service in pull requests.
 
-### Azure resources
+### Infrastructure-as-Code
 
 Azure resources are designed to be updated by the _infra_ Azure DevOps pipeline
-after having [created the Azure resources](bicep/README.md) for the
+after initially having [created the Azure resources](bicep/README.md) for the
 environments.
-
-This is due to that the infrastructure deployment is not necessarily idenpotent
-and could cause a brief interruption in customer-facing services.
-
-The pipelne _api-to-apim_ is to import/update the API in an existing API
-Management service.
