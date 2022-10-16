@@ -178,7 +178,7 @@ Deployment triggers are as followng:
 | rc          | ✔️  | `main` | ✔️  | After deployment to staging succeeded     |
 | production  | ✔️  | `main` |     | A person runs the production pipeline     |
 
-When the person runs the production pipeline, slot rc is swapped to production.
+The function of the production pipeline is to only swap rc with production.
 
 ### Create Azure DevOps project
 
