@@ -27,7 +27,7 @@ param environment string = 'stg'
 param owner string
 
 @description('App Service slot name i.e. postfix to append to the hostname')
-param app_slot_postfix string = 'testing'
+param app_slot_postfix string = 'slot'
 
 @description('Service principal object ID for App Service to pull from ACR')
 param acr_sp_object_id string = ''

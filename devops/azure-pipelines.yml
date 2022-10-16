@@ -12,8 +12,8 @@ variables:
   - group: stg
 
 stages:
-  - stage: testing
-    displayName: testing
+  - stage: slot
+    displayName: slot
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
       - job: docker
@@ -50,7 +50,7 @@ stages:
         displayName: Deploy AppService slot
         steps:
           - task: AzureRmWebAppDeployment@4
-            displayName: Deploy to testing
+            displayName: Deploy to slot
             inputs:
               ConnectionType: 'AzureRM'
               azureSubscription: '$(azureRmServiceConnectionName)'
@@ -68,7 +68,7 @@ stages:
 
   - stage: staging
     displayName: staging
-    dependsOn: testing
+    dependsOn: slot
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
       - deployment: appservice
@@ -79,7 +79,7 @@ stages:
             deploy:
               steps:
                 - task: AzureAppServiceManage@0
-                  displayName: Swap testing to staging
+                  displayName: Swap slot to staging
                   inputs:
                     azureSubscription: '$(azureRmServiceConnectionName)'
                     Action: 'Swap Slots'

@@ -33,7 +33,7 @@ Install Node.js packages:
 
     npm install
 
-### Usage
+### Code
 
 Build production `dist/`:
 
@@ -43,7 +43,7 @@ Start development server that watches for changes:
 
     npm run dev
 
-### Testing
+### Test
 
 Run functional tests on [Jest](https://jestjs.io/):
 
@@ -63,7 +63,7 @@ for load test results:
 
 ![K6 load test results dashboard in Grafana](docs/grafana_k6.png)
 
-### Metrics and logging
+### Observe
 
 [Morgan](https://github.com/expressjs/morgan) is used as Express middleware for
 logging HTTP requests to console.
@@ -81,7 +81,7 @@ from the commit SHA by the [Azure DevOps pipeline](devops/README.md).
 In Azure, Node.js metrics are streamed to Application Insights and logs are
 sent to Log Analytics Workspace.
 
-### Mocking APIs
+### Virtualize APIs
 
 Use [Prism](https://github.com/stoplightio/prism) locally to fake the APIs
 defined in `openapi.yaml` that are not yet implemented:
@@ -105,7 +105,7 @@ properties `operationId` and `x-eov-operation-handler`: The Express will
 respond HTTP status 501 (Not Implemented) for routes that do not have handlers
 implemented, causing Prism then to mock the response.
 
-### Security scans
+### Scan vulnerabilities
 
 Have [Trivy](https://trivy.dev) present in your system to run vulnerability,
 secret, misconfiguration and license scans automatically on commit.
@@ -120,7 +120,7 @@ Or to write `results/` in various different formats:
     npm run sec:junit
     npm run sec:sarif
 
-### Pre-commit hooks
+### Use pre-commit checks
 
 [Husky](https://typicode.github.io/husky/#/) is used for running the static
 code analysis tools defined in `.husky/pre-commit`:
@@ -134,7 +134,7 @@ code analysis tools defined in `.husky/pre-commit`:
 
 Husky is installed in Node.js development dependencies (on `npm install`).
 
-### IDE checks
+### Use IDE checks
 
 Use VSCode to install the VSCode extensions defined in `.vscode/extensions.json`
 so linting, static analysis and formatting runs continuously write-time,
@@ -169,16 +169,7 @@ The git workflow is [trunk based development](https://trunkbaseddevelopment.com/
 Azure DevOps hosts the pipelines for building Docker images and deploying
 images to PR, staging and production environments in Azure.
 
-### Creating pipelines
-
-To reproduce the Azure DevOps project and the pipelines in your Azure DevOps
-organisation, see
-[creating Azure DevOps resources programmatically](devops/README.md).
-
-For **public Azure DevOps projects, don't allow PRs to be deployed**
-without a review from a team member as doing so might compromise security.
-
-### Deployment triggers
+Deployment triggers are as followng:
 
 | Environment | CI  | Branch | CD  | Deployment trigger                      |
 | ----------- | :-: | ------ | :-: | --------------------------------------- |
@@ -186,6 +177,15 @@ without a review from a team member as doing so might compromise security.
 | staging     | ✔️  | `main` | ✔️  | After a PR merge, tests pass in main    |
 | rc          | ✔️  | `main` |     | A person runs the production pipeline   |
 | production  | ✔️  | `main` |     | (Configure gate in the ADO environment) |
+
+### Create Azure DevOps project
+
+To reproduce the Azure DevOps project and the pipelines in your Azure DevOps
+organisation, see
+[creating Azure DevOps resources programmatically](devops/README.md).
+
+For **public Azure DevOps projects, don't allow PRs to be deployed**
+without a review from a team member as doing so might compromise security.
 
 ## 🏗️ Infrastructure
 
@@ -198,7 +198,7 @@ run in any system having Docker present.
 Regardless, Azure Container Registry and Azure App Service are preferred as the
 container registry and as the PaaS respectively.
 
-### Local
+### Docker images
 
 Multi-staged `docker/` files build the images as following:
 
@@ -226,7 +226,7 @@ The only difference between non-prod and prod images is that non-prod will
 install, configure (according to App Service's guidelines) and start the
 SSH daemon which can help debugging Azure App Service in pull requests.
 
-### Azure
+### Azure resources
 
 Azure resources are designed to be updated by the _infra_ Azure DevOps pipeline
 after having [created the Azure resources](bicep/README.md) for the

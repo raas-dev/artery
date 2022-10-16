@@ -28,8 +28,8 @@ Greyed out parts are not created by here but other scripts in the repository.
 We will deploy two resource groups, one for non-production (here, `stg`) and
 one for production (`prod`). As we want to minimize the number of environments
 and their maintenance work, effectively leading to costs, we target to use the
-non-production App Service to implement all the internal environments (PR
-test environments, staging).
+non-production App Service to implement all the internal environments (test
+environments for PRs, staging).
 
 For both non-production and production, we will always deploy to slot first
 before swapping it live. This ensures zero-downtime deployment in App Service.
