@@ -171,12 +171,12 @@ images to PR, staging and production environments in Azure.
 
 Deployment triggers are as followng:
 
-| Environment | CI  | Branch | CD  | Deployment trigger                        |
-| ----------- | :-: | ------ | :-: | ----------------------------------------- |
-| PR envs     | ✔️  | `*`    | ✔️  | After tests in the feature branch pass    |
-| staging     | ✔️  | `main` | ✔️  | After the PR merge and tests pass in main |
-| rc          | ✔️  | `main` | ✔️  | After deployment to staging succeeded     |
-| production  | ✔️  | `main` |     | A person runs the production pipeline     |
+| Environment | CI/CD | Branch | CDP | Deployment trigger                        |
+| ----------- | :---: | ------ | :-: | ----------------------------------------- |
+| PR envs     |  ✔️   | `*`    | ✔️  | After tests in the feature branch pass    |
+| staging     |  ✔️   | `main` | ✔️  | After the PR merge and tests pass in main |
+| rc          |  ✔️   | `main` | ✔️  | After deployment to staging succeeded     |
+| production  |  ✔️   | `main` |     | A person runs the production pipeline     |
 
 The function of the production pipeline is to only swap rc with production.
 
