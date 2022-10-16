@@ -175,8 +175,10 @@ Deployment triggers are as followng:
 | ----------- | :-: | ------ | :-: | ----------------------------------------- |
 | PR envs     | ✔️  | `*`    | ✔️  | After tests in the feature branch pass    |
 | staging     | ✔️  | `main` | ✔️  | After the PR merge and tests pass in main |
-| rc          | ✔️  | `main` |     | Manually run the production pipeline      |
-| production  | ✔️  | `main` |     | (Configure gate in the ADO environment)   |
+| rc          | ✔️  | `main` | ✔️  | After deployment to staging succeeded     |
+| production  | ✔️  | `main` |     | A person runs the production pipeline     |
+
+When the person runs the production pipeline, slot rc is swapped to production.
 
 ### Create Azure DevOps project
 
