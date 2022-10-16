@@ -170,25 +170,31 @@ The git workflow is [trunk based development](https://trunkbaseddevelopment.com/
 
 The branches map to pipeline stages and target Azure environments as following:
 
-| Branch |   Stage    | CI/CD | CDP | Deployment trigger                       | Env  |
-| ------ | :--------: | ----- | :-: | ---------------------------------------- | :--: |
-| `*`    |     PR     | ✔️    | ✔️  | The tests in the feature branch passed   | stg  |
-| `main` |  staging   | ✔️    | ✔️  | A PR was merged and tests passed in main | stg  |
-| `main` |     rc     | ✔️    | ✔️  | Post-deployment gates in staging passed  | prod |
-| `main` | production | ✔️    |     | A person runs the production pipeline    | prod |
+| Branch |   Stage    | CI/CD | CDP | Deployment trigger                       | Cluster |
+| ------ | :--------: | ----- | :-: | ---------------------------------------- | :-----: |
+| `*`    |     PR     | ✔️    | ✔️  | The tests in the feature branch passed   |   stg   |
+| `main` |  staging   | ✔️    | ✔️  | A PR was merged and tests passed in main |   stg   |
+| `main` |     rc     | ✔️    | ✔️  | Post-deployment gates in staging passed  |  prod   |
+| `main` | production | ✔️    |     | A person runs the production pipeline    |  prod   |
 
-Different stages in `stg` and `prod` environments are implemented using slots.
+Stages `rc` and `production` re-use the artifacts from `staging`. Thus the only
+task of the `production` pipeline is to roll out `rc` to `production`.
 
-The only function of the production pipeline is to swap rc and production.
+The infrastructure deployment pipelines are separated from the app deployment
+for `staging`, `rc` and `production`.
+
+For `PR` review environments, the infrastructure is created before the tests
+are run.
 
 ### Azure App Service
 
-In Azure, swapping can be used rolling back fast or doing progressive exposure.
+Stages are implemented as slots in `stg` and `prod` App Services.
 
-The infrastructure deployment pipelines are separated from app deployment.
+In App Services, swapping the slots is used for rolling out new app version.
+This enables to configure App Services to do canaries and progressive delivery.
 
-For pull request review environments, the infrastructure is deployed
-by the PR pipeline before the tests in the feature branch are run.
+Slots can be swapped back to do a fast roll back. Database migrations, if any,
+may have to be reverted to get back to the working state.
 
 ### Azure DevOps
 
