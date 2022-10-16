@@ -44,6 +44,11 @@ stages:
               tags: |
                 $(Build.BuildNumber)
                 main
+          - script: |
+              docker save $(dockerRepositoryName):$(Build.BuildNumber) --output $(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).tar
+            displayName: save
+          - publish: $(Build.ArtifactStagingDirectory)
+            artifact: images
       - job: slot
         dependsOn: docker
         displayName: Deploy AppService slot
@@ -110,6 +115,12 @@ stages:
       - job: docker
         displayName: Release app
         steps:
+          - download: current
+            artifact: images
+          - script: |
+              docker load --input $(Build.ArtifactStagingDirectory)/$(Build.BuildNumber).tar
+              docker tag $(dockerRepositoryName):$(Build.BuildNumber) $(dockerRepositoryName):main
+            displayName: load
           - task: Docker@2
             displayName: login
             inputs:
