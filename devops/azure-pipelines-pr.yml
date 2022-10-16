@@ -8,12 +8,40 @@ name: $(Date:yyyyMMdd)-$(Hours).$(Minutes)-$(SourceBranch).$(Rev:r)
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  - group: pr
-
 stages:
-  - stage: PR
-    displayName: PR
+  - stage: infra
+    displayName: Deploy infra
+    variables:
+      - group: stg
+    jobs:
+      - deployment: deploy
+        displayName: Deploy stg
+        environment: staging.infra
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: bicep/deploy
+                  inputs:
+                    azureSubscription: '$(azureRmServiceConnectionName)'
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: './deploy'
+                    workingDirectory: 'bicep'
+                  env:
+                    AZ_SUBSCRIPTION_ID: $(AZ_SUBSCRIPTION_ID)
+                    AZ_LOCATION: $(AZ_LOCATION)
+                    AZ_PREFIX: $(AZ_PREFIX)
+                    AZ_ENVIRONMENT: $(AZ_ENVIRONMENT)
+                    AZ_NAME: $(AZ_NAME)
+                    AZ_OWNER: $(AZ_OWNER)
+                    AZ_SLOT_POSTFIX: $(Build.SourceBranchName)
+
+  - stage: app
+    displayName: Deploy app
+    variables:
+      - group: pr
     jobs:
       - job: docker
         displayName: Release app

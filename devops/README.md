@@ -62,11 +62,7 @@ Production:
 
 - GitHub
 - AzureRm (the SP will have _Contributor_ in the prod rg)
-- Registry (the SP will have AcrPush in the prod ACR)
-
-In addition, you must add production registry service connection to have
-RBAC role AcrPull in stg rg, for the production pipeline to be able to
-reuse the Docker image from staging.
+- Registry (the SP will have AcrPush in the prod ACR and AcrPull in stg ACR)
 
 Copy `infra.env.example` to `infra.env`, configure variables and create project:
 
@@ -87,6 +83,10 @@ Copy `prod.env` from the template, configure variables and create the pipeline:
 Role _User Access Administrator_ is added to the infra SP in stg's and prod's
 resource groups for `bicep/deploy` to assign the managed identity of the App
 Service as Key Vault Reader and a service principal to ACR with role _AcrPull_.
+
+In addition for production pipeline, you must add production registry service
+connection to have RBAC role AcrPull in stg rg, for the pipeline to be able to
+reuse the Docker image from staging.
 
 ### Infra SP's required Azure AD permissions
 
