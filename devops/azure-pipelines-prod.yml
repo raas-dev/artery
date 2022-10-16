@@ -15,7 +15,7 @@ stages:
     displayName: production
     variables:
       - group: prod
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
     jobs:
       - deployment: appservice
         displayName: Swap slots

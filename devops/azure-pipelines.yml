@@ -13,7 +13,7 @@ stages:
     displayName: staging
     variables:
       - group: stg
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
     jobs:
       - job: docker
         displayName: Release app
