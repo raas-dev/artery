@@ -171,12 +171,12 @@ images to PR, staging and production environments in Azure.
 
 Deployment triggers are as followng:
 
-| Environment | CI  | Branch | CD  | Deployment trigger                      |
-| ----------- | :-: | ------ | :-: | --------------------------------------- |
-| PR envs     | ✔️  | `*`    | ✔️  | After tests in the feature branch pass  |
-| staging     | ✔️  | `main` | ✔️  | After a PR merge and tests pass in main |
-| rc          | ✔️  | `main` |     | A person runs the production pipeline   |
-| production  | ✔️  | `main` |     | (Configure gate in the ADO environment) |
+| Environment | CI  | Branch | CD  | Deployment trigger                        |
+| ----------- | :-: | ------ | :-: | ----------------------------------------- |
+| PR envs     | ✔️  | `*`    | ✔️  | After tests in the feature branch pass    |
+| staging     | ✔️  | `main` | ✔️  | After the PR merge and tests pass in main |
+| rc          | ✔️  | `main` |     | Manually run the production pipeline      |
+| production  | ✔️  | `main` |     | (Configure gate in the ADO environment)   |
 
 ### Create Azure DevOps project
 
