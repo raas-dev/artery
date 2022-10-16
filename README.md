@@ -166,8 +166,8 @@ codebase:
 
 The git workflow is [trunk based development](https://trunkbaseddevelopment.com/).
 
-Azure DevOps will host the pipelines for building Docker images, deploying PRs
-to testing environments and trunk to staging and production in Azure.
+Azure DevOps hosts the pipelines for building Docker images and deploying
+images to PR, staging and production environments in Azure.
 
 ### Creating pipelines
 
@@ -175,8 +175,8 @@ To reproduce the Azure DevOps project and the pipelines in your Azure DevOps
 organisation, see
 [creating Azure DevOps resources programmatically](devops/README.md).
 
-For public projects, **don't let PRs to be deployed to a shared environment**
-without a review from a core member as doing so might compromise security.
+For **public Azure DevOps projects, don't allow PRs to be deployed**
+without a review from a team member as doing so might compromise security.
 
 ### Deployment triggers
 

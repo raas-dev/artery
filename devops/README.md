@@ -152,11 +152,8 @@ These environments are created:
 
 ![Azure DevOps environments](../docs/environments.png)
 
-For 'staging', go to 'approvals and checks' and create a branch control check
-for environment 'staging' with allowed branches as `refs/heads/main`, as pull
-requests ought to be verified in the testing (App Service deployment slot).
-
-Similarly for production, define allowed branches only as `refs/heads/main`.
+For 'staging', and 'production' environments, go to 'approvals and checks' and
+create a branch control check with allowed branches as `refs/heads/main`.
 
 ![Configure branch controls for environment](../docs/environment_branch_controls.png)
 

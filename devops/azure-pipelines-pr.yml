@@ -49,7 +49,7 @@ stages:
         displayName: Deploy AppService slot
         steps:
           - task: AzureRmWebAppDeployment@4
-            displayName: Deploy to PR slot
+            displayName: Deploy to PR
             inputs:
               ConnectionType: 'AzureRM'
               azureSubscription: '$(azureRmServiceConnectionName)'

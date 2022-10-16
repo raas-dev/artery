@@ -28,43 +28,23 @@ Greyed out parts are not created by here but other scripts in the repository.
 We will deploy two resource groups, one for non-production (here, `stg`) and
 one for production (`prod`). As we want to minimize the number of environments
 and their maintenance work, effectively leading to costs, we target to use the
-non-production App Service to implement all the internal environments (testing, staging).
+non-production App Service to implement all the internal environments (PR
+test environments, staging).
 
-Thus, the staging App Service will include, besides staging, a deployment slot
-`testing` which is used similarly as any pre-staging environment usually is,
-mainly integrating the upcoming features and fixes together into the mainline.
+For both non-production and production, we will always deploy to slot first
+before swapping it live. This ensures zero-downtime deployment in App Service.
 
-Note that this approach assumes (however, is not restricted to) also
-**striving towards minimizing test data management** which starts best by using
-a shared database for testing and staging. We assume staging is what is usually
-used for internal demoing purposes and has the nearest production-like data.
-
-Going from testing to staging is as simple as switching the slot `testing` as
-the current live version in App Service. After the swap, note that the current
-testing ought to be redeployed to `testing` where the previous staging is now
-held, unless there is a particular case to keep the previous staging release.
-
-Similarly, the production will include deployment slot `rc` which is dedicated
+The production will include deployment slot `rc` which is dedicated
 for any possible final checks that ought to be done (especially with production
 data) before going live. Additionally, the `rc` slot can be used to implement
-"canary" that is redirecting e.g 5% of the customers from the current production
-to `rc`, allowing to pilot changes first with a smaller number of customers.
+canary, that is redirecting e.g 5% of the customers from the current production
+to `rc`, allowing to verify changes first with a smaller batch of customers.
 
 After swapping `rc` to production in AppService, the previous production is
 held in slot `rc` so that if errors start occurring in production, the previous
 production can be swapped back as fast as possible. Note that for this to work,
 database migrations ought to be already run in `rc`. Sometimes errors only occur
 with production data and for debugging them `rc` is also the most ideal.
-
-For both staging and production, we will always deploy to the first
-environment first before swapping it to the latter environment. This
-ensures zero-downtime deployment in App Service, preferable not only in
-production, but also in staging as there is often internal demoing going on.
-
-We will later introduce Azure DevOps pipeline to do the swap, as well as
-implement an approval stpe before swapping the slots in production. The approval
-can be done via Azure Pipelines UI or by the named pressing Approve/Deny button
-on a Slack channel (or similarly with MS Teams Azure DevOps integration).
 
 ## Creating PaaS resources
 
@@ -200,7 +180,7 @@ After the deployment finishes successfully, the rg content is as following:
 
 ![Azure resources created for staging](../docs/azure_stg_resources.png)
 
-Now going to App Service or the testing slot's URL, you will see the following:
+Now going to App Service or the slot's URL, you will see the following:
 
 ![App Service hello world page](../docs/appservice_hello.png)
 
@@ -221,7 +201,7 @@ If you want to deploy a more sophisticated solution for verifying connectivity
 to the private endpoint fronted services, I recommend to take a look at the
 [Janne Mattila's webapp-network-tester](https://github.com/JanneMattila/webapp-network-tester)
 
-### Deploy to the slot for testing
+### Deploy to the slot
 
 Build Docker image (and run a container from it, printing the Node.js version):
 
@@ -270,7 +250,7 @@ account (if not already in) and you will see the API docs:
 
 ### Swap the slots
 
-After experimenting with the API, swap the testing slot in the App Service:
+After experimenting with the API, swap the slot in the App Service:
 
     az webapp deployment slot swap \
         --name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app" \
@@ -278,9 +258,9 @@ After experimenting with the API, swap the testing slot in the App Service:
         --resource-group "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-rg" \
         --subscription "$AZ_SUBSCRIPTION_ID"
 
-Note that after the swap, the previous staging is now at the testing slot.
-You may want to redeploy to the testing slot (similarly as done in the last
-section) to have the testing up-to-date for the team to continue the work on.
+Note that after the swap, the previous staging is now at the slot.
+You may want to redeploy to the slot (similarly as done in the last section)
+to have the slot up-to-date for the team to continue the work on.
 
 Now, browse to `https://APP_SERVICE_URL/to-backend` to witness that the
 DNS query from App Service to the Storage Account resolves to a private IP.
