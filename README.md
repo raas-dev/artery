@@ -81,29 +81,7 @@ from the commit SHA by the [Azure DevOps pipeline](devops/README.md).
 In Azure, Node.js metrics are streamed to Application Insights and logs are
 sent to Log Analytics Workspace.
 
-### Virtualize APIs
-
-Use [Prism](https://github.com/stoplightio/prism) locally to fake the APIs
-defined in `openapi.yaml` that are not yet implemented:
-
-    npm run prism:mock
-
-Fake data is generated dynamically according to the `x-faker` properties in the
-OpenAPI definition. See [Faker.js](https://github.com/marak/Faker.js#api-methods)
-for all different kinds of test data to generate.
-
-To run Prism so that the already implemented endpoints are responded by Express:
-
-    npm run prism:proxy
-
-Prism server is launched at [localhost:4010](http://localhost:4010), returning
-mock responses for the non-implemented endpoints according to
-`example`/`examples` properties in the OpenAPI definition (`openapi.yaml`).
-
-This applies for all the routes which do not have handler set by the OpenAPI
-properties `operationId` and `x-eov-operation-handler`: The Express will
-respond HTTP status 501 (Not Implemented) for routes that do not have handlers
-implemented, causing Prism then to mock the response.
+## 🧰 Practices
 
 ### Scan vulnerabilities
 
@@ -161,6 +139,30 @@ You may run [Semgrep](https://github.com/returntocorp/semgrep) manually for the
 codebase:
 
     npm run sa
+
+### Virtualize APIs
+
+Use [Prism](https://github.com/stoplightio/prism) locally to fake the APIs
+defined in `openapi.yaml` that are not yet implemented:
+
+    npm run prism:mock
+
+Fake data is generated dynamically according to the `x-faker` properties in the
+OpenAPI definition. See [Faker.js](https://github.com/marak/Faker.js#api-methods)
+for all different kinds of test data to generate.
+
+To run Prism so that the already implemented endpoints are responded by Express:
+
+    npm run prism:proxy
+
+Prism server is launched at [localhost:4010](http://localhost:4010), returning
+mock responses for the non-implemented endpoints according to
+`example`/`examples` properties in the OpenAPI definition (`openapi.yaml`).
+
+This applies for all the routes which do not have handler set by the OpenAPI
+properties `operationId` and `x-eov-operation-handler`: The Express will
+respond HTTP status 501 (Not Implemented) for routes that do not have handlers
+implemented, causing Prism then to mock the response.
 
 ## ⚙️ CI/CD
 
