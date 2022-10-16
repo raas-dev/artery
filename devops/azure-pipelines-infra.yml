@@ -41,7 +41,7 @@ stages:
 
   - stage: production
     displayName: Production
-    condition: eq(variables['build.sourceBranch'], 'refs/heads/prod')
+    condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
     variables:
       - group: prod
     jobs:

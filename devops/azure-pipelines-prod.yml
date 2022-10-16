@@ -1,7 +1,7 @@
 # triggers shall also be defined in Azure DevOps pipeline settings
 
 trigger:
-  - prod
+  - none
 
 pr: none
 
@@ -16,36 +16,8 @@ variables:
 stages:
   - stage: rc
     displayName: rc
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
-      - job: docker
-        displayName: Release app
-        steps:
-          - task: Docker@2
-            displayName: build
-            inputs:
-              containerRegistry: '$(registryServiceConnectionName)'
-              repository: '$(dockerRepositoryName)'
-              command: 'build'
-              Dockerfile: 'docker/Dockerfile.alpine.prod'
-              buildContext: '.'
-              tags: |
-                $(Build.BuildNumber)
-                prod
-              arguments: '--pull --no-cache'
-          - task: Docker@2
-            displayName: login
-            inputs:
-              containerRegistry: '$(registryServiceConnectionName)'
-              command: 'login'
-          - task: Docker@2
-            displayName: push
-            inputs:
-              containerRegistry: '$(registryServiceConnectionName)'
-              repository: '$(dockerRepositoryName)'
-              command: 'push'
-              tags: |
-                $(Build.BuildNumber)
-                prod
       - job: slot
         dependsOn: docker
         displayName: Deploy AppService slot
@@ -62,12 +34,12 @@ stages:
               SlotName: '$(appServiceSlotName)'
               DockerNamespace: '$(dockerRegistryFQDN)'
               DockerRepository: '$(dockerRepositoryName)'
-              DockerImageTag: '$(Build.BuildNumber)'
+              DockerImageTag: 'main'
 
   - stage: production
     displayName: production
     dependsOn: rc
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/prod'))
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
       - deployment: appservice
         displayName: Swap slots

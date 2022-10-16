@@ -167,55 +167,25 @@ codebase:
 Azure DevOps will host the pipelines for building Docker images, deploying to
 testing-staging and rc-production in Azure.
 
-The infra pipeline is to create/update the Azure resources in those
-environments, and _api-to-apim_ to import/update the API in an existing API
-Management service.
-
-The pipeline stages are configured as following:
-
-| Environment | CI  | Branch | CD  | Deployment trigger                 |
-| ----------- | :-: | ------ | :-: | ---------------------------------- |
-| testing     | ✔️  | `*`    | ✔️  | PRs about to be merged to `main`   |
-| staging     | ✔️  | `main` |     | testing deployed + manual approval |
-| rc          | ✔️  | `prod` | ✔️  | `main` merged to `prod`            |
-| production  | ✔️  | `prod` |     | rc deployed + manual approval      |
-
-The git workflow uses two persisting branches in addition to feature branches:
-
-`main`
-
-- has squashed merges of Pull Requests (which are created from feature branches)
-- primary use is **releasing to staging**
-  - release to testing happens from feature branches trigged by a created PR
-  - staging deployment happens from `main` after testing has been reviewed
-    - it is recommended to configure a manual approval step for going to
-      staging, being usually the environment for internal demoing purposes
-
-`prod`
-
-- has merges from `main`
-- only for **releasing to rc and prodution**
-  - deployment to rc is triggered as soon as something is merged to `prod`
-    - optionally, rc App Service slot can be then set to take N% of traffic
-  - for going to production, it is recommended to have a manual approval step
-    - this acts a heads up if there is any chance that rollback to previous
-      prod may be required in case of errors
-      - note that after prod deployment, the previous prod is in slot 'rc'
-        - thus rollback is possibly done fastest by just swapping the slots
-
-### Azure DevOps
+### Creating pipelines
 
 To reproduce the Azure DevOps project and the pipelines in your Azure DevOps
 organisation, see
 [creating Azure DevOps resources programmatically](devops/README.md).
 
-For private Azure DevOps projects, depending on the practices and size of the
-team, it is recommended to configure deployment of feature branches
-automatically to testing, just before the review (triggered by creating a PR),
-even if testing is used as a shared environment between the team members.
+For public projects, **don't let PRs to be deployed to a shared environment**
+without a review from a core member as doing so might compromise security.
 
-For public projects, **never let PRs to be deployed to a shared environment**
-without a review from a core team member - doing so might compromise security.
+### Branches and environments
+
+The git workflow uses trunk-based development and environments are as following:
+
+| Environment | CI  | Branch | CD  | Deployment trigger                    |
+| ----------- | :-: | ------ | :-: | ------------------------------------- |
+| testing     | ✔️  | `*`    | ✔️  | Pull request tests pass               |
+| staging     | ✔️  | `main` | ✔️  | After PR merge, tests pass in main    |
+| rc          | ✔️  | `main` |     | A person runs the production pipeline |
+| production  | ✔️  | `main` |     | Exposure to public is approved        |
 
 ## 🏗️ Infrastructure
 
@@ -262,11 +232,8 @@ Azure resources are designed to be updated by the _infra_ Azure DevOps pipeline
 after having [created the Azure resources](bicep/README.md) for the
 environments.
 
-Note that Azure resources for rc-production is only updated from the `prod`
-branch.
-
-Even in `main` (testing-staging), the pipeline ought to be run manually only
-when there are changes.
-
 This is due to that the infrastructure deployment is not necessarily idenpotent
 and could cause a brief interruption in customer-facing services.
+
+The pipelne _api-to-apim_ is to import/update the API in an existing API
+Management service.

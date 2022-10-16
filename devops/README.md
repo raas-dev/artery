@@ -143,7 +143,7 @@ Pull reqest validation: branch filters -> if include `main`
 
 #### rc-production
 
-- Continuous integration: branch filters -> if include `prod`
+- Continuous integration: branch filters -> if include `main`
 - Pull reqest validation: disabled
 
 ### Environments: Branch controls
@@ -156,26 +156,19 @@ For 'staging', go to 'approvals and checks' and create a branch control check
 for environment 'staging' with allowed branches as `refs/heads/main`, as pull
 requests ought to be verified in the testing (App Service deployment slot).
 
-Similarly for production, define allowed branches only as `refs/heads/prod`.
+Similarly for production, define allowed branches only as `refs/heads/main`.
 
 ![Configure branch controls for environment](../docs/environment_branch_controls.png)
 
 ### Environments: Manual approvals
 
-If no approval conditions are defined, changes will go to production
-without confirmation. This as soon as branch `main` is merged to branch `prod`.
+If no approval conditions are defined in the Azure DevOps environments,
+the pipelines won't prompt anything which is wanted unless goind to production.
 
-Thus for production:
+Thus for production configure:
 
 - require approval (if set to a group -> one member of the group must approve)
-- timeout e.g. 12h
-
-Additionally, you may define manual approval for staging e.g. as following:
-
-- require approval (optional, allow to self-approve)
-- timeout e.g. 10min
-
-![Configure approvals for environment](../docs/environment_approvals.png)
+- timeout e.g. 1h
 
 ### Process fine-tuning
 

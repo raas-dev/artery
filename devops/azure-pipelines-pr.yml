@@ -1,0 +1,66 @@
+# triggers shall also be defined in Azure DevOps pipeline settings
+
+pr:
+  - main
+
+name: $(Date:yyyyMMdd)-$(Hours).$(Minutes)-$(SourceBranch).$(Rev:r)
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: stg
+
+stages:
+  - stage: testing
+    displayName: testing
+    jobs:
+      - job: docker
+        displayName: Release app
+        steps:
+          - task: Docker@2
+            displayName: build
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              repository: '$(dockerRepositoryName)'
+              command: 'build'
+              Dockerfile: 'docker/Dockerfile.alpine'
+              buildContext: '.'
+              tags: |
+                $(Build.BuildNumber)
+                $(Build.SourceBranchName)
+              arguments: '--pull --no-cache'
+          - task: Docker@2
+            displayName: login
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              command: 'login'
+          - task: Docker@2
+            displayName: push
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              repository: '$(dockerRepositoryName)'
+              command: 'push'
+              tags: |
+                $(Build.BuildNumber)
+                $(Build.SourceBranchName)
+      - job: slot
+        dependsOn: docker
+        displayName: Deploy AppService slot
+        steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: Deploy to PR slot
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: '$(azureRmServiceConnectionName)'
+              appType: 'webAppContainer'
+              WebAppName: '$(appServiceName)'
+              deployToSlotOrASE: true
+              ResourceGroupName: '$(appServiceRgName)'
+              SlotName: '$(Build.SourceBranchName)'
+              DockerNamespace: '$(dockerRegistryFQDN)'
+              DockerRepository: '$(dockerRepositoryName)'
+              DockerImageTag: '$(Build.BuildNumber)'
+              AppSettings: |
+                -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "$(Build.SourceBranchName)" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
+              # -FUNCTIONS_EXTENSION_VERSION "~3"

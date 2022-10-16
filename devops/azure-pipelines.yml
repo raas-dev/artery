@@ -3,9 +3,6 @@
 trigger:
   - main
 
-pr:
-  - main
-
 name: $(Date:yyyyMMdd)-$(Hours).$(Minutes)-$(SourceBranch).$(Rev:r)
 
 pool:
@@ -17,6 +14,7 @@ variables:
 stages:
   - stage: testing
     displayName: testing
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
     jobs:
       - job: docker
         displayName: Release app
@@ -63,9 +61,9 @@ stages:
               SlotName: '$(appServiceSlotName)'
               DockerNamespace: '$(dockerRegistryFQDN)'
               DockerRepository: '$(dockerRepositoryName)'
-              DockerImageTag: '$(Build.BuildNumber)'
+              DockerImageTag: 'main'
               AppSettings: |
-                -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "$(Build.SourceBranchName)" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
+                -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "main" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
               # -FUNCTIONS_EXTENSION_VERSION "~3"
 
   - stage: staging
@@ -104,7 +102,7 @@ stages:
                       SlotName: '$(appServiceSlotName)'
                       DockerNamespace: '$(dockerRegistryFQDN)'
                       DockerRepository: '$(dockerRepositoryName)'
-                      DockerImageTag: '$(Build.BuildNumber)'
+                      DockerImageTag: 'main'
                       AppSettings: |
-                        -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "$(Build.SourceBranchName)" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
+                        -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "main" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
                       # -FUNCTIONS_EXTENSION_VERSION "~3"
