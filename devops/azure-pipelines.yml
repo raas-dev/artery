@@ -9,8 +9,8 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: testing
-    displayName: testing
+  - stage: staging
+    displayName: staging
     variables:
       - group: stg
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
@@ -64,14 +64,6 @@ stages:
               AppSettings: |
                 -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "main" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
               # -FUNCTIONS_EXTENSION_VERSION "~3"
-
-  - stage: staging
-    displayName: staging
-    dependsOn: testing
-    variables:
-      - group: stg
-    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
-    jobs:
       - deployment: appservice
         displayName: Swap slots
         environment: staging

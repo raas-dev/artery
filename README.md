@@ -170,13 +170,12 @@ The git workflow is [trunk based development](https://trunkbaseddevelopment.com/
 
 The branches map to pipeline stages and target Azure environments as following:
 
-| Branch |   Stage    | CI/CD | CDP |             Deployment trigger              | Env  |
-| ------ | :--------: | ----- | :-: | :-----------------------------------------: | :--: |
-| `*`    |     PR     | ✔️    | ✔️  |   The tests in the feature branch passed    | stg  |
-| `main` |  testing   | ✔️    | ✔️  |  A PR was merged and tests passed in main   | stg  |
-| `main` |  staging   | ✔️    | ✔️  |    Deployment to testing slot succeeded     | stg  |
-| `main` |     rc     | ✔️    | ✔️  | Testing was successfully swapped to staging | prod |
-| `main` | production | ✔️    |     |    A person runs the production pipeline    | prod |
+| Branch |   Stage    | CI/CD | CDP | Deployment trigger                       | Env  |
+| ------ | :--------: | ----- | :-: | ---------------------------------------- | :--: |
+| `*`    |     PR     | ✔️    | ✔️  | The tests in the feature branch passed   | stg  |
+| `main` |  staging   | ✔️    | ✔️  | A PR was merged and tests passed in main | stg  |
+| `main` |     rc     | ✔️    | ✔️  | Post-deployment gates in staging passed  | prod |
+| `main` | production | ✔️    |     | A person runs the production pipeline    | prod |
 
 Different stages in `stg` and `prod` environments are implemented using slots.
 
