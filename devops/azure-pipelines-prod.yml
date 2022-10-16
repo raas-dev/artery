@@ -14,6 +14,40 @@ variables:
   - group: prod
 
 stages:
+  - stage: artifacts
+    displayName: Copy stg artifacts
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: docker
+        displayName: Copy docker image
+        steps:
+          - task: Docker@2
+            displayName: login
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              command: 'login'
+          # fix this task
+          - task: Docker@2
+            displayName: pull
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              repository: '$(stgDockerRepositoryName)'
+              command: 'pull'
+          - task: Docker@2
+            displayName: login
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              command: 'login'
+          - task: Docker@2
+            displayName: push
+            inputs:
+              containerRegistry: '$(registryServiceConnectionName)'
+              repository: '$(dockerRepositoryName)'
+              command: 'push'
+              tags: |
+                $(Build.BuildNumber)
+                main
+
   - stage: rc
     displayName: rc
     condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
@@ -34,7 +68,7 @@ stages:
               SlotName: '$(appServiceSlotName)'
               DockerNamespace: '$(dockerRegistryFQDN)'
               DockerRepository: '$(dockerRepositoryName)'
-              DockerImageTag: 'main'
+              DockerImageTag: '$(Build.BuildNumber)'
 
   - stage: production
     displayName: production

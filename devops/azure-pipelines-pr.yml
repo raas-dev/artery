@@ -9,7 +9,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - group: stg
+  - group: pr
 
 stages:
   - stage: PR

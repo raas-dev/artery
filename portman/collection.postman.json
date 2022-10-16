@@ -1,10 +1,18 @@
 {
   "_": {
+<<<<<<< HEAD
     "postman_id": "709a0144-6d01-49e7-aa20-43de9d81e23a"
   },
   "item": [
     {
       "id": "5217510f-dd4b-46dc-a8d1-bcab825bf73f",
+=======
+    "postman_id": "719c3162-454f-4b40-b467-bc60f5d460c7"
+  },
+  "item": [
+    {
+      "id": "6dfd2a3f-de60-4433-a76c-46c30c91d202",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
       "name": "json",
       "description": {
         "content": "",
@@ -12,7 +20,11 @@
       },
       "item": [
         {
+<<<<<<< HEAD
           "id": "700eabf3-3cf5-497a-b884-ec116bab04b1",
+=======
+          "id": "6c9c5180-774d-4768-83dd-11464b4fa1cb",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
           "name": "version",
           "request": {
             "name": "version",
@@ -43,7 +55,11 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
+<<<<<<< HEAD
               "id": "7e7f1c84-585a-4397-a851-059923803dc8",
+=======
+              "id": "a783d416-151a-4e48-b3e4-3ee7b4d5a86a",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -75,7 +91,11 @@
             {
               "listen": "test",
               "script": {
+<<<<<<< HEAD
                 "id": "9ff256e1-f4ab-4978-9055-b2f4e86c3487",
+=======
+                "id": "cf214540-54d2-4e06-b984-bf4981d0a9fe",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/ - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -88,7 +108,11 @@
           ]
         },
         {
+<<<<<<< HEAD
           "id": "a3cf5902-e2b7-47ed-b222-f2fff46000db",
+=======
+          "id": "13fca907-a70b-44ae-a9cc-6aa7fcf4aa46",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
           "name": "to Backend",
           "request": {
             "name": "to Backend",
@@ -119,7 +143,11 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
+<<<<<<< HEAD
               "id": "e0ac0ee7-dcd9-4fbc-a941-bd6d850e1d86",
+=======
+              "id": "fbfe32c1-1633-466c-ad86-a6a9c9d7ee8e",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -150,7 +178,11 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
+<<<<<<< HEAD
               "id": "0790d011-ad90-4716-b082-089fa4f2e440",
+=======
+              "id": "61e7e280-afa2-4350-88a4-7a366fc490a1",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
               "name": "bad_request",
               "originalRequest": {
                 "url": {
@@ -182,7 +214,11 @@
             {
               "listen": "test",
               "script": {
+<<<<<<< HEAD
                 "id": "c8d2212a-2195-4b52-ae55-aaabcb343623",
+=======
+                "id": "b16166d3-4649-43f4-9668-6d75b0ea46a1",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/to-backend - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -198,7 +234,11 @@
       "event": []
     },
     {
+<<<<<<< HEAD
       "id": "4679273d-2e46-49df-8bc0-435a6155b38d",
+=======
+      "id": "8311f11a-f20c-4a18-ade7-e80d8f1e3907",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
       "name": "non-json",
       "description": {
         "content": "",
@@ -206,7 +246,11 @@
       },
       "item": [
         {
+<<<<<<< HEAD
           "id": "bc5e904e-d99b-46f6-a560-1df2bbf20770",
+=======
+          "id": "51d74e5c-f96f-48ec-9827-9184e532d678",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
           "name": "spec",
           "request": {
             "name": "spec",
@@ -237,7 +281,11 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
+<<<<<<< HEAD
               "id": "515fa4b1-e8b5-47f5-b98f-df92962cb5f4",
+=======
+              "id": "daaaac2d-aa25-4818-b43e-6fa5706cc22f",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -269,7 +317,11 @@
             {
               "listen": "test",
               "script": {
+<<<<<<< HEAD
                 "id": "a1a63e29-178b-439c-ab22-9387bceeaeee",
+=======
+                "id": "b6485946-60e7-4d19-9f73-ec7948673631",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/spec - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -281,7 +333,11 @@
           ]
         },
         {
+<<<<<<< HEAD
           "id": "8981ec45-dbdc-453c-a1ea-5396428bf31e",
+=======
+          "id": "8a7e07b8-d381-402f-8695-ea0b7fb7ea64",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
           "name": "docs",
           "request": {
             "name": "docs",
@@ -312,7 +368,11 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
+<<<<<<< HEAD
               "id": "e40f901f-4bd9-46ab-8e75-ce1f323008e4",
+=======
+              "id": "95abbf23-5ace-4f50-9eac-9ddbf9039fc5",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -344,7 +404,11 @@
             {
               "listen": "test",
               "script": {
+<<<<<<< HEAD
                 "id": "2cc9bfd0-a4ec-4d1c-8957-7f2d21950d6f",
+=======
+                "id": "35e78d56-de08-4356-a50a-0ef45c4c33f6",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/docs - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -356,7 +420,11 @@
           ]
         },
         {
+<<<<<<< HEAD
           "id": "1c0058a6-062b-4083-8f9b-2e6a6b71557d",
+=======
+          "id": "bcf152ec-7175-467d-8d90-f54c2d75d4af",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
           "name": "dns Servers",
           "request": {
             "name": "dns Servers",
@@ -387,7 +455,11 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
+<<<<<<< HEAD
               "id": "5cbb617a-9c08-4af8-bc36-0def8a01be5d",
+=======
+              "id": "56da3fb8-cfd5-4180-8a14-a0f8db1451ac",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -419,7 +491,11 @@
             {
               "listen": "test",
               "script": {
+<<<<<<< HEAD
                 "id": "cf96318a-206c-4af5-b3b9-bd75cd1c0b36",
+=======
+                "id": "281a33d9-e3ea-4e31-8649-00114f40dc8b",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/dns-servers - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -443,7 +519,11 @@
     }
   ],
   "info": {
+<<<<<<< HEAD
     "_postman_id": "709a0144-6d01-49e7-aa20-43de9d81e23a",
+=======
+    "_postman_id": "719c3162-454f-4b40-b467-bc60f5d460c7",
+>>>>>>> b9fad55 (fix(devops): Trunk based development updates)
     "name": "artery",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {

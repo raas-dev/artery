@@ -98,7 +98,6 @@ az devops service-endpoint create \
 
 echo -e "\nCreating a pipeline for $AZ_ENVIRONMENT"
 az pipelines create \
-  --branch "$AZDO_BRANCH_NAME" \
   --name "$AZDO_PIPELINE_NAME" \
   --repository "$AZDO_GITHUB_URL" \
   --service-connection "$AZDO_GITHUB_SERVICE_CONNECTION_ID" \

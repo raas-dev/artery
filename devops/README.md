@@ -41,8 +41,8 @@ Login and install the Azure CLI DevOps extension:
 
 ## Azure DevOps IAC
 
-Each of the pipelines (infra, stg, prod) will have its own service connections
-for GitHub, Azure Resource Manager and Azure Container Registry.
+Each of the pipelines will have its own service connections for GitHub,
+Azure Resource Manager and Azure Container Registry.
 
 One service connection is are backed by one service principal which are
 created by the scripts per pipeline as following:
@@ -52,27 +52,35 @@ Infra:
 - GitHub
 - AzureRm (the SP will have subscription _Contributor_)
 
-Stg:
+Non-productions:
 
 - GitHub
 - AzureRm (the SP will have _Contributor_ in the stg rg)
 - Registry (the SP will AcrPush in the stg ACR)
 
-Prod:
+Production:
 
 - GitHub
 - AzureRm (the SP will have _Contributor_ in the prod rg)
 - Registry (the SP will have AcrPush in the prod ACR)
 
+In addition, you must add production registry service connection to have
+RBAC role AcrPull in stg rg, for the production pipeline to be able to
+reuse the Docker image from staging.
+
 Copy `infra.env.example` to `infra.env`, configure variables and create project:
 
     ./create_azdo_project
 
-Create `stg.env` from the example, configure its variables and create pipeline:
+Copy `stg.env` from the template, configure variables and create the pipeline:
 
     ./create_azdo_pipeline stg.env
 
-Create `prod.env` from the example, configure its variables and create pipeline:
+Copy `pr.env` from the template, configure variables and create the pipeline:
+
+    ./create_azdo_pipeline pr.env
+
+Copy `prod.env` from the template, configure variables and create the pipeline:
 
     ./create_azdo_pipeline prod.env
 

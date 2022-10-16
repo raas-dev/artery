@@ -61,7 +61,7 @@ stages:
               SlotName: '$(appServiceSlotName)'
               DockerNamespace: '$(dockerRegistryFQDN)'
               DockerRepository: '$(dockerRepositoryName)'
-              DockerImageTag: 'main'
+              DockerImageTag: '$(Build.BuildNumber)'
               AppSettings: |
                 -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "main" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
               # -FUNCTIONS_EXTENSION_VERSION "~3"
@@ -102,7 +102,7 @@ stages:
                       SlotName: '$(appServiceSlotName)'
                       DockerNamespace: '$(dockerRegistryFQDN)'
                       DockerRepository: '$(dockerRepositoryName)'
-                      DockerImageTag: 'main'
+                      DockerImageTag: '$(Build.BuildNumber)'
                       AppSettings: |
                         -PRIVATE_BACKEND_URL "https://aswestgarterysa.blob.core.windows.net/public/openapi.yaml" -SWAGGER_STATS_USERNAME "main" -SWAGGER_STATS_PASSWORD "$(Build.SourceVersion)"
                       # -FUNCTIONS_EXTENSION_VERSION "~3"

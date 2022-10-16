@@ -388,6 +388,14 @@ In addition, you have to set _App Service_ application setting
 See [creating Azure DevOps project](../devops/README.md) to update the Azure
 resources and deploy Docker images to ACR and AppService from Azure Pipelines.
 
+### Create PR environments
+
+Implement test environments for pull requests as App Service slots in staging.
+
+Copy `pr.env.example` to `pr.env`, configure variables and run:
+
+    ./deploy pr.env
+
 ### Import API in Azure API Management
 
 An existing Azure API Management service and `openapi.yaml` uploaded in the
