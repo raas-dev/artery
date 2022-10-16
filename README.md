@@ -177,24 +177,23 @@ The branches map to pipeline stages and target Azure environments as following:
 | `main` |     rc     | ✔️    | ✔️  | Post-deployment gates in staging passed  |  prod   |
 | `main` | production | ✔️    |     | A person runs the production pipeline    |  prod   |
 
-Stages `rc` and `production` re-use the artifacts from `staging`. Thus the only
-task of the `production` pipeline is to roll out `rc` to `production`.
+Stages `rc` and `production` re-use the artifacts from `staging`.
 
-The infrastructure deployment pipelines are separated from the app deployment
-for `staging`, `rc` and `production`.
+The only task of the `production` pipeline is to roll out `rc` to `production`.
 
-For `PR` review environments, the infrastructure is created before the tests
-are run.
+The infrastructure deployment pipelines are separated from the app deployment,
+except for pull request review environments, the infrastructure is created in
+the pipeline.
 
 ### Azure App Service
 
-Stages are implemented as slots in `stg` and `prod` App Services.
+The stages are implemented as slots in `stg` and `prod` App Services.
 
-In App Services, swapping the slots is used for rolling out new app version.
-This enables to configure App Services to do canaries and progressive delivery.
+Swapping the slots is used to roll out the new app version.
 
-Slots can be swapped back to do a fast roll back. Database migrations, if any,
-may have to be reverted to get back to the working state.
+Slots can be swapped back to do a fast roll back (unless have DB migrations).
+
+App Service can be configured to canaries and progressive delivery using slots.
 
 ### Azure DevOps
 
