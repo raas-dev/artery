@@ -47,31 +47,16 @@ stages:
         displayName: Release app
         steps:
           - task: Docker@2
-            displayName: build
-            inputs:
-              containerRegistry: '$(registryServiceConnectionName)'
-              repository: '$(dockerRepositoryName)'
-              command: 'build'
-              Dockerfile: 'docker/Dockerfile.alpine'
-              buildContext: '.'
-              tags: |
-                $(Build.BuildNumber)
-                $(Build.SourceBranchName)
-              arguments: '--pull --no-cache'
-          - task: Docker@2
             displayName: login
             inputs:
               containerRegistry: '$(registryServiceConnectionName)'
               command: 'login'
-          - task: Docker@2
+          - script: |
+              IMAGE_NAME=artery docker/build_and_test_image ls -al
+            displayName: build
+          - script: |
+              REGISTRY_IMAGE_TAG=$(Build.BuildNumber) REGISTRY_FQDN=$(dockerRepositoryName) docker/tag_and_push_image
             displayName: push
-            inputs:
-              containerRegistry: '$(registryServiceConnectionName)'
-              repository: '$(dockerRepositoryName)'
-              command: 'push'
-              tags: |
-                $(Build.BuildNumber)
-                $(Build.SourceBranchName)
       - job: slot
         dependsOn: docker
         displayName: Deploy AppService slot
