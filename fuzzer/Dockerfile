@@ -1,0 +1,40 @@
+ARG PYTHON_VERSION=3.10
+FROM python:$PYTHON_VERSION-slim-bullseye
+
+ARG UNAME="app"
+ARG GNAME="app"
+ARG UHOME="/home/app"
+ARG HOST_UID=1000
+ARG HOST_GID=1000
+ARG SHELL="/bin/bash"
+
+RUN addgroup --system \
+  --gid ${HOST_GID} \
+  ${GNAME}
+
+RUN adduser --system \
+  --uid ${HOST_UID} \
+  --ingroup ${GNAME} \
+  --disabled-password \
+  --home ${UHOME} \
+  --shell ${SHELL} \
+  ${UNAME}
+
+RUN apt-get update && \
+    apt-get install --yes --no-install-recommends gcc libc6-dev  libcurl4-openssl-dev libssl-dev curl && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+USER ${UNAME}
+WORKDIR ${UHOME}
+
+ENV VIRTUAL_ENV=${UHOME}/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+RUN pip3 install --no-cache-dir --upgrade pip
+
+ARG APIFUZZER_VERSION=0.9.13
+RUN pip3 install --no-cache-dir APIFuzzer==$APIFUZZER_VERSION
+
+ENTRYPOINT ["APIFuzzer"]
