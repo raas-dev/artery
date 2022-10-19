@@ -42,6 +42,8 @@ services:
     volumes:
       - ./openapi.yaml:/var/openapi.yaml:ro
       - ./results:/var/results
+    depends_on:
+      - 'api'
     user: app
     cap_drop:
       - ALL
@@ -56,6 +58,8 @@ services:
       - appsec
     volumes:
       - ./results:/var/results
+    depends_on:
+      - 'api'
     user: app
     cap_drop:
       - ALL
@@ -71,6 +75,8 @@ services:
       - K6_OUT=influxdb=http://influxdb:8086/k6
     volumes:
       - ./k6/auto:/auto
+    depends_on:
+      - 'influxdb'
     cap_drop:
       - ALL
 
