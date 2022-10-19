@@ -31,16 +31,29 @@ services:
     environment:
       - INFLUXDB_DB=k6
 
-  fuzzer:
+  apifuzzer:
     build:
       context: .
-      dockerfile: fuzzer/Dockerfile
+      dockerfile: appsec/Dockerfile.apifuzzer
     security_opt:
       - no-new-privileges:true
     networks:
-      - fuzzer
+      - appsec
     volumes:
       - ./openapi.yaml:/var/openapi.yaml:ro
+      - ./results:/var/results
+    cap_drop:
+      - ALL
+
+  dirsearch:
+    build:
+      context: .
+      dockerfile: appsec/Dockerfile.dirsearch
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - appsec
+    volumes:
       - ./results:/var/results
     cap_drop:
       - ALL
@@ -67,8 +80,8 @@ services:
     security_opt:
       - no-new-privileges:true
     networks:
+      - appsec
       - k6
-      - fuzzer
     ports:
       - 8080:8080
     environment:
@@ -81,4 +94,4 @@ services:
 networks:
   grafana:
   k6:
-  fuzzer:
+  appsec:

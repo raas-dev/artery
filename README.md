@@ -232,7 +232,7 @@ To build the API image locally and run the production server as container:
 
 Or to run the API, as well as k6 and Grafana with Docker Compose:
 
-    docker-compose up
+    docker compose up
 
 By default, Alpine Linux based Docker images are built, but Debian Buster
 (slim) Dockerfiles are also included in `docker/` if
