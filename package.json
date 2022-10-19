@@ -11,7 +11,7 @@
     "watch-start": "nodemon --delay 1 --watch dist/ --watch openapi.* --exec 'SWAGGER_STATS_USERNAME=local SWAGGER_STATS_PASSWORD=local npm run start'",
     "dev": "concurrently -k -p '[{name}]' -n 'typescript,api' -c 'yellow.bold,cyan.bold' npm:watch-build npm:watch-start",
     "dev:proxy": "concurrently -k -p '[{name}]' -n 'typescript,api,prism' -c 'yellow.bold,cyan.bold,magenta' npm:watch-build npm:watch-start npm:prism:proxy",
-    "sa": "semgrep --config auto --verbose",
+    "sa": "semgrep --config auto --verbose --exclude trivy/junit.tpl",
     "sec": "trivy fs --config trivy/trivy.yaml .",
     "sec:html": "trivy fs --config trivy/trivy.yaml --format template --template @trivy/html.tpl --output results/trivy.html .",
     "sec:junit": "trivy fs --config trivy/trivy.yaml --format template --template @trivy/junit.tpl --output results/trivy.junit.xml .",
