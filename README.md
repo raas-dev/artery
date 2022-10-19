@@ -234,7 +234,7 @@ Or to run the API, as well as k6 and Grafana with Docker Compose:
 
     docker compose up
 
-By default, Alpine Linux based Docker images are built, but Debian Buster
+By default, Alpine Linux based Docker images are built, but Debian Bullseye
 (slim) Dockerfiles are also included in `docker/` if
 [Alpine caveats](https://github.com/gliderlabs/docker-alpine/blob/master/docs/caveats.md) are present in your system.
 
