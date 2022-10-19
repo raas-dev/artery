@@ -11,6 +11,9 @@ brew 'semgrep'    # languages
 brew 'hadolint'   # docker
 brew 'shellcheck' # bash
 
+# testing
+brew 'allure'
+
 # docker/
 brew 'goodwithtech/r/dockle'
 
