@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml ?>
 <testsuites name="trivy">
 {{- range . -}}
 {{- $failures := len .Vulnerabilities }}
