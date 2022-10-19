@@ -31,6 +31,20 @@ services:
     environment:
       - INFLUXDB_DB=k6
 
+  fuzzer:
+    build:
+      context: .
+      dockerfile: fuzzer/Dockerfile
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - fuzzer
+    volumes:
+      - ./openapi.yaml:/var/openapi.yaml:ro
+      - ./results:/var/results
+    cap_drop:
+      - ALL
+
   k6:
     image: 24hoursmedia/k6-xarch:latest
     read_only: true
@@ -54,6 +68,7 @@ services:
       - no-new-privileges:true
     networks:
       - k6
+      - fuzzer
     ports:
       - 8080:8080
     environment:
@@ -66,3 +81,4 @@ services:
 networks:
   grafana:
   k6:
+  fuzzer:
