@@ -99,7 +99,36 @@ services:
     cap_drop:
       - ALL
 
+  allure:
+    image: frankescobar/allure-docker-service
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - allure
+    ports:
+      - 5050:5050
+    environment:
+      - CHECK_RESULTS_EVERY_SECONDS=3
+      - KEEP_HISTORY=1
+      - KEEP_HISTORY_LATEST=25
+    cap_drop:
+      - ALL
+
+  allure-ui:
+    image: frankescobar/allure-docker-service-ui
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - allure
+    ports:
+      - 5252:5252
+    environment:
+      - ALLURE_DOCKER_API_URL=http://localhost:5050
+    cap_drop:
+      - ALL
+
 networks:
   grafana:
   k6:
   appsec:
+  allure:
