@@ -27,9 +27,6 @@ ENV VIRTUAL_ENV=${UHOME}/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# hadolint ignore=DL3013
-RUN pip3 install --no-cache-dir --upgrade pip
-
 ARG PACKAGE_VERSION=0.4.3.post1
 RUN pip3 install --no-cache-dir dirsearch==$PACKAGE_VERSION
 
