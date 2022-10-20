@@ -88,20 +88,25 @@ Create a target resource group for deployment:
 
 Create an AAD app to be used for authentication on the App Service and the slot:
 
-    AZ_AAD_APP_CLIENT_SECRET="$(openssl rand -base64 32)"
-
     az ad app create \
         --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr" \
-        --available-to-other-tenants false \
-        --homepage "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
-        --reply-urls "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net/.auth/login/aad/callback" "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app-$AZ_SLOT_POSTFIX.azurewebsites.net/.auth/login/aad/callback" \
-        --password "$AZ_AAD_APP_CLIENT_SECRET"
+        --enable-access-token-issuance true \
+        --enable-id-token-issuance true \
+        --sign-in-audience AzureADMyOrg \
+        --web-home-page-url "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
+        --web-redirect-uris "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net/.auth/login/aad/callback" "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app-$AZ_SLOT_POSTFIX.azurewebsites.net/.auth/login/aad/callback"
 
 Fetch the AAD app's client ID:
 
     AZ_AAD_APP_CLIENT_ID="$(az ad app list \
         --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr" \
         --query "[].appId" --output tsv)"
+
+Fetch the AAD app's client secret:
+
+    AZ_AAD_APP_CLIENT_SECRET="$(az ad app credential reset \
+        --id "$AZ_AAD_APP_CLIENT_ID" \
+        --query password --output tsv)"
 
 Create a service principal for the above AAD app:
 
@@ -127,6 +132,7 @@ Grant User.Read on AAD Graph API to the App Service's AAD app:
 
     az ad app permission grant \
         --id "$AZ_AAD_APP_CLIENT_ID" \
+        --scope User.Read \
         --api "00000002-0000-0000-c000-000000000000"
 
 Next, we will create a dedicated service principal for App Service to be used

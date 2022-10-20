@@ -225,9 +225,6 @@ resource app_slot_vnet_integration 'Microsoft.Web/sites/slots/networkConfig@2020
   ]
 }
 
-// Bicep gives faulty warnings on authsettingsV2
-// See: https://github.com/Azure/bicep/issues/2905
-
 resource app_aad_auth 'Microsoft.Web/sites/config@2020-12-01' = if(!empty(aad_app_client_id)) {
   parent: app
   name: 'authsettingsV2'
