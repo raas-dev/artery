@@ -8,11 +8,15 @@ param kv_name string
 param tags object
 
 param acr_sp_client_id string = ''
+@secure()
 param acr_sp_password string = ''
+@secure()
 param aad_app_client_secret string = ''
 param soft_delete_retention_in_days int = 30
 param virtual_network_rules array = []
 param ip_rules array = []
+
+param location string = resourceGroup().location
 
 /*
 ------------------------------------------------------------------------------
@@ -22,7 +26,7 @@ RESOURCES
 
 resource kv 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: kv_name
-  location: resourceGroup().location
+  location: location
   tags: tags
   properties: {
     tenantId: subscription().tenantId

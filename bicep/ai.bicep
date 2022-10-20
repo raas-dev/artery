@@ -19,6 +19,7 @@ param availability_threshold_pct int = 99
 
 param azure_app_push_receivers array = []
 
+param location string = resourceGroup().location
 /*
 ------------------------------------------------------------------------------
 RESOURCES
@@ -27,7 +28,7 @@ RESOURCES
 
 resource ai 'Microsoft.Insights/components@2020-02-02-preview' = {
   name: ai_name
-  location: resourceGroup().location
+  location: location
   tags: tags
   kind: 'web'
   properties: {

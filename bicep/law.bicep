@@ -8,6 +8,8 @@ param law_name string
 param tags object
 param retention_in_days int = 30 // first 30 days are free
 
+param location string = resourceGroup().location
+
 /*
 ------------------------------------------------------------------------------
 VARIABLES
@@ -16,7 +18,7 @@ VARIABLES
 
 resource law 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
   name: law_name
-  location: resourceGroup().location
+  location: location
   tags: tags
   properties: {
     sku: {

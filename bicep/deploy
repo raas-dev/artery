@@ -23,11 +23,11 @@ echo -e "\nCreating an AAD app for requiring authentication on the App Service"
 AZ_AAD_APP_CLIENT_SECRET="$(openssl rand -base64 32)"
 
 az ad app create \
-    --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr" \
-    --available-to-other-tenants false \
-    --homepage "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
-    --reply-urls "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net/.auth/login/aad/callback" "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app-$AZ_SLOT_POSTFIX.azurewebsites.net/.auth/login/aad/callback" \
-    --password "$AZ_AAD_APP_CLIENT_SECRET" &>/dev/null
+    --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr"
+#    --available-to-other-tenants false \
+#    --homepage "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
+#    --reply-urls "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net/.auth/login/aad/callback" "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app-$AZ_SLOT_POSTFIX.azurewebsites.net/.auth/login/aad/callback" \
+#    --password "$AZ_AAD_APP_CLIENT_SECRET" &>/dev/null
 
 #  fetch client ID as `app create` returns none if the app was already created
 AZ_AAD_APP_CLIENT_ID="$(az ad app list \
@@ -45,6 +45,7 @@ az ad app permission add \
 
 az ad app permission grant \
     --id "$AZ_AAD_APP_CLIENT_ID" \
+    --scope User.Read \
     --api "00000002-0000-0000-c000-000000000000"
 
 echo -e "\nCreating a service principal for App Service to docker pull from ACR"
@@ -62,7 +63,7 @@ AZ_ACR_SP_CLIENT_ID="$(az ad sp list \
 AZ_ACR_SP_OBJECT_ID="$(az ad sp list \
     --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-sp" \
     --only-show-errors \
-    --query "[].objectId" --output tsv)"
+    --query "[].id" --output tsv)"
 
 echo -e "\nCreating a deployment in the resource group"
 az deployment group create \

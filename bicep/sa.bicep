@@ -36,6 +36,8 @@ param sa_access_tier string = 'Hot'
 param virtual_network_rules array = []
 param ip_rules array = []
 
+param location string = resourceGroup().location
+
 /*
 ------------------------------------------------------------------------------
 VARIABLES
@@ -52,7 +54,7 @@ RESOURCES
 
 resource sa 'Microsoft.Storage/storageAccounts@2021-02-01' = {
   name: sa_name
-  location: resourceGroup().location
+  location: location
   tags: tags
   sku: {
     name: sa_sku_name

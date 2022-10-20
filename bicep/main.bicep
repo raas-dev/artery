@@ -36,12 +36,14 @@ param acr_sp_object_id string = ''
 param acr_sp_client_id string = ''
 
 @description('Service principal password for App Service to puill from ACR')
+@secure()
 param acr_sp_password string = ''
 
 @description('Azure AD application client ID for App Service auth')
 param aad_app_client_id string = ''
 
 @description('Azure AD application client secret for App Service auth')
+@secure()
 param aad_app_client_secret string = ''
 
 @description('Virtual network address space to create')
@@ -57,6 +59,9 @@ param public_subnet_mask string = '172.16.10.0/25'
 
 @description('Private subnet address space to create in the virtual network')
 param private_subnet_mask string = '172.16.10.128/25'
+
+@description('Location')
+param location string = resourceGroup().location
 
 /*
 ------------------------------------------------------------------------------
@@ -97,6 +102,7 @@ module vnet 'vnet.bicep' = {
     public_subnet_mask: public_subnet_mask
     private_subnet_mask: private_subnet_mask
     tags: tags
+    location: location
   }
 }
 
@@ -113,6 +119,7 @@ module sa 'sa.bicep' = {
       }
     ]
     tags: tags
+    location: location
   }
 }
 
@@ -137,6 +144,7 @@ module kv 'kv.bicep' = {
       }
     ]
     tags: tags
+    location: location
   }
 }
 
@@ -148,6 +156,7 @@ module acr 'acr.bicep' = {
     acr_name: acr_name
     acr_sp_object_id: acr_sp_object_id
     tags: tags
+    location: location
   }
 }
 
@@ -158,6 +167,7 @@ module law 'law.bicep' = {
   params: {
     law_name: law_name
     tags: tags
+    location: location
   }
 }
 
@@ -175,6 +185,7 @@ module ai 'ai.bicep' = {
       }
     ]
     tags: tags
+    location: location
   }
 }
 
@@ -193,6 +204,7 @@ module app 'app.bicep' = {
     ai_instrumentation_key: ai.outputs.instrumentationKey
     aad_app_client_id: aad_app_client_id
     tags: tags
+    location: location
   }
 }
 
@@ -230,6 +242,7 @@ module wt 'wt.bicep' = {
     ai_name: ai_name
     app_name: app_name
     tags: tags
+    location: location
   }
 }
 
@@ -253,6 +266,7 @@ module pe_blob 'pe.bicep' = {
     pdns_zone_name: pdns_blob.outputs.privateDnsZoneName
     subnet_id: vnet.outputs.privateSubnetId
     tags: tags
+    location: location
   }
 }
 

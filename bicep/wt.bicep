@@ -9,6 +9,8 @@ param ai_name string
 param app_name string
 param tags object
 
+param location string = resourceGroup().location
+
 /*
 ------------------------------------------------------------------------------
 EXISTING RESOURCES
@@ -31,7 +33,7 @@ RESOURCES
 
 resource webtest 'Microsoft.Insights/webtests@2015-05-01' = {
   name: webtest_name
-  location: resourceGroup().location
+  location: location
   tags: union(tags, {
     'hidden-link:${resourceId('microsoft.Insights/Components', ai.name)}': 'Resource'
   })

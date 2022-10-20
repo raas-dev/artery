@@ -11,6 +11,8 @@ param pdns_zone_name string
 param subnet_id string
 param tags object
 
+param location string = resourceGroup().location
+
 /*
 ------------------------------------------------------------------------------
 EXISTING RESOURCES
@@ -29,7 +31,7 @@ RESOURCES
 
 resource pe 'Microsoft.Network/privateEndpoints@2020-07-01' = {
   name: name
-  location: resourceGroup().location
+  location: location
   tags: tags
   properties: {
     subnet: {

@@ -25,6 +25,8 @@ param public_subnet_delegations array = [
 param private_subnet_name string = 'private'
 param private_subnet_delegations array = []
 
+param location string = resourceGroup().location
+
 /*
 ------------------------------------------------------------------------------
 VARIABLES
@@ -102,7 +104,7 @@ RESOURCES
 
 resource vnet 'Microsoft.Network/virtualNetworks@2020-07-01' = {
   name: vnet_name
-  location: resourceGroup().location
+  location: location
   tags: tags
   properties: {
     addressSpace: {

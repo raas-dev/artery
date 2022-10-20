@@ -42,6 +42,8 @@ param arr_affinity_enabled bool = false
 param web_sockets_enabled bool = false
 param app_sa_logs_retention_in_days int = 90
 
+param location string = resourceGroup().location
+
 /*
 ------------------------------------------------------------------------------
 VARIABLES
@@ -107,10 +109,6 @@ resource sa 'Microsoft.Storage/storageAccounts@2021-02-01' existing = {
   name: sa_name
 }
 
-resource kv 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: kv_name
-}
-
 resource law 'Microsoft.OperationalInsights/workspaces@2020-10-01' existing = {
   name: law_name
 }
@@ -123,7 +121,7 @@ RESOURCES
 
 resource app_plan 'Microsoft.Web/serverFarms@2020-12-01' = {
   name: app_plan_name
-  location: resourceGroup().location
+  location: location
   tags: tags
   kind: app_plan_kind
   sku: {
@@ -138,7 +136,7 @@ resource app_plan 'Microsoft.Web/serverFarms@2020-12-01' = {
 
 resource app 'Microsoft.Web/sites@2020-12-01' = {
   name: app_name
-  location: resourceGroup().location
+  location: location
   kind: app_kind
   tags: tags
   properties: {
@@ -172,7 +170,7 @@ resource app_config 'Microsoft.Web/sites/config@2020-12-01' = {
 resource app_slot 'Microsoft.Web/sites/slots@2020-12-01' = if (!empty(app_slot_postfix)) {
   parent: app
   name: app_slot_postfix
-  location: resourceGroup().location
+  location: location
   kind: app_kind
   tags: tags
   properties: {
@@ -430,9 +428,6 @@ resource app_kv_secret_reader 'Microsoft.Authorization/roleAssignments@2020-08-0
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
     principalId: app.identity.principalId
   }
-  dependsOn: [
-    app
-  ]
 }
 
 resource app_slot_kv_secret_reader 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = if (!empty(app_slot_postfix)) {
@@ -442,9 +437,6 @@ resource app_slot_kv_secret_reader 'Microsoft.Authorization/roleAssignments@2020
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
     principalId: app_slot.identity.principalId
   }
-  dependsOn: [
-    app_slot
-  ]
 }
 
 // Pulling from ACR with managed identity does not work.

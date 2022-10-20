@@ -19,6 +19,8 @@ param acr_sku_name string = 'Basic'
 
 param acr_sp_object_id string = ''
 
+param location string = resourceGroup().location
+
 /*
 ------------------------------------------------------------------------------
 RESOURCES
@@ -29,7 +31,7 @@ RESOURCES
 // https://github.com/MicrosoftDocs/azure-docs/issues/64660
 resource acr 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
   name: acr_name
-  location: resourceGroup().location
+  location: location
   tags: tags
   sku: {
     name: acr_sku_name
