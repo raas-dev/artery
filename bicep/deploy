@@ -23,11 +23,14 @@ echo -e "\nCreating an AAD app for requiring authentication on the App Service"
 AZ_AAD_APP_CLIENT_SECRET="$(openssl rand -base64 32)"
 
 az ad app create \
-    --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr"
-#    --available-to-other-tenants false \
-#    --homepage "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
-#    --reply-urls "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net/.auth/login/aad/callback" "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app-$AZ_SLOT_POSTFIX.azurewebsites.net/.auth/login/aad/callback" \
-#    --password "$AZ_AAD_APP_CLIENT_SECRET" &>/dev/null
+    --display-name "$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-appr" \
+    --enable-access-token-issuance true \
+    --enable-id-token-issuance true \
+    --sign-in-audience AzureADMyOrg \
+    --web-home-page-url "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net" \
+    --web-redirect-uris "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app.azurewebsites.net/.auth/login/aad/callback" "https://$AZ_PREFIX-$AZ_ENVIRONMENT-$AZ_NAME-app-$AZ_SLOT_POSTFIX.azurewebsites.net/.auth/login/aad/callback" #\
+    #--key-type Password \
+    #--key-value "$AZ_AAD_APP_CLIENT_SECRET" &>/dev/null
 
 #  fetch client ID as `app create` returns none if the app was already created
 AZ_AAD_APP_CLIENT_ID="$(az ad app list \
