@@ -26,7 +26,7 @@
     "prism:proxy": "npx --yes --package=prism prism proxy openapi.yaml http://localhost:8080 --errors",
     "newman": "newman run portman/collection.postman.json --reporters cli,junit,htmlextra --reporter-junit-export results/newman.junit.xml --reporter-htmlextra-export results/newman.html",
     "portman": "portman --cliOptionsFile portman/portman-newman.json",
-    "k6": "portman --cliOptionsFile portman/portman-k6.json ; postman-to-k6 tmp/k6.postman.json --iterations 10 --output k6/auto/tests.js ; docker compose up -d ; docker compose run k6 run --vus 100 --duration 30s /auto/tests.js",
+    "k6": "portman --cliOptionsFile portman/portman-k6.json ; postman-to-k6 tmp/k6.postman.json --iterations 10 --output k6/auto/tests.js ; docker compose up -d ; open http://localhost:3000/d/k6/k6-load-testing-results ; docker compose run k6 run --vus 100 --duration 30s /auto/tests.js",
     "dirsearch": "docker compose up -d ; docker compose run dirsearch -u http://api:8080 -o /var/results/dirsearch.txt --format plain",
     "fuzz": "docker compose up -d ; docker compose run apifuzzer -s /var/openapi.yaml -u http://api:8080 -t /var/results/apifuzzer.junit.xml --log debug",
     "results": "allure serve results/",

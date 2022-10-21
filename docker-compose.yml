@@ -80,6 +80,8 @@ services:
       - 'influxdb'
     cap_drop:
       - ALL
+    cpu_count: 1
+    cpu_percent: 25
 
   api:
     build:
