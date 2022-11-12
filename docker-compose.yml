@@ -32,23 +32,6 @@ services:
     environment:
       - INFLUXDB_DB=k6
 
-  apifuzzer:
-    build:
-      context: .
-      dockerfile: appsec/Dockerfile.apifuzzer
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - appsec
-    volumes:
-      - ./openapi.yaml:/var/openapi.yaml:ro
-      - ./results:/var/results
-    depends_on:
-      - 'api'
-    user: app
-    cap_drop:
-      - ALL
-
   cats:
     build:
       context: .
