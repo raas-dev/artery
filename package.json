@@ -58,6 +58,7 @@
     "@types/wait-on": "^5.3.1",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
+    "@useoptic/optic": "^0.34.6",
     "concurrently": "^7.4.0",
     "eslint": "^8.25.0",
     "eslint-config-standard": "^17.0.0",

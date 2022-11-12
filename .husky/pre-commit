@@ -12,5 +12,8 @@ npx eslint --cache --fix
 ## lint openapi
 npm run lint:spec
 
+## check breaking changes in openapi
+npx optic diff openapi.yaml --base main --check
+
 ## generate tests
 npm run portman && git add portman/collection.postman.json
