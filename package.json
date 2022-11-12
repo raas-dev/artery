@@ -28,8 +28,9 @@
     "portman": "portman --cliOptionsFile portman/portman-newman.json",
     "k6": "portman --cliOptionsFile portman/portman-k6.json ; postman-to-k6 tmp/k6.postman.json --iterations 10 --output k6/auto/tests.js ; docker-compose up -d ; open http://localhost:3000/d/k6/k6-load-testing-results ; docker-compose run k6 run --vus 100 --duration 30s /auto/tests.js",
     "dirsearch": "docker-compose up -d ; docker-compose run dirsearch -u http://api:8080 -o /var/results/dirsearch.txt --format plain",
-    "fuzz": "docker-compose up -d ; docker-compose run apifuzzer -s /var/openapi.yaml -u http://api:8080 -t /var/results/apifuzzer.junit.xml --log debug",
-    "cats": "docker-compose up -d ; docker-compose run cats --contract=/var/openapi.yaml --server=http://api:8080 --blackbox --skipReportingForIgnored --output=/var/results/cats",
+    "apifuzzer": "docker-compose up -d ; docker-compose run apifuzzer -s /var/openapi.yaml -u http://api:8080 -t /var/results/apifuzzer.junit.xml --log debug",
+    "cats": "docker-compose up -d ; docker-compose run cats --contract=/var/openapi.yaml --server=http://api:8080 --blackbox --log=error --output=/var/results/cats",
+    "cats:ci": "docker-compose up -d ; docker-compose run cats --contract=/var/openapi.yaml --server=http://api:8080 --blackbox --reportFormat=JUNIT --output=/var/results/cats",
     "results": "allure serve results/",
     "release": "npx --yes standard-version"
   },
