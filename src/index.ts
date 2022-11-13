@@ -26,11 +26,7 @@ if (instrumentationKey) {
 
 // setup Express
 const app = express()
-app.use(
-  Helmet({
-    contentSecurityPolicy: false
-  })
-)
+app.use(Helmet())
 app.use(favicon(path.join(__dirname, 'favicon.ico')))
 app.use(express.json())
 
