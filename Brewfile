@@ -13,6 +13,3 @@ brew 'shellcheck' # bash
 
 # docker/
 brew 'goodwithtech/r/dockle'
-
-# bicep/
-brew 'azure-cli'
