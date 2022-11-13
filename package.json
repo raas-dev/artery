@@ -31,7 +31,6 @@
     "cats": "docker-compose up -d ; docker-compose run cats --contract=/var/openapi.yaml --server=http://api:8080 --blackbox --log=error --output=/var/results/cats",
     "cats:ci": "docker-compose up -d ; docker-compose run cats --contract=/var/openapi.yaml --server=http://api:8080 --blackbox --reportFormat=JUNIT --output=/var/results/cats",
     "njsscan": "pipx run njsscan --html --output results/njsscan.html .",
-    "results": "allure serve results/",
     "release": "npx --yes standard-version"
   },
   "dependencies": {
