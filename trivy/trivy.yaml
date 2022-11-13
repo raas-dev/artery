@@ -191,6 +191,7 @@ scan:
     - vuln
   skip-dirs:
     - node_modules
+    - results
   skip-files: []
 secret:
   config: trivy-secret.yaml
