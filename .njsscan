@@ -1,0 +1,9 @@
+---
+- ignore-paths:
+  - bicep
+  - devops
+  - results
+
+  severity-filter:
+  - ERROR
+  - WARNING
