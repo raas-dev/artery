@@ -1,5 +1,5 @@
 {
   "upgrade": true,
-  "reject": ["prom-client"],
+  "reject": ["express-openapi-validator"],
   "format": "group"
 }
