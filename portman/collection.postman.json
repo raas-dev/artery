@@ -1,10 +1,10 @@
 {
   "_": {
-    "postman_id": "5fa6eb7d-5005-4c8b-b65b-6c157cf305ce"
+    "postman_id": "95a93450-8165-461f-96ee-6034ee165087"
   },
   "item": [
     {
-      "id": "d9888694-9128-4a85-8205-c0d688a80f0b",
+      "id": "00b07d14-87a1-4922-9b6b-f688ad3c0cc0",
       "name": "json",
       "description": {
         "content": "",
@@ -12,7 +12,7 @@
       },
       "item": [
         {
-          "id": "1ca51a49-38d7-4365-914d-c4227512fd69",
+          "id": "dd7770b2-4462-441d-bf3f-ed38b1abc168",
           "name": "version",
           "request": {
             "name": "version",
@@ -43,7 +43,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "ca4b5f0b-87a0-4e0e-9a67-9bc86bb18017",
+              "id": "c27fe673-c7a6-4921-9c5e-a142f0f27355",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -75,7 +75,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "6db48498-3464-48bf-b8ff-92406dcfd218",
+                "id": "82190288-a6b9-4984-903f-b4f8049b868e",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/ - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -88,7 +88,7 @@
           ]
         },
         {
-          "id": "b8d175c5-56e2-407c-88e8-b696ba35d679",
+          "id": "c55fc42d-ff8c-424a-a9c9-430d8d8f8ca1",
           "name": "to Backend",
           "request": {
             "name": "to Backend",
@@ -119,7 +119,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "eb320b78-141b-428e-b982-e2cd16f4f725",
+              "id": "527882eb-a265-44e5-9d5e-0d473d891a85",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -150,7 +150,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "292aaaa7-7a22-4545-8878-5a1123f7c072",
+              "id": "467f271b-757e-4321-bc1b-23c1aadc4cfb",
               "name": "bad_request",
               "originalRequest": {
                 "url": {
@@ -182,7 +182,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "05218a0a-5246-4c2b-ac85-7fd3b6f619d9",
+                "id": "b8db6604-6c82-46d2-b4c6-71595825b39a",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/to-backend - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -198,7 +198,7 @@
       "event": []
     },
     {
-      "id": "6e43943e-441c-45ca-8efd-10beb2f7b2ed",
+      "id": "365af25c-4061-4c8f-b72e-a6b5338a8d41",
       "name": "non-json",
       "description": {
         "content": "",
@@ -206,7 +206,7 @@
       },
       "item": [
         {
-          "id": "4e00bbfb-0168-4860-b494-d59b07ca2b90",
+          "id": "134097eb-a395-4162-b6f1-4388a8926b39",
           "name": "spec",
           "request": {
             "name": "spec",
@@ -237,7 +237,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "1a3c6a06-69ad-4e0c-8f5f-27593a922673",
+              "id": "7227eac0-666c-44eb-8fcc-586e73ca78f9",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -269,7 +269,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "b9e731c0-6645-426c-8b74-ae859f53fb44",
+                "id": "32fde23b-cb00-411c-8b26-1b466b10367d",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/spec - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -281,7 +281,7 @@
           ]
         },
         {
-          "id": "7a7514ff-c4d1-4612-887f-7ea6f224d264",
+          "id": "45dddbdd-19e6-4a4c-b868-55c2328e1ae1",
           "name": "docs",
           "request": {
             "name": "docs",
@@ -312,7 +312,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "5bcd9fca-368b-4702-8398-10c6d6762731",
+              "id": "cfacc290-4f15-4aea-99e2-441941c80cec",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -344,7 +344,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "d1f46d4f-0285-46e2-b130-bd1546234f91",
+                "id": "eafcde29-09e2-471f-ba01-526a67ddae97",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/docs - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -356,7 +356,7 @@
           ]
         },
         {
-          "id": "346d7da6-0ab4-4952-89fe-4f885b5a9f3b",
+          "id": "77962000-1951-4ced-ab63-e3a4801cc9b6",
           "name": "dns Servers",
           "request": {
             "name": "dns Servers",
@@ -387,7 +387,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "4fb1d616-c3b0-4f4f-9d84-9768d7e8805a",
+              "id": "8003e3b7-cc74-490d-b5fb-ce790f6bfe2d",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -419,7 +419,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "6c3762dd-1d4a-4277-8b81-6a283673c90c",
+                "id": "0f99ea3e-b231-490a-949c-ac7606d47c0c",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/dns-servers - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -443,7 +443,7 @@
     }
   ],
   "info": {
-    "_postman_id": "5fa6eb7d-5005-4c8b-b65b-6c157cf305ce",
+    "_postman_id": "95a93450-8165-461f-96ee-6034ee165087",
     "name": "artery",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
