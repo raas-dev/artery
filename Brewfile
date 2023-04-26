@@ -10,6 +10,3 @@ brew 'trivy'
 brew 'semgrep'    # languages
 brew 'hadolint'   # docker
 brew 'shellcheck' # bash
-
-# docker/
-brew 'goodwithtech/r/dockle'
