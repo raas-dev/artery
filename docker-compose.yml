@@ -49,24 +49,10 @@ services:
     cap_drop:
       - ALL
 
-  dirsearch:
+  k6:
     build:
       context: .
-      dockerfile: appsec/Dockerfile.dirsearch
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - appsec
-    volumes:
-      - ./results:/var/results
-    depends_on:
-      - 'api'
-    user: app
-    cap_drop:
-      - ALL
-
-  k6:
-    image: 24hoursmedia/k6-xarch:latest
+      dockerfile: k6/Dockerfile.k6
     read_only: true
     security_opt:
       - no-new-privileges:true
