@@ -1,10 +1,10 @@
 {
   "_": {
-    "postman_id": "e32a1778-0c27-4c56-9aba-dd9e133f903f"
+    "postman_id": "d0be4192-4ba5-4a44-be30-facfd3dd32df"
   },
   "item": [
     {
-      "id": "baea1a4f-15e1-4250-8c2c-5d074c73bb79",
+      "id": "48308991-6352-4971-b857-8c39f2f97e29",
       "name": "json",
       "description": {
         "content": "",
@@ -12,7 +12,7 @@
       },
       "item": [
         {
-          "id": "9c6651d1-af53-40a0-b410-402600b3a11a",
+          "id": "bbd87870-95a3-43c5-a638-c09e4d9de61f",
           "name": "version",
           "request": {
             "name": "version",
@@ -43,7 +43,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "ea87b3f0-c20a-4b56-b1e8-71946dd7ff68",
+              "id": "edbafb25-7207-4b42-a2da-3dfe699f899a",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -75,7 +75,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "3d70af36-cd9b-49f8-8500-ed421bbe12cd",
+                "id": "b5a369d7-953b-41be-9b48-424cbf79433f",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/ - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -85,10 +85,13 @@
                 ]
               }
             }
-          ]
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         },
         {
-          "id": "df3c07f0-e06b-40bf-9983-ceb1e57f7ffc",
+          "id": "708aa8e5-abee-460d-928d-1e2f2511eef1",
           "name": "to Backend",
           "request": {
             "name": "to Backend",
@@ -119,7 +122,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "ab43923d-d8e4-4fba-af61-d98872d81e46",
+              "id": "83eee474-ef8e-4b69-88d9-856bf61088a1",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -150,7 +153,7 @@
               "_": {
                 "postman_previewlanguage": "json"
               },
-              "id": "3630de6b-19bc-4724-99e8-cfd2bd7a7b10",
+              "id": "bb042df7-03e3-45a5-8cf1-f7a099e01485",
               "name": "bad_request",
               "originalRequest": {
                 "url": {
@@ -182,7 +185,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "6b78de4c-82df-41a8-9f04-6b2433a514c0",
+                "id": "f0ce887f-8182-4701-8d60-f120e4c58427",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/to-backend - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -192,13 +195,16 @@
                 ]
               }
             }
-          ]
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         }
       ],
       "event": []
     },
     {
-      "id": "306d0213-213f-4268-8f03-0d29654d11b9",
+      "id": "3dbf60d0-be3c-461c-a875-7b76134b5a73",
       "name": "non-json",
       "description": {
         "content": "",
@@ -206,7 +212,7 @@
       },
       "item": [
         {
-          "id": "9aab75df-04f3-4f43-9210-f103120420fd",
+          "id": "5412ac03-f97b-4175-88db-4ff9817939eb",
           "name": "spec",
           "request": {
             "name": "spec",
@@ -237,7 +243,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "b9633e6a-aa06-450a-bcb2-5563e8d1dd32",
+              "id": "84c993a4-b01c-4833-a314-32471b2fc677",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -269,7 +275,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "4aa22022-8fa4-4f1f-bef2-8dc610a8e7af",
+                "id": "0b5589ff-9a0b-4003-818c-440cb2cf9a4c",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/spec - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -278,10 +284,13 @@
                 ]
               }
             }
-          ]
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         },
         {
-          "id": "db5dbf9c-d1b4-47f8-ad45-d5d49ff82743",
+          "id": "77d94301-db65-44b3-9ab1-1aa4d540cd2b",
           "name": "docs",
           "request": {
             "name": "docs",
@@ -312,7 +321,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "193d3cd4-f029-4839-b679-94d25840438c",
+              "id": "965685ba-5bd0-4735-81fc-5707e99c6187",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -344,7 +353,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "3a5e4bad-8751-481b-8080-134fa315eab8",
+                "id": "060bf4c3-2b1c-4d14-a28d-6280641b209d",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/docs - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -353,10 +362,13 @@
                 ]
               }
             }
-          ]
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         },
         {
-          "id": "7b5532b8-ef1e-43d0-949f-b27765d5b0da",
+          "id": "bd5f7224-2f9f-4fc8-9d87-ee2edcffc2d2",
           "name": "dns Servers",
           "request": {
             "name": "dns Servers",
@@ -387,7 +399,7 @@
               "_": {
                 "postman_previewlanguage": "text"
               },
-              "id": "711a14e8-cf2f-4801-bdc4-d01a6b42812f",
+              "id": "4d045097-26b6-4476-ad6c-059ea1013276",
               "name": "ok",
               "originalRequest": {
                 "url": {
@@ -419,7 +431,7 @@
             {
               "listen": "test",
               "script": {
-                "id": "0f3efafc-69d5-4808-a3e6-50ab086ce018",
+                "id": "0cfca2b5-4c5e-4922-ac68-0cc36bc391e0",
                 "type": "text/javascript",
                 "exec": [
                   "// Validate status 2xx \npm.test(\"[GET]::/dns-servers - Status code is 2xx\", function () {\n   pm.response.to.be.success;\n});\n",
@@ -428,7 +440,10 @@
                 ]
               }
             }
-          ]
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
         }
       ],
       "event": []
@@ -443,7 +458,7 @@
     }
   ],
   "info": {
-    "_postman_id": "e32a1778-0c27-4c56-9aba-dd9e133f903f",
+    "_postman_id": "d0be4192-4ba5-4a44-be30-facfd3dd32df",
     "name": "artery",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
