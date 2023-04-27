@@ -8,7 +8,6 @@
     "semgrep.semgrep",
     "ms-azure-devops.azure-pipelines",
     "exiasr.hadolint",
-    "aquasecurityofficial.trivy-vulnerability-scanner",
     "stoplight.spectral"
   ]
 }
