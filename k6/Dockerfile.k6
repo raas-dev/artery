@@ -11,4 +11,6 @@ COPY --from=builder /tmp/k6 /usr/bin/k6
 
 USER k6
 WORKDIR /home/k6
+
+HEALTHCHECK CMD which k6
 ENTRYPOINT ["k6"]

@@ -32,5 +32,6 @@ ARG CATS_VERSION=8.2.0
 RUN curl -fsSL https://github.com/Endava/cats/releases/download/cats-$CATS_VERSION/cats_uberjar_$CATS_VERSION.tar.gz -o cats.tar.gz
 RUN tar xvfz cats.tar.gz
 
+HEALTHCHECK CMD test -f cats.jar
 ENTRYPOINT ["java", "-jar", "cats.jar"]
 CMD ["--help"]

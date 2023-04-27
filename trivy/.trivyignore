@@ -2,6 +2,3 @@
 # docker/Dockerfile.alpine
 # docker/Dockerfile.bullseye
 AVD-DS-0002 # https://avd.aquasec.com/misconfig/dockerfile/general/avd-ds-0002/
-
-# Allow not using healthcheck in Dockerfiles
-AVD-DS-0026 # https://avd.aquasec.com/misconfig/dockerfile/general/avd-ds-0026/
